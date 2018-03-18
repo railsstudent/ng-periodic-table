@@ -28,6 +28,6 @@
       <span class="index">7</span>
     </div>
 
-    <app-atom *ngFor="let i of atoms" class="periodic-atom-{{i}}" [data]="i"></app-atom>
+    <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"></app-atom>
   </div>
 </div>

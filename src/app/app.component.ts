@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { HighlightState } from './shared/highlight-state';
+import { HighlightState } from './shared/';
 
 @Component({
   selector: 'app-root',
