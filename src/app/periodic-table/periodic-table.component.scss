@@ -14,9 +14,6 @@ $square: 60px;
   &-grid {
     display: grid;
     grid-gap: 8px;
-
-    border: 1px solid blue;
-
     grid-template-columns: 20px repeat(18, $square);
     grid-auto-rows: $square;
   }
@@ -25,6 +22,7 @@ $square: 60px;
     border: 1px solid #ccc;
     color: #000088;
     position: relative;
+    cursor: pointer;
 
     display: flex;
     flex-direction: column;
@@ -672,5 +670,10 @@ $square: 60px;
       grid-row: 10;
       grid-column: 19;
     }
+  }
+
+  .description {
+    grid-row: 2;
+    grid-column: 3;
   }
 }

@@ -2,13 +2,10 @@
   border: 2px solid #ccc;
 }
 
-* {
-  box-sizing: border-box;;
-}
-
 .atom-container {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 
   p {
     margin: 0;

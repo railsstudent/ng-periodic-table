@@ -29,5 +29,6 @@
     </div>
 
     <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"></app-atom>
+    <app-atom class="description" [data]="description"></app-atom>
   </div>
 </div>

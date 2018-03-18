@@ -22,6 +22,7 @@ $margin-size: 8px;
   button {
     margin: $margin-size $margin-size $margin-size 0;
     padding: $margin-size;
+    cursor: pointer;
   }
 
   .other, .metal-container, .nonmetal-container {

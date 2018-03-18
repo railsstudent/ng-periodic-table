@@ -11,6 +11,16 @@ export class PeriodicTableComponent implements OnInit {
 
   rowHeader: { index: number, description: string }[];
   atoms: Atom[];
+  description = {
+    number: 'Atomic',
+    symbol: 'SYM',
+    name: 'Name',
+    atomic_mass: 'Weight',
+    phase: '',
+    category: '',
+    xpos: 3,
+    ypos: 2
+  }
 
   constructor() { }
 
@@ -27,8 +37,8 @@ export class PeriodicTableComponent implements OnInit {
       atomic_mass: a.atomic_mass,
       phase: a.phase,
       category: a.category,
-      xpos: a.xpos,
-      ypos: a.ypos
+      xpos: a.xpos + 1,
+      ypos: a.ypos + 1
     })).concat([{
       number: '57-71',
       category: 'lanthanide',
@@ -40,7 +50,7 @@ export class PeriodicTableComponent implements OnInit {
       ypos: 4
     }, {
       number: '89-103',
-      category: 'actinoids',
+      category: 'actinide',
       symbol: '',
       name: '',
       atomic_mass: null,
