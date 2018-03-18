@@ -1,0 +1,43 @@
+:host {
+  border: 2px solid #ccc;
+}
+
+.atom-container {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  p {
+    margin: 0;
+    padding: 0;
+
+    &.atomic {
+      font-size: 0.7em;
+    }
+
+    &.symbol {
+      font-size: 1em;
+      font-weight: bold;
+    }
+
+    &.name, &.weight {
+      font-size: 0.7em;
+    }
+  }
+
+  .gas {
+    color: #990000;
+  }
+
+  .liquid {
+    color: #0000dd;
+  }
+
+  .solid {
+    color: #000;
+  }
+
+  .unknown {
+    color: #667766;
+  }
+}

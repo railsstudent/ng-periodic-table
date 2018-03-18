@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { HighlightState } from './shared/highlight-state';
+import { HighlightState } from './shared/';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,6 @@ export class AppComponent {
   }
 
   highlightElement(highlightState: HighlightState) {
-    this.highlightState = JSON.stringify(highlightState);
+    //this.highlightState = JSON.stringify(highlightState);
   }
 }

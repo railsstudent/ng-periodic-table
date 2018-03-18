@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { HighlightState } from '../shared/highlight-state';
+import { HighlightState } from '../shared/';
 
 @Component({
   selector: 'app-selection-bar',
@@ -8,9 +8,9 @@ import { HighlightState } from '../shared/highlight-state';
 })
 export class SelectionBarComponent implements OnInit {
 
-  highlightState: HighlightState;
   @Output()
   highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
+  highlightState: HighlightState;
 
   constructor() { }
 

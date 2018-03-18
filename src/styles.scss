@@ -6,41 +6,44 @@
 body {
   min-height: 100vh;
   background: #FFF;
-  border: 1px solid red;
 }
 
-.alkali {
+.alkali-metal {
   background: #FFCC33;
-
-  &-earth {
-    background: #FFFF44;
-  }
 }
 
-.lant {
+.alkaline-earth-metal {
+  background: #FFFF44;
+}
+
+.lanthanide {
   background: #FFBB99;
 }
 
-.actinoids {
+.actinide {
   background: #EEBBDD;
 }
 
-.transition {
+.transition-metal {
   background: #DDBBBB;
 }
 
-.post-transition {
+.post-transition-metal {
   background: #99DDCC;
 }
 
-.metalloids {
+.metalloid {
   background: #77DD88;
 }
 
-.nonmetals {
+.nonmetal {
   background: #22FF22;
 }
 
 .noble-gas {
   background: #77CCFF;
+}
+
+.unknown-metal {
+  background: #DDDDDD;
 }
