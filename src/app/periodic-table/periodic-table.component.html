@@ -1,3 +1,24 @@
-<p>
-  periodic-table works!
-</p>
+<div class="periodic-container">
+  <div class="periodic-grid">
+    <div class="periodic-row-num">&nbsp;</div>
+    <div class="periodic-row-num" *ngFor="let o of rowHeader">
+      <span class="index">{{o.index}}</span>
+      <span class="description">{{o.description}}</span>
+    </div>
+
+    <div class="periodic-col-num one">
+      <span class="index">1</span>
+    </div>
+    <div class="periodic-col-num two">
+      <span class="index">2</span>
+    </div>
+    <div class="periodic-col-num three">
+      <span class="index">3</span>
+    </div>
+    <div class="periodic-col-num four">
+      <span class="index">4</span>
+    </div>
+
+    <app-atom *ngFor="let i of atoms" class="periodic-atom-{{i}}" [data]="i"></app-atom>
+  </div>
+</div>

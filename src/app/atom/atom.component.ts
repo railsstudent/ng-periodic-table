@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-atom',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./atom.component.scss']
 })
 export class AtomComponent implements OnInit {
+
+  @Input()
+  data: any;
 
   constructor() { }
 
