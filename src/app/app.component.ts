@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { HighlightState } from './shared/highlight-state';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,13 @@ import { Title } from '@angular/platform-browser';
 })
 export class AppComponent {
   title = 'app';
+  highlightState: HighlightState;
 
   constructor(titleService: Title) {
     titleService.setTitle('Periodic Table');
+  }
+
+  highlightElement(highlightState: HighlightState) {
+    this.highlightState = JSON.stringify(highlightState);
   }
 }

@@ -1,18 +1,54 @@
 <div class="selection-bar">
   <div class="metal-container">
-    <p>Metals<p>
-    <button>Alkali metals</button>
-    <button>Alkaline earth metals</button>
-    <button>Lanthanoids</button>
-    <button>Actinoids</button>
-    <button>Transition metals</button>
+    <p class="title">Metals</p>
+    <div class="buttons">
+      <button class="alkali"
+        (mouseover)="changeHighlightState('alkali', true)"
+        (mouseleave)="changeHighlightState('alkali', false)">
+        <span>Alkali metals</span>
+      </button>
+      <button class="alkali-earth" (mouseover)="changeHighlightState('alkaline', true)"
+        (mouseleave)="changeHighlightState('alkaline', false)">
+        <span>Alkaline earth metals</span>
+      </button>
+      <button class="lant" (mouseover)="changeHighlightState('lant', true)"
+        (mouseleave)="changeHighlightState('lant', false)">
+        <span>Lanthanoids</span>
+      </button>
+      <button class="actinoids" (mouseover)="changeHighlightState('actinoids', true)"
+        (mouseleave)="changeHighlightState('actinoids', false)">
+        <span>Actinoids</span>
+      </button>
+      <button class="transition" (mouseover)="changeHighlightState('transition', true)"
+        (mouseleave)="changeHighlightState('transition', false)">
+        <span>Transition metals</span>
+      </button>
+      <button class="post-transition" (mouseover)="changeHighlightState('postTransition', true)"
+        (mouseleave)="changeHighlightState('postTransition', false)">
+        <span>Post-transition metals</span>
+      </button>
+    </div>
   </div>
   <div class="other">
-    <button>Metalloids</button>
+    <p class="title">&nbsp;</p>
+    <div class="buttons">
+      <button class="metalloids" (mouseover)="changeHighlightState('metalloids', true)"
+        (mouseleave)="changeHighlightState('metalloids', false)">
+        <span>Metalloids</span>
+      </button>
+    </div>
   </div>
   <div class="nonmetal-container">
-    <p>Nonmetals<p>
-    <button>Other nonmetals</button>
-    <button>Noble gases</button>
+    <p class="title">Nonmetals</p>
+    <div class="buttons">
+      <button class="nonmetals" (mouseover)="changeHighlightState('nonMetals', true)"
+        (mouseleave)="changeHighlightState('nonMetals', false)">
+        <span>Other nonmetals</span>
+      </button>
+      <button class="noble-gas" (mouseover)="changeHighlightState('nobleGas', true)"
+        (mouseleave)="changeHighlightState('nobleGas', false)">
+        <span>Noble gases</span>
+      </button>
+    </div>
   </div>
 </div>

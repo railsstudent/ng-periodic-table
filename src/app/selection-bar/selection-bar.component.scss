@@ -1,0 +1,41 @@
+:host {
+  flex: 0 0 100%;
+}
+
+$margin-size: 8px;
+
+.selection-bar {
+  display: flex;
+  flex-direction: row;
+
+  p {
+    &.title {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  button {
+    margin: $margin-size $margin-size $margin-size 0;
+    padding: $margin-size;
+  }
+
+  .other, .metal-container, .nonmetal-container {
+    border: 1px solid #CCC;
+    margin-left: 0px;
+    margin-right: $margin-size;
+
+    .buttons {
+      border: 1px solid red;
+
+      button:nth-of-type(1) {
+        margin-left: $margin-size;
+      }
+      button span {
+        font-size: 1em;
+        writing-mode: vertical-rl;
+      }
+    }
+  }
+}

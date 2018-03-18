@@ -1,6 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
 body {
   min-height: 100vh;
   background: #FFF;
   border: 1px solid red;
+}
+
+.alkali {
+  background: #FFCC33;
+
+  &-earth {
+    background: #FFFF44;
+  }
+}
+
+.lant {
+  background: #FFBB99;
+}
+
+.actinoids {
+  background: #EEBBDD;
+}
+
+.transition {
+  background: #DDBBBB;
+}
+
+.post-transition {
+  background: #99DDCC;
+}
+
+.metalloids {
+  background: #77DD88;
+}
+
+.nonmetals {
+  background: #22FF22;
+}
+
+.noble-gas {
+  background: #77CCFF;
 }

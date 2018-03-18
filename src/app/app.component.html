@@ -1,5 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<ng-container>
-  <app-selection-bar></app-selection-bar>
+<div class="container">
+  <app-selection-bar (highlightElement)=highlightElement($event)></app-selection-bar>
+  {{ highlightState }}
   <app-periodic-table></app-periodic-table>
-</ng-container>
+</div>
