@@ -1,22 +1,31 @@
 <div class="periodic-container">
   <div class="periodic-grid">
-    <div class="periodic-row-num">&nbsp;</div>
-    <div class="periodic-row-num" *ngFor="let o of rowHeader">
+    <div class="periodic-col-num">&nbsp;</div>
+    <div class="periodic-col-num" *ngFor="let o of rowHeader">
       <span class="index">{{o.index}}</span>
       <span class="description">{{o.description}}</span>
     </div>
 
-    <div class="periodic-col-num one">
+    <div class="periodic-row-num one">
       <span class="index">1</span>
     </div>
-    <div class="periodic-col-num two">
+    <div class="periodic-row-num two">
       <span class="index">2</span>
     </div>
-    <div class="periodic-col-num three">
+    <div class="periodic-row-num three">
       <span class="index">3</span>
     </div>
-    <div class="periodic-col-num four">
+    <div class="periodic-row-num four">
       <span class="index">4</span>
+    </div>
+    <div class="periodic-row-num five">
+      <span class="index">5</span>
+    </div>
+    <div class="periodic-row-num six">
+      <span class="index">6</span>
+    </div>
+    <div class="periodic-row-num seven">
+      <span class="index">7</span>
     </div>
 
     <app-atom *ngFor="let i of atoms" class="periodic-atom-{{i}}" [data]="i"></app-atom>

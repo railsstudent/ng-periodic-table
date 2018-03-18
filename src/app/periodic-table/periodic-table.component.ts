@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class PeriodicTableComponent implements OnInit {
 
   rowHeader: { index: number, description: string }[];
-  atoms: number[];
+  atoms: string[];
 
   constructor() { }
 
@@ -18,6 +18,7 @@ export class PeriodicTableComponent implements OnInit {
       description: i === 14 ? 'Pnictogens':  (i === 15? 'Chalcogens' : (i === 16 ? 'Halogens': ''))
     }));
 
-    this.atoms = Array(36).fill(1).map((v, i) => i+1);
+    this.atoms = Array(118).fill(1).map((v, i) => `${i+1}`)
+                  .concat(['57-71', '89-103']);
   }
 }
