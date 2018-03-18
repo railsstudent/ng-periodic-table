@@ -28,6 +28,23 @@
       <span class="index">7</span>
     </div>
 
+    <div class="phase-row-1 col-1">
+      <div class="solid">C</div>
+      <div class="liquid">Hg</div>
+    </div>
+    <div class="phase-row-1 col-2">
+      <div class="solid">Solid</div>
+      <div class="liquid">Liquid</div>
+    </div>
+    <div class="phase-row-2 col-1">
+      <div class="gas">H</div>
+      <div class="unknown">Rf</div>
+    </div>
+    <div class="phase-row-2 col-2">
+      <div class="gas">Gas</div>
+      <div class="unknown">Unknown</div>
+    </div>
+
     <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"></app-atom>
     <app-atom class="description" [data]="description"></app-atom>
   </div>
