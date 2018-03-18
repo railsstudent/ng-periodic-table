@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Atom } from '../shared';
+
+declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
+
+// import * as atomData from '../../assets/periodic-table.json'
+
 
 @Component({
   selector: 'app-periodic-table',
