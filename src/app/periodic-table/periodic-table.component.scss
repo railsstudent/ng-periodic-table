@@ -16,6 +16,75 @@ $square: 60px;
     grid-gap: 8px;
     grid-template-columns: 20px repeat(18, $square);
     grid-auto-rows: $square;
+
+    .phase-row-1 {
+        .solid, .liquid {
+          padding: 2px;
+          font-size: 1em;
+          font-weight: bold;
+        }
+
+        .liquid {
+          margin-top: 5px;
+        }
+
+        &.col-1 {
+          grid-row: 3;
+          grid-column: 6;
+
+          .solid, .liquid {
+            width: 50%;
+            margin: 0 0 0 auto;
+            border: 1px solid #000;
+            text-align: center;
+            cursor: pointer;
+          }
+
+          .liquid {
+            margin-top: 5px;
+          }
+        }
+
+        &.col-2 {
+          grid-row: 3;
+          grid-column: 7;
+        }
+    }
+
+    .phase-row-2 {
+        .gas, .unknown {
+          padding: 2px;
+          font-size: 1em;
+          font-weight: bold;
+        }
+
+        .unknown {
+          margin-top: 5px;
+        }
+
+        &.col-1 {
+          grid-row: 4;
+          grid-column: 6;
+
+          .gas, .unknown {
+            width: 50%;
+            margin: 0 0 0 auto;
+            border: 1px solid #000;
+            text-align: center;
+            cursor: pointer;
+          }
+
+          .unknown {
+            margin-top: 5px;
+          }
+        }
+
+        &.col-2 {
+          grid-row: 4;
+          grid-column: 7;
+        }
+    }
+
   }
 
   &-row-num, &-col-num {
