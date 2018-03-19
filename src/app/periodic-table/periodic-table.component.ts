@@ -14,7 +14,7 @@ const atomData = require('../../assets/periodic-table.json');
 })
 export class PeriodicTableComponent implements OnInit {
 
-  rowHeader: { index: number, description: string }[];
+  colHeader: { index: number, description: string }[];
   atoms: Atom[];
   description = {
     number: 'Atomic',
@@ -26,13 +26,23 @@ export class PeriodicTableComponent implements OnInit {
     xpos: 3,
     ypos: 2
   }
+  rowHeader = [
+    { index: 1, className: 'one', selected: false },
+    { index: 2, className: 'two', selected: false },
+    { index: 3, className: 'three', selected: false },
+    { index: 4, className: 'four', selected: false },
+    { index: 5, className: 'fifth', selected: false },
+    { index: 6, className: 'six', selected: false },
+    { index: 7, className: 'seven', selected: false }
+  ];
 
   constructor() { }
 
   ngOnInit() {
-    this.rowHeader = Array(18).fill(1).map((v, i) => ({
+    this.colHeader = Array(18).fill(1).map((v, i) => ({
       index: i+1,
-      description: i === 14 ? 'Pnictogens':  (i === 15? 'Chalcogens' : (i === 16 ? 'Halogens': ''))
+      description: i === 14 ? 'Pnictogens':  (i === 15? 'Chalcogens' : (i === 16 ? 'Halogens': '')),
+      selected: false
     }));
 
     this.atoms = atomData.map(a => ({

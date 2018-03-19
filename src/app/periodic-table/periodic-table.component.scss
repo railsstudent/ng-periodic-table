@@ -85,6 +85,9 @@ $square: 60px;
         }
     }
 
+    .selected {
+      background: yellow;
+    }
   }
 
   &-row-num, &-col-num {

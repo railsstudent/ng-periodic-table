@@ -1,15 +1,19 @@
 <div class="periodic-container">
   <div class="periodic-grid">
     <div class="periodic-col-num">&nbsp;</div>
-    <div class="periodic-col-num" *ngFor="let o of rowHeader">
+    <div class="periodic-col-num" *ngFor="let o of colHeader"
+      (mouseenter)="colHeader[o.index-1].selected=true;" (mouseleave)="colHeader[o.index-1].selected=false;"
+      [class.selected]="o.selected">
       <span class="index">{{o.index}}</span>
       <span class="description">{{o.description}}</span>
     </div>
 
-    <div class="periodic-row-num one">
-      <span class="index">1</span>
+    <div *ngFor="let o of rowHeader" class="periodic-row-num {{o.className}}"
+      (mouseenter)="rowHeader[o.index-1].selected=true;" (mouseleave)="rowHeader[o.index-1].selected=false;"
+      [class.selected]="o.selected">
+      <span class="index">{{o.index}}</span>
     </div>
-    <div class="periodic-row-num two">
+    <!-- <div class="periodic-row-num two">
       <span class="index">2</span>
     </div>
     <div class="periodic-row-num three">
@@ -26,7 +30,7 @@
     </div>
     <div class="periodic-row-num seven">
       <span class="index">7</span>
-    </div>
+    </div> -->
 
     <div class="phase-row-1 col-1">
       <div class="solid">C</div>
