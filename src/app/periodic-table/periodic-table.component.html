@@ -1,44 +1,46 @@
 <div class="periodic-container">
   <div class="periodic-grid">
     <div class="periodic-col-num">&nbsp;</div>
-    <div class="periodic-col-num" *ngFor="let o of rowHeader">
+    <div class="periodic-col-num" *ngFor="let o of colHeader"
+      (mouseenter)="colHeader[o.index-1].selected=true; blurColAtoms({ colNum: o.index, blurry: true })"
+      (mouseleave)="colHeader[o.index-1].selected=false; blurColAtoms({ colNum: o.index, blurry: false })"
+      [class.selected]="o.selected">
       <span class="index">{{o.index}}</span>
       <span class="description">{{o.description}}</span>
     </div>
 
-    <div class="periodic-row-num one">
-      <span class="index">1</span>
-    </div>
-    <div class="periodic-row-num two">
-      <span class="index">2</span>
-    </div>
-    <div class="periodic-row-num three">
-      <span class="index">3</span>
-    </div>
-    <div class="periodic-row-num four">
-      <span class="index">4</span>
-    </div>
-    <div class="periodic-row-num five">
-      <span class="index">5</span>
-    </div>
-    <div class="periodic-row-num six">
-      <span class="index">6</span>
-    </div>
-    <div class="periodic-row-num seven">
-      <span class="index">7</span>
+    <div *ngFor="let o of rowHeader" class="periodic-row-num {{o.className}}"
+      (mouseenter)="rowHeader[o.index-1].selected=true; blurRowAtoms({ rowNum: o.index, blurry: true })"
+      (mouseleave)="rowHeader[o.index-1].selected=false; blurRowAtoms({ rowNum: o.index, blurry: false })"
+      [class.selected]="o.selected">
+      <span class="index">{{o.index}}</span>
     </div>
 
     <div class="phase-row-1 col-1">
-      <div class="solid">C</div>
-      <div class="liquid">Hg</div>
+      <div class="solid"
+        (mouseenter)="matterClass.solid=true" (mouseleave)="matterClass.solid=false"
+        [class.selected]="matterClass.solid == true">
+        C
+      </div>
+      <div class="liquid"
+        (mouseenter)="matterClass.liquid=true" (mouseleave)="matterClass.liquid=false"
+        [class.selected]="matterClass.liquid == true">
+        Hg
+      </div>
     </div>
     <div class="phase-row-1 col-2">
       <div class="solid">Solid</div>
       <div class="liquid">Liquid</div>
     </div>
     <div class="phase-row-2 col-1">
-      <div class="gas">H</div>
-      <div class="unknown">Rf</div>
+      <div class="gas"
+        (mouseenter)="matterClass.gas=true" (mouseleave)="matterClass.gas=false"
+        [class.selected]="matterClass.gas == true">H</div>
+      <div class="unknown"
+        (mouseenter)="matterClass.unknown=true" (mouseleave)="matterClass.unknown=false"
+        [class.selected]="matterClass.unknown == true">
+        Rf
+      </div>
     </div>
     <div class="phase-row-2 col-2">
       <div class="gas">Gas</div>
@@ -47,5 +49,7 @@
 
     <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"></app-atom>
     <app-atom class="description" [data]="description"></app-atom>
+    <app-atom class="periodic-atom-57-71" [data]="lantAtomGroup"></app-atom>
+    <app-atom class="periodic-atom-89-103" [data]="actinideAtomGroup"></app-atom>
   </div>
 </div>

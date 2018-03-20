@@ -25,19 +25,7 @@
     }
   }
 
-  .gas {
-    color: #990000;
-  }
-
-  .liquid {
-    color: #0000dd;
-  }
-
-  .solid {
-    color: #000;
-  }
-
-  .unknown {
-    color: #667766;
+  &.blurry {
+    opacity: 0.5;
   }
 }
