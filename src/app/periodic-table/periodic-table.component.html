@@ -2,8 +2,8 @@
   <div class="periodic-grid">
     <div class="periodic-col-num">&nbsp;</div>
     <div class="periodic-col-num" *ngFor="let o of colHeader"
-      (mouseenter)="colHeader[o.index-1].selected=true; blurColAtoms({ colNum: o.index, isBlur: true })"
-      (mouseleave)="colHeader[o.index-1].selected=false; blurColAtoms({ colNum: o.index, isBlur: false })"
+      (mouseenter)="colHeader[o.index-1].selected=true; blurColAtoms({ colNum: o.index, blurry: true })"
+      (mouseleave)="colHeader[o.index-1].selected=false; blurColAtoms({ colNum: o.index, blurry: false })"
       [class.selected]="o.selected">
       <span class="index">{{o.index}}</span>
       <span class="description">{{o.description}}</span>

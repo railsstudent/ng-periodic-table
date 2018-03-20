@@ -1,6 +1,6 @@
 :host {
   flex: 0 0 100%;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 $square: 60px;
@@ -9,6 +9,7 @@ $liquid-color: #2D51E1;
 $gas-color: #923A49;
 $unknown-color: #898989;
 $heading-color: #000088;
+$grid-gap: 4px;
 
 .periodic {
   &-container {
@@ -18,7 +19,7 @@ $heading-color: #000088;
 
   &-grid {
     display: grid;
-    grid-gap: 8px;
+    grid-gap: $grid-gap;
     grid-template-columns: 20px repeat(18, $square);
     grid-auto-rows: $square;
 

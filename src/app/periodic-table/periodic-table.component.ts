@@ -78,17 +78,14 @@ export class PeriodicTableComponent implements OnInit {
   }
 
   blurRowAtoms({ rowNum, blurry }) {
-    console.log({ rowNum, blurry });
-    this.atoms =
-      this.atoms.map (atom => {
-        if (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 9) || (rowNum === 7 && atom.ypos === 10)) {
-          return atom;
-        }
-        return Object.assign({}, atom, { blurry });
-    });
+    this.atoms = this.atoms.map (atom =>
+      (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 9) || (rowNum === 7 && atom.ypos === 10)) ?
+          atom : Object.assign({}, atom, { blurry })
+    );
   }
 
-  blurColAtoms({ colNum, isBlur }) {
-    console.log({ colNum, isBlur });
+  blurColAtoms({ colNum, blurry }) {
+    this.atoms = this.atoms.map (atom =>
+      (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : Object.assign({}, atom, { blurry }));
   }
 }
