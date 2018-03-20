@@ -1,15 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-atom',
   templateUrl: './atom.component.html',
   styleUrls: ['./atom.component.scss']
 })
-export class AtomComponent implements OnInit {
+export class AtomComponent implements OnInit, OnChanges {
 
   @Input()
   data: any;
+
   phaseClass: {}
+  backgroundStyles = {
+    blurry: false
+  };
 
   constructor() { }
 
@@ -22,4 +26,9 @@ export class AtomComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+      console.log(changes)
+      const blurry = changes.data && changes.data.currentValue && changes.data.currentValue.blurry || false;
+      this.backgroundStyles.blurry = blurry;
+  }
 }

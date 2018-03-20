@@ -18,5 +18,6 @@ export interface Atom {
   atomic_mass: number,
   phase: string,
   xpos: number,
-  ypos: number
+  ypos: number,
+  blurry: boolean
 };

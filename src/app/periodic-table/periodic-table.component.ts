@@ -4,9 +4,6 @@ import { Atom } from '../shared';
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
 
-// import * as atomData from '../../assets/periodic-table.json'
-
-
 @Component({
   selector: 'app-periodic-table',
   templateUrl: './periodic-table.component.html',
@@ -16,17 +13,31 @@ export class PeriodicTableComponent implements OnInit {
 
   colHeader: { index: number, description: string }[];
   atoms: Atom[];
+  rowHeader: any;
+
   description = {
     number: 'Atomic',
     symbol: 'SYM',
     name: 'Name',
-    atomic_mass: 'Weight',
-    phase: '',
-    category: '',
-    xpos: 3,
-    ypos: 2
+    atomic_mass: 'Weight'
   };
-  rowHeader: any;
+
+  lantAtomGroup = {
+    number: '57-71',
+    category: 'lanthanide',
+    symbol: '',
+    name: '',
+    atomic_mass: null
+  }
+
+  actinideAtomGroup = {
+    number: '89-103',
+    category: 'actinide',
+    symbol: '',
+    name: '',
+    atomic_mass: null
+  }
+
   matterClass = {
     solid: false,
     liquid: false,
@@ -60,26 +71,24 @@ export class PeriodicTableComponent implements OnInit {
       atomic_mass: a.atomic_mass,
       phase: a.phase,
       category: a.category,
-      xpos: a.xpos + 1,
-      ypos: a.ypos + 1
-    })).concat([{
-      number: '57-71',
-      category: 'lanthanide',
-      symbol: '',
-      name: '',
-      atomic_mass: null,
-      phase: '',
-      xpos: 7,
-      ypos: 4
-    }, {
-      number: '89-103',
-      category: 'actinide',
-      symbol: '',
-      name: '',
-      atomic_mass: null,
-      phase: '',
-      xpos: 8,
-      ypos: 4
-    }]);
+      xpos: a.xpos,
+      ypos: a.ypos,
+      blurry: false
+    }));
+  }
+
+  blurRowAtoms({ rowNum, blurry }) {
+    console.log({ rowNum, blurry });
+    this.atoms =
+      this.atoms.map (atom => {
+        if (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 9) || (rowNum === 7 && atom.ypos === 10)) {
+          return atom;
+        }
+        return Object.assign({}, atom, { blurry });
+    });
+  }
+
+  blurColAtoms({ colNum, isBlur }) {
+    console.log({ colNum, isBlur });
   }
 }
