@@ -4,6 +4,11 @@
 }
 
 $square: 60px;
+$solid-color: #171717;
+$liquid-color: #2D51E1;
+$gas-color: #923A49;
+$unknown-color: #898989;
+$heading-color: #000088;
 
 .periodic {
   &-container {
@@ -22,6 +27,18 @@ $square: 60px;
           padding: 2px;
           font-size: 1em;
           font-weight: bold;
+        }
+
+        .solid.selected, .liquid.selected {
+          color: #FFF;
+        }
+
+        .solid.selected {
+          background: $solid-color;
+        }
+
+        .liquid.selected {
+          background: $liquid-color;
         }
 
         .liquid {
@@ -58,6 +75,18 @@ $square: 60px;
           font-weight: bold;
         }
 
+        .unknown.selected, .gas.selected {
+          color: #FFF;
+        }
+
+        .gas.selected {
+          background: $gas-color;
+        }
+
+        .unknown.selected {
+          background: $unknown-color;
+        }
+
         .unknown {
           margin-top: 5px;
         }
@@ -88,11 +117,16 @@ $square: 60px;
     .selected {
       background: yellow;
     }
+
+    .description {
+      grid-row: 2;
+      grid-column: 3;
+    }
   }
 
   &-row-num, &-col-num {
     border: 1px solid #ccc;
-    color: #000088;
+    color: $heading-color;
     position: relative;
     cursor: pointer;
 
@@ -140,7 +174,6 @@ $square: 60px;
       grid-row: 8;
     }
   }
-
 
   &-atom {
     &-1 {
@@ -744,8 +777,4 @@ $square: 60px;
     }
   }
 
-  .description {
-    grid-row: 2;
-    grid-column: 3;
-  }
 }
