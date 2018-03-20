@@ -88,4 +88,20 @@ export class PeriodicTableComponent implements OnInit {
     this.atoms = this.atoms.map (atom =>
       (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : Object.assign({}, atom, { blurry }));
   }
+
+  selectSolid() {
+    console.log('select all solid');
+  }
+
+  selectLiquid() {
+    console.log('select all liquid');
+  }
+
+  selectGas() {
+    console.log('select all gas');
+  }
+
+  selectUnknown() {
+    console.log('select all unknown');
+  }
 }
