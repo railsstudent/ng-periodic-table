@@ -103,6 +103,7 @@ export class PeriodicTableComponent implements OnInit {
     console.log('select all solid');
     this.matterClass.solid = selected;
 
+
   }
 
   selectLiquid(selected: boolean) {
