@@ -3,13 +3,12 @@
   margin-top: 10px;
 }
 
+@import "../../variables";
+
 $square: 60px;
-$solid-color: #171717;
-$liquid-color: #2D51E1;
-$gas-color: #923A49;
-$unknown-color: #898989;
 $heading-color: #000088;
 $grid-gap: 4px;
+$selected-color: #FFF;
 
 .periodic {
   &-container {
@@ -30,16 +29,24 @@ $grid-gap: 4px;
           font-weight: bold;
         }
 
+        .solid {
+          color: $solid-color;
+        }
+
+        .liquid {
+          color: $liquid-color;
+        }
+
         .solid.selected, .liquid.selected {
-          color: #FFF;
+          color: $selected-color;
         }
 
         .solid.selected {
-          background: $solid-color;
+          background: $solid-background-color;
         }
 
         .liquid.selected {
-          background: $liquid-color;
+          background: $liquid-background-color;
         }
 
         .liquid {
@@ -76,16 +83,24 @@ $grid-gap: 4px;
           font-weight: bold;
         }
 
+        .gas {
+          color: $gas-color;
+        }
+
+        .unknown {
+          color: $unknown-color;
+        }
+
         .unknown.selected, .gas.selected {
-          color: #FFF;
+          color: $selected-color;
         }
 
         .gas.selected {
-          background: $gas-color;
+          background: $gas-background-color;
         }
 
         .unknown.selected {
-          background: $unknown-color;
+          background: $unknown-background-color;
         }
 
         .unknown {

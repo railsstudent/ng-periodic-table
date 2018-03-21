@@ -11,7 +11,7 @@ const atomData = require('../../assets/periodic-table.json');
 })
 export class PeriodicTableComponent implements OnInit {
 
-  colHeader: { index: number, description: string }[];
+  colHeader: { index: number, description: string, selected: boolean }[];
   atoms: Atom[];
   rowHeader: any;
 
@@ -87,5 +87,15 @@ export class PeriodicTableComponent implements OnInit {
   blurColAtoms({ colNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
       (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : Object.assign({}, atom, { blurry }));
+  }
+
+  updateRowHeaderSelected(rowNum: number, selected: boolean) {
+    this.rowHeader[rowNum-1].selected = selected;
+    this.blurRowAtoms({ rowNum, blurry: selected })
+  }
+
+  updateColHeaderSelected(colNum: number, selected: boolean) {
+    this.colHeader[colNum-1].selected=selected;
+    this.blurColAtoms({ colNum, blurry: selected })
   }
 }
