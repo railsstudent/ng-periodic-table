@@ -27,7 +27,6 @@ export class AtomComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-      console.log(changes)
       const blurry = changes.data && changes.data.currentValue && changes.data.currentValue.blurry || false;
       this.backgroundStyles.blurry = blurry;
   }

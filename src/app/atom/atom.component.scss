@@ -2,6 +2,8 @@
   border: 2px solid #ccc;
 }
 
+@import "../../variables";
+
 .atom-container {
   display: flex;
   flex-direction: column;
@@ -27,5 +29,41 @@
 
   &.blurry {
     opacity: 0.5;
+  }
+
+  .gas {
+    color: $gas-color;
+  }
+
+  .liquid {
+    color: $liquid-color;
+  }
+
+  .solid {
+    color: $solid-color;
+  }
+
+  .unknown {
+    color: $unknown-color;
+  }
+
+  &.solid-selected, &.liquid-selected, &.gas-selected, &.unknown-selected {
+    color: #FFF;
+  }
+
+  &.solid-selected {
+
+  }
+
+  &.liquid-selected {
+
+  }
+
+  &.gas-selected {
+
+  }
+
+  &.unknown-selected {
+
   }
 }
