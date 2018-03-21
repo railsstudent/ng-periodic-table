@@ -98,27 +98,4 @@ export class PeriodicTableComponent implements OnInit {
     this.colHeader[colNum-1].selected=selected;
     this.blurColAtoms({ colNum, blurry: selected })
   }
-
-  selectSolid(selected: boolean) {
-    console.log('select all solid');
-    this.matterClass.solid = selected;
-
-
-  }
-
-  selectLiquid(selected: boolean) {
-    console.log('select all liquid');
-    this.matterClass.liquid = selected;
-
-  }
-
-  selectGas(selected: boolean) {
-    console.log('select all gas');
-    this.matterClass.gas = selected;
-  }
-
-  selectUnknown(selected: boolean) {
-    console.log('select all unknown');
-    this.matterClass.unknown = selected;
-  }
 }

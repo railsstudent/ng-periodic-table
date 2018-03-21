@@ -18,12 +18,12 @@
 
     <div class="phase-row-1 col-1">
       <div class="solid"
-        (mouseenter)="selectSolid(true)" (mouseleave)="selectSolid(false)"
+        (mouseenter)="this.matterClass.solid=true" (mouseleave)="this.matterClass.solid=false"
         [class.selected]="matterClass.solid == true">
         C
       </div>
       <div class="liquid"
-        (mouseenter)="selectLiquid(true)" (mouseleave)="selectLiquid(false)"
+        (mouseenter)="this.matterClass.liquid=true" (mouseleave)="this.matterClass.liquid=false"
         [class.selected]="matterClass.liquid == true">
         Hg
       </div>
@@ -34,10 +34,10 @@
     </div>
     <div class="phase-row-2 col-1">
       <div class="gas"
-        (mouseenter)="selectGas(true)" (mouseleave)="selectGas(false)"
+        (mouseenter)="this.matterClass.gas=true" (mouseleave)="this.matterClass.gas=false"
         [class.selected]="matterClass.gas == true">H</div>
       <div class="unknown"
-        (mouseenter)="selectUnknown(true)" (mouseleave)="selectUnknown(false)"
+        (mouseenter)="this.matterClass.unknown=true" (mouseleave)="this.matterClass.unknown=false"
         [class.selected]="matterClass.unknown == true">
         Rf
       </div>
