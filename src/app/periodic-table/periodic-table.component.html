@@ -18,12 +18,12 @@
 
     <div class="phase-row-1 col-1">
       <div class="solid"
-        (mouseenter)="matterClass.solid=true" (mouseleave)="matterClass.solid=false"
+        (mouseenter)="selectSolid(true)" (mouseleave)="selectSolid(false)"
         [class.selected]="matterClass.solid == true">
         C
       </div>
       <div class="liquid"
-        (mouseenter)="matterClass.liquid=true" (mouseleave)="matterClass.liquid=false"
+        (mouseenter)="selectLiquid(true)" (mouseleave)="selectLiquid(false)"
         [class.selected]="matterClass.liquid == true">
         Hg
       </div>
@@ -34,10 +34,10 @@
     </div>
     <div class="phase-row-2 col-1">
       <div class="gas"
-        (mouseenter)="matterClass.gas=true" (mouseleave)="matterClass.gas=false"
+        (mouseenter)="selectGas(true)" (mouseleave)="selectGas(false)"
         [class.selected]="matterClass.gas == true">H</div>
       <div class="unknown"
-        (mouseenter)="matterClass.unknown=true" (mouseleave)="matterClass.unknown=false"
+        (mouseenter)="selectUnknown(true)" (mouseleave)="selectUnknown(false)"
         [class.selected]="matterClass.unknown == true">
         Rf
       </div>
@@ -47,7 +47,12 @@
       <div class="unknown">Unknown</div>
     </div>
 
-    <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"></app-atom>
+    <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"
+      [solidSelected]="matterClass.solid"
+      [liquidSelected]="matterClass.liquid"
+      [gasSelected]="matterClass.gas"
+      [unknownSelected]="matterClass.unknown"
+      ></app-atom>
     <app-atom class="description" [data]="description"></app-atom>
     <app-atom class="periodic-atom-57-71" [data]="lantAtomGroup"></app-atom>
     <app-atom class="periodic-atom-89-103" [data]="actinideAtomGroup"></app-atom>

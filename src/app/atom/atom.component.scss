@@ -4,6 +4,8 @@
 
 @import "../../variables";
 
+$selected-color: #FFF;
+
 .atom-container {
   display: flex;
   flex-direction: column;
@@ -52,18 +54,22 @@
   }
 
   &.solid-selected {
-
+    color: $selected-color;
+    background: $solid-background-color;
   }
 
   &.liquid-selected {
-
+    color: $selected-color;
+    background: $liquid-background-color;
   }
 
   &.gas-selected {
-
+    color: $selected-color;
+    background: $gas-background-color;
   }
 
   &.unknown-selected {
-
+    color: $selected-color;
+    background: $unknown-background-color;
   }
 }
