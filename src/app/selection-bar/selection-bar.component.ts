@@ -23,17 +23,18 @@ export class SelectionBarComponent implements OnInit {
       alkali: false,
       alkaline: false,
       lant: false,
-      actinoids: false,
+      actinoid: false,
       transition: false,
       postTransition: false,
-      metalloids: false,
-      nonMetals: false,
+      metalloid: false,
+      nonMetal: false,
       nobleGas: false
     };
   }
 
   changeHighlightState(key: string, value: boolean) {
     this.resetHighlight();
+    this.highlightState = Object.assign({}, this.highlightState)
     this.highlightState[key] = value;
     this.highlightElement.emit(this.highlightState);
   }

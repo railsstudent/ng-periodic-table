@@ -2,11 +2,11 @@ export interface HighlightState {
   alkali: boolean;
   alkaline: boolean;
   lant: boolean;
-  actinoids: boolean;
+  actinoid: boolean;
   transition: boolean;
   postTransition: boolean;
-  metalloids: boolean;
-  nonMetals: boolean;
+  metalloid: boolean;
+  nonMetal: boolean;
   nobleGas: boolean;
 };
 
