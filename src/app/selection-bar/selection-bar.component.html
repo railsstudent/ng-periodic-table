@@ -6,42 +6,42 @@
         (mouseenter)="changeHighlightState('alkali', true)"
         (mouseleave)="changeHighlightState('alkali', false)"
         [class.selected]="highlightState.alkali === true"
-        [class.gray]="grayButtonStyle.alkali === true">
+        [class.gray]="grayButtonStyle.alkali && grayButtonStyle.alkali === true">
         <span>Alkali metals</span>
       </button>
       <button class="alkaline-earth-metal"
         (mouseenter)="changeHighlightState('alkaline', true)"
         (mouseleave)="changeHighlightState('alkaline', false)"
         [class.selected]="highlightState.alkaline === true"
-        [class.gray]="grayButtonStyle.alkaline === true">
+        [class.gray]="grayButtonStyle.alkaline && grayButtonStyle.alkaline === true">
         <span>Alkaline earth metals</span>
       </button>
       <button class="lanthanide"
         (mouseenter)="changeHighlightState('lant', true)"
         (mouseleave)="changeHighlightState('lant', false)"
         [class.selected]="highlightState.lant===true"
-        [class.gray]="grayButtonStyle.lant === true">
+        [class.gray]="grayButtonStyle.lant && grayButtonStyle.lant === true">
         <span>Lanthanoids</span>
       </button>
       <button class="actinide"
         (mouseenter)="changeHighlightState('actinoid', true)"
         (mouseleave)="changeHighlightState('actinoid', false)"
         [class.selected]="highlightState.actinoid===true"
-        [class.gray]="grayButtonStyle.actinoid === true">
+        [class.gray]="grayButtonStyle.actinoid && grayButtonStyle.actinoid === true">
         <span>Actinoids</span>
       </button>
       <button class="transition-metal"
         (mouseenter)="changeHighlightState('transition', true)"
         (mouseleave)="changeHighlightState('transition', false)"
         [class.selected]="highlightState.transition===true"
-        [class.gray]="grayButtonStyle.transition === true">
+        [class.gray]="grayButtonStyle.transition && grayButtonStyle.transition === true">
         <span>Transition metals</span>
       </button>
       <button class="post-transition-metal"
         (mouseenter)="changeHighlightState('postTransition', true)"
         (mouseleave)="changeHighlightState('postTransition', false)"
         [class.selected]="highlightState.postTransition===true"
-        [class.gray]="grayButtonStyle.postTransition === true">
+        [class.gray]="grayButtonStyle.postTransition && grayButtonStyle.postTransition === true">
         <span>Post-transition metals</span>
       </button>
     </div>
@@ -53,7 +53,7 @@
         (mouseenter)="changeHighlightState('metalloid', true)"
         (mouseleave)="changeHighlightState('metalloid', false)"
         [class.selected]="highlightState.metalloid===true"
-        [class.gray]="grayButtonStyle.metalloid === true">
+        [class.gray]="grayButtonStyle.metalloid && grayButtonStyle.metalloid === true">
         <span>Metalloids</span>
       </button>
     </div>
@@ -65,14 +65,14 @@
         (mouseenter)="changeHighlightState('nonMetal', true)"
         (mouseleave)="changeHighlightState('nonMetal', false)"
         [class.selected]="highlightState.nonMetal===true"
-        [class.gray]="grayButtonStyle.nonMetal === true">
+        [class.gray]="grayButtonStyle.nonMetal && grayButtonStyle.nonMetal === true">
         <span>Other nonmetals</span>
       </button>
       <button class="noble-gas"
         (mouseenter)="changeHighlightState('nobleGas', true)"
         (mouseleave)="changeHighlightState('nobleGas', false)"
         [class.selected]="highlightState.nobleGas===true"
-        [class.gray]="grayButtonStyle.nobleGas === true">
+        [class.gray]="grayButtonStyle.nobleGas && grayButtonStyle.nobleGas === true">
         <span>Noble gases</span>
       </button>
     </div>
