@@ -2,17 +2,17 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HighlightState } from '../shared/';
 import * as some from 'lodash/some';
 
-const CATEGORIES = [
-  'alkali',
-  'alkaline',
-  'lant',
-  'actinoid',
-  'transition',
-  'postTransition',
-  'metalloid',
-  'nonMetal',
-  'nobleGas'
-];
+// const CATEGORIES = [
+//   'alkali',
+//   'alkaline',
+//   'lant',
+//   'actinoid',
+//   'transition',
+//   'postTransition',
+//   'metalloid',
+//   'nonMetal',
+//   'nobleGas'
+// ];
 
 @Component({
   selector: 'app-selection-bar',
@@ -24,7 +24,17 @@ export class SelectionBarComponent implements OnInit {
   @Output()
   highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
   highlightState: HighlightState;
-  grayButtonStyle = {};
+  grayButtonStyle = {
+    alkali: false,
+    alkaline: false,
+    lant: false,
+    actinoid: false,
+    transition: false,
+    postTransition: false,
+    metalloid: false,
+    nonMetal: false,
+    nobleGas: false
+  };
 
   constructor() { }
 
@@ -53,15 +63,29 @@ export class SelectionBarComponent implements OnInit {
 
     const hasTrueValue = Object.keys(this.highlightState).some(k => this.highlightState[k] === true);
     if (hasTrueValue === true) {
-      this.grayButtonStyle = CATEGORIES.reduce((acc, k) => {
-        acc[k] = this.highlightState[k] !== true;
-        return acc;
-      }, {});
+      this.grayButtonStyle = {
+        alkali: this.highlightState.alkali !== true,
+        alkaline: this.highlightState.alkaline !== true,
+        lant: this.highlightState.lant !== true,
+        actinoid: this.highlightState.actinoid !== true,
+        transition: this.highlightState.transition !== true,
+        postTransition: this.highlightState.postTransition !== true,
+        metalloid: this.highlightState.metalloid !== true,
+        nonMetal: this.highlightState.nonMetal !== true,
+        nobleGas: this.highlightState.nobleGas !== true
+      };
     } else {
-      this.grayButtonStyle = CATEGORIES.reduce((acc, k) => {
-        acc[k] = false;
-        return acc;
-      }, {});
+      this.grayButtonStyle = {
+        alkali: false,
+        alkaline: false,
+        lant: false,
+        actinoid: false,
+        transition: false,
+        postTransition: false,
+        metalloid: false,
+        nonMetal: false,
+        nobleGas: false
+      };
     }
   }
 }
