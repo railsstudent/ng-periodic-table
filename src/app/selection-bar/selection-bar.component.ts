@@ -34,7 +34,6 @@ export class SelectionBarComponent implements OnInit {
 
   changeHighlightState(key: string, value: boolean) {
     this.resetHighlight();
-    this.highlightState = Object.assign({}, this.highlightState)
     this.highlightState[key] = value;
     this.highlightElement.emit(this.highlightState);
   }

@@ -16,6 +16,6 @@ export class AppComponent {
   }
 
   highlightElement(highlightState: HighlightState) {
-    //this.highlightState = JSON.stringify(highlightState);
+    this.highlightState = highlightState;
   }
 }
