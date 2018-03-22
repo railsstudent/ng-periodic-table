@@ -63,6 +63,5 @@ export class SelectionBarComponent implements OnInit {
         return acc;
       }, {});
     }
-    console.log(this.grayButtonStyle);
   }
 }
