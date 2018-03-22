@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Atom } from '../shared';
+import { Atom, HighlightState } from '../shared';
+import * as assign from 'lodash/assign';
 
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
@@ -48,6 +49,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     unknown: false
   };
 
+  metalClass: HighlightState;
+
   constructor() { }
 
   ngOnInit() {
@@ -81,7 +84,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes.selectedMetal);
+    this.metalClass = assign({}, changes.selectedMetal.currentValue);
   }
 
   blurRowAtoms({ rowNum, blurry }) {

@@ -72,4 +72,8 @@ $selected-color: #FFF;
     color: $selected-color;
     background: $unknown-background-color;
   }
+
+  &.grayout {
+      background: $gray;
+  }
 }

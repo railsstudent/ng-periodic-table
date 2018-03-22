@@ -29,6 +29,10 @@ $margin-size: 6px;
     &.selected {
       border: 3px solid $thick-border-color;
     }
+
+    &.gray {
+      background: $gray;
+    }
   }
 
   .other, .metal-container, .nonmetal-container {

@@ -1,5 +1,18 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HighlightState } from '../shared/';
+import * as some from 'lodash/some';
+
+const CATEGORIES = [
+  'alkali',
+  'alkaline',
+  'lant',
+  'actinoid',
+  'transition',
+  'postTransition',
+  'metalloid',
+  'nonMetal',
+  'nobleGas'
+];
 
 @Component({
   selector: 'app-selection-bar',
@@ -11,6 +24,7 @@ export class SelectionBarComponent implements OnInit {
   @Output()
   highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
   highlightState: HighlightState;
+  grayButtonStyle = {};
 
   constructor() { }
 
@@ -36,5 +50,18 @@ export class SelectionBarComponent implements OnInit {
     this.resetHighlight();
     this.highlightState[key] = value;
     this.highlightElement.emit(this.highlightState);
+
+    const hasTrueValue = Object.keys(this.highlightState).some(k => this.highlightState[k] === true);
+    if (hasTrueValue === true) {
+      this.grayButtonStyle = CATEGORIES.reduce((acc, k) => {
+        acc[k] = this.highlightState[k] !== true;
+        return acc;
+      }, {});
+    } else {
+      this.grayButtonStyle = CATEGORIES.reduce((acc, k) => {
+        acc[k] = false;
+        return acc;
+      }, {});
+    }
   }
 }
