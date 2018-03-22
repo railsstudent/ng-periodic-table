@@ -23,11 +23,11 @@ export class SelectionBarComponent implements OnInit {
       alkali: false,
       alkaline: false,
       lant: false,
-      actinoids: false,
+      actinoid: false,
       transition: false,
       postTransition: false,
-      metalloids: false,
-      nonMetals: false,
+      metalloid: false,
+      nonMetal: false,
       nobleGas: false
     };
   }

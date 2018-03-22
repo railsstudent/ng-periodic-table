@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Atom } from '../shared';
 
 declare function require(url: string);
@@ -9,7 +9,10 @@ const atomData = require('../../assets/periodic-table.json');
   templateUrl: './periodic-table.component.html',
   styleUrls: ['./periodic-table.component.scss']
 })
-export class PeriodicTableComponent implements OnInit {
+export class PeriodicTableComponent implements OnInit, OnChanges {
+
+  @Input()
+  selectedMetal: any;
 
   colHeader: { index: number, description: string, selected: boolean }[];
   atoms: Atom[];
@@ -75,6 +78,10 @@ export class PeriodicTableComponent implements OnInit {
       ypos: a.ypos,
       blurry: false
     }));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes.selectedMetal);
   }
 
   blurRowAtoms({ rowNum, blurry }) {

@@ -1,3 +1,5 @@
+@import "../../variables";
+
 :host {
   flex: 0 0 100%;
 
@@ -23,10 +25,14 @@ $margin-size: 6px;
     margin: $margin-size $margin-size $margin-size 0;
     padding: $margin-size;
     cursor: pointer;
+
+    &.selected {
+      border: 3px solid $thick-border-color;
+    }
   }
 
   .other, .metal-container, .nonmetal-container {
-    border: 1px solid #CCC;
+    border: 1px solid $border-color;
     margin-left: 0px;
     margin-right: $margin-size;
 
