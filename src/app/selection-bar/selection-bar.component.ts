@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HighlightState } from '../shared/';
-import * as some from 'lodash/some';
 
 const CATEGORIES = [
   'alkali',
