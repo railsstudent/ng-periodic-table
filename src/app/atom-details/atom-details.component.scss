@@ -3,6 +3,7 @@
 $default-font-size: 1.25em;
 $phase-font-size: 1.75em;
 $shell-font-size: 0.85em;
+$name-font-size: 0.7em;
 
 @mixin listItemStyle {
   list-style-type: none;
@@ -39,6 +40,10 @@ $shell-font-size: 0.85em;
           @include listItemStyle();
           font-size: $default-font-size;
           flex: 1 0 auto;
+
+          .name, .weight {
+            font-size: $name-font-size;
+          }
       }
 
       &-shelf {
