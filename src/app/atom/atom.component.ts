@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { HighlightState } from '../shared';
 import * as get from 'lodash/get';
 import * as includes from 'lodash/includes';
@@ -33,6 +33,9 @@ export class AtomComponent implements OnInit, OnChanges {
 
   @Input()
   selectAllNonmetals: boolean;
+
+  @Output()
+  hoverAtom: EventEmitter<number> = new EventEmitter<number>();
 
   phaseClass: {}
   backgroundStyles = {

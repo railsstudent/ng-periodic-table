@@ -11,7 +11,7 @@ export interface HighlightState {
 };
 
 export interface Atom {
-  number: string,
+  number: number,
   category: string,
   symbol: string,
   name: string,

@@ -1,4 +1,5 @@
-<div class="atom-container {{data.category}}" [ngClass]="backgroundStyles">
+<div class="atom-container {{data.category}}" [ngClass]="backgroundStyles"
+  (mouseenter)="hoverAtom.emit(data.number)" (mouseleave)="hoverAtom.emit(null)">
   <p class="atomic">{{data.number}}</p>
   <p class="symbol" [ngClass]="phaseClass" *ngIf="data.symbol else blankSymbol">
     {{data.symbol}}

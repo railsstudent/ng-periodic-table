@@ -16,6 +16,8 @@
       <span class="index">{{o.index}}</span>
     </div>
 
+    <app-atom-details class="atom-details" [class.show]="atomDetails === true" [data]="currentAtom"></app-atom-details>
+
     <div class="phase-row-1 col-1">
       <div class="solid"
         (mouseenter)="this.matterClass.solid=true" (mouseleave)="this.matterClass.solid=false"
@@ -55,6 +57,7 @@
       [metalSelected]="metalClass"
       [selectAllMetals]="allMetals"
       [selectAllNonmetals]="allNonmetals"
+      (hoverAtom)="showAtomDetails($event)"
       ></app-atom>
     <app-atom class="description" [data]="description"></app-atom>
     <app-atom class="periodic-atom-57-71" [data]="lantAtomGroup"></app-atom>

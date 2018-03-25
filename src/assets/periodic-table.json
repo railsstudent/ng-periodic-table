@@ -1330,7 +1330,7 @@
       "summary": "Lanthanum is a soft, ductile, silvery-white metallic chemical element with symbol La and atomic number 57. It tarnishes rapidly when exposed to air and is soft enough to be cut with a knife. It gave its name to the lanthanide series, a group of 15 similar elements between lanthanum and lutetium in the periodic table:it is also sometimes considered the first element of the 6th-period transition metals.",
       "symbol": "La",
       "xpos": 3,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1360,7 +1360,7 @@
       "summary": "Cerium is a chemical element with symbol Ce and atomic number 58. It is a soft, silvery, ductile metal which easily oxidizes in air. Cerium was named after the dwarf planet Ceres (itself named after the Roman goddess of agriculture).",
       "symbol": "Ce",
       "xpos": 4,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1390,7 +1390,7 @@
       "summary": "Praseodymium is a chemical element with symbol Pr and atomic number 59. Praseodymium is a soft, silvery, malleable and ductile metal in the lanthanide group. It is valued for its magnetic, electrical, chemical, and optical properties.",
       "symbol": "Pr",
       "xpos": 5,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1420,7 +1420,7 @@
       "summary": "Neodymium is a chemical element with symbol Nd and atomic number 60. It is a soft silvery metal that tarnishes in air. Neodymium was discovered in 1885 by the Austrian chemist Carl Auer von Welsbach.",
       "symbol": "Nd",
       "xpos": 6,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1450,7 +1450,7 @@
       "summary": "Promethium, originally prometheum, is a chemical element with the symbol Pm and atomic number 61. All of its isotopes are radioactive; it is one of only two such elements that are followed in the periodic table by elements with stable forms, a distinction shared with technetium. Chemically, promethium is a lanthanide, which forms salts when combined with other elements.",
       "symbol": "Pm",
       "xpos": 7,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1480,7 +1480,7 @@
       "summary": "Samarium is a chemical element with symbol Sm and atomic number 62. It is a moderately hard silvery metal that readily oxidizes in air. Being a typical member of the lanthanide series, samarium usually assumes the oxidation state +3.",
       "symbol": "Sm",
       "xpos": 8,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1510,7 +1510,7 @@
       "summary": "Europium is a chemical element with symbol Eu and atomic number 63. It was isolated in 1901 and is named after the continent of Europe. It is a moderately hard, silvery metal which readily oxidizes in air and water.",
       "symbol": "Eu",
       "xpos": 9,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1540,7 +1540,7 @@
       "summary": "Gadolinium is a chemical element with symbol Gd and atomic number 64. It is a silvery-white, malleable and ductile rare-earth metal. It is found in nature only in combined (salt) form.",
       "symbol": "Gd",
       "xpos": 10,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1570,7 +1570,7 @@
       "summary": "Terbium is a chemical element with symbol Tb and atomic number 65. It is a silvery-white rare earth metal that is malleable, ductile and soft enough to be cut with a knife. Terbium is never found in nature as a free element, but it is contained in many minerals, including cerite, gadolinite, monazite, xenotime and euxenite.",
       "symbol": "Tb",
       "xpos": 11,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1600,7 +1600,7 @@
       "summary": "Dysprosium is a chemical element with the symbol Dy and atomic number 66. It is a rare earth element with a metallic silver luster. Dysprosium is never found in nature as a free element, though it is found in various minerals, such as xenotime.",
       "symbol": "Dy",
       "xpos": 12,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1630,7 +1630,7 @@
       "summary": "Holmium is a chemical element with symbol Ho and atomic number 67. Part of the lanthanide series, holmium is a rare earth element. Holmium was discovered by Swedish chemist Per Theodor Cleve.",
       "symbol": "Ho",
       "xpos": 13,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1660,7 +1660,7 @@
       "summary": "Erbium is a chemical element in the lanthanide series, with symbol Er and atomic number 68. A silvery-white solid metal when artificially isolated, natural erbium is always found in chemical combination with other elements on Earth. As such, it is a rare earth element which is associated with several other rare elements in the mineral gadolinite from Ytterby in Sweden, where yttrium, ytterbium, and terbium were discovered.",
       "symbol": "Er",
       "xpos": 14,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1690,7 +1690,7 @@
       "summary": "Thulium is a chemical element with symbol Tm and atomic number 69. It is the thirteenth and antepenultimate (third-last) element in the lanthanide series. Like the other lanthanides, the most common oxidation state is +3, seen in its oxide, halides and other compounds.",
       "symbol": "Tm",
       "xpos": 15,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1720,7 +1720,7 @@
       "summary": "Ytterbium is a chemical element with symbol Yb and atomic number 70. It is the fourteenth and penultimate element in the lanthanide series, which is the basis of the relative stability of its +2 oxidation state. However, like the other lanthanides, its most common oxidation state is +3, seen in its oxide, halides and other compounds.",
       "symbol": "Yb",
       "xpos": 16,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -1750,7 +1750,7 @@
       "summary": "Lutetium is a chemical element with symbol Lu and atomic number 71. It is a silvery white metal, which resists corrosion in dry, but not in moist air. It is considered the first element of the 6th-period transition metals and the last element in the lanthanide series, and is traditionally counted among the rare earths.",
       "symbol": "Lu",
       "xpos": 17,
-      "ypos": 9,
+      "ypos": 8,
       "shells": [
           2,
           8,
@@ -2292,7 +2292,7 @@
       "summary": "Actinium is a radioactive chemical element with symbol Ac (not to be confused with the abbreviation for an acetyl group) and atomic number 89, which was discovered in 1899. It was the first non-primordial radioactive element to be isolated. Polonium, radium and radon were observed before actinium, but they were not isolated until 1902.",
       "symbol": "Ac",
       "xpos": 3,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2323,7 +2323,7 @@
       "summary": "Thorium is a chemical element with symbol Th and atomic number 90. A radioactive actinide metal, thorium is one of only two significantly radioactive elements that still occur naturally in large quantities as a primordial element (the other being uranium). It was discovered in 1828 by the Norwegian Reverend and amateur mineralogist Morten Thrane Esmark and identified by the Swedish chemist J\u00f6ns Jakob Berzelius, who named it after Thor, the Norse god of thunder.",
       "symbol": "Th",
       "xpos": 4,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2354,7 +2354,7 @@
       "summary": "Protactinium is a chemical element with symbol Pa and atomic number 91. It is a dense, silvery-gray metal which readily reacts with oxygen, water vapor and inorganic acids. It forms various chemical compounds where protactinium is usually present in the oxidation state +5, but can also assume +4 and even +2 or +3 states.",
       "symbol": "Pa",
       "xpos": 5,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2385,7 +2385,7 @@
       "summary": "Uranium is a chemical element with symbol U and atomic number 92. It is a silvery-white metal in the actinide series of the periodic table. A uranium atom has 92 protons and 92 electrons, of which 6 are valence electrons.",
       "symbol": "U",
       "xpos": 6,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2416,7 +2416,7 @@
       "summary": "Neptunium is a chemical element with symbol Np and atomic number 93. A radioactive actinide metal, neptunium is the first transuranic element. Its position in the periodic table just after uranium, named after the planet Uranus, led to it being named after Neptune, the next planet beyond Uranus.",
       "symbol": "Np",
       "xpos": 7,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2447,7 +2447,7 @@
       "summary": "Plutonium is a transuranic radioactive chemical element with symbol Pu and atomic number 94. It is an actinide metal of silvery-gray appearance that tarnishes when exposed to air, and forms a dull coating when oxidized. The element normally exhibits six allotropes and four oxidation states.",
       "symbol": "Pu",
       "xpos": 8,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2478,7 +2478,7 @@
       "summary": "Americium is a radioactive transuranic chemical element with symbol Am and atomic number 95. This member of the actinide series is located in the periodic table under the lanthanide element europium, and thus by analogy was named after the Americas. Americium was first produced in 1944 by the group of Glenn T.Seaborg from Berkeley, California, at the metallurgical laboratory of University of Chicago.",
       "symbol": "Am",
       "xpos": 9,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2509,7 +2509,7 @@
       "summary": "Curium is a transuranic radioactive chemical element with symbol Cm and atomic number 96. This element of the actinide series was named after Marie and Pierre Curie \u2013 both were known for their research on radioactivity. Curium was first intentionally produced and identified in July 1944 by the group of Glenn T. Seaborg at the University of California, Berkeley.",
       "symbol": "Cm",
       "xpos": 10,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2540,7 +2540,7 @@
       "summary": "Berkelium is a transuranic radioactive chemical element with symbol Bk and atomic number 97. It is a member of the actinide and transuranium element series. It is named after the city of Berkeley, California, the location of the University of California Radiation Laboratory where it was discovered in December 1949.",
       "symbol": "Bk",
       "xpos": 11,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2571,7 +2571,7 @@
       "summary": "Californium is a radioactive metallic chemical element with symbol Cf and atomic number 98. The element was first made in 1950 at the University of California Radiation Laboratory in Berkeley, by bombarding curium with alpha particles (helium-4 ions). It is an actinide element, the sixth transuranium element to be synthesized, and has the second-highest atomic mass of all the elements that have been produced in amounts large enough to see with the unaided eye (after einsteinium).",
       "symbol": "Cf",
       "xpos": 12,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2602,7 +2602,7 @@
       "summary": "Einsteinium is a synthetic element with symbol Es and atomic number 99. It is the seventh transuranic element, and an actinide. Einsteinium was discovered as a component of the debris of the first hydrogen bomb explosion in 1952, and named after Albert Einstein.",
       "symbol": "Es",
       "xpos": 13,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2633,7 +2633,7 @@
       "summary": "Fermium is a synthetic element with symbol Fm and atomic number 100. It is a member of the actinide series. It is the heaviest element that can be formed by neutron bombardment of lighter elements, and hence the last element that can be prepared in macroscopic quantities, although pure fermium metal has not yet been prepared.",
       "symbol": "Fm",
       "xpos": 14,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2664,7 +2664,7 @@
       "summary": "Mendelevium is a synthetic element with chemical symbol Md (formerly Mv) and atomic number 101. A metallic radioactive transuranic element in the actinide series, it is the first element that currently cannot be produced in macroscopic quantities through neutron bombardment of lighter elements. It is the antepenultimate actinide and the ninth transuranic element.",
       "symbol": "Md",
       "xpos": 15,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2695,7 +2695,7 @@
       "summary": "Nobelium is a synthetic chemical element with symbol No and atomic number 102. It is named in honor of Alfred Nobel, the inventor of dynamite and benefactor of science. A radioactive metal, it is the tenth transuranic element and is the penultimate member of the actinide series.",
       "symbol": "No",
       "xpos": 16,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,
@@ -2726,7 +2726,7 @@
       "summary": "Lawrencium is a synthetic chemical element with chemical symbol Lr (formerly Lw) and atomic number 103. It is named in honor of Ernest Lawrence, inventor of the cyclotron, a device that was used to discover many artificial radioactive elements. A radioactive metal, lawrencium is the eleventh transuranic element and is also the final member of the actinide series.",
       "symbol": "Lr",
       "xpos": 17,
-      "ypos": 10,
+      "ypos": 9,
       "shells": [
           2,
           8,

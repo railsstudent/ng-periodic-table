@@ -5,6 +5,7 @@ import * as get from 'lodash/get';
 
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
+const MAX_ROW_INDEX = 7;
 
 @Component({
   selector: 'app-periodic-table',
@@ -57,6 +58,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   metalClass: HighlightState;
   allMetals: boolean;
   allNonmetals: boolean;
+  atomDetails: boolean;
+  currentAtom: any;
 
   constructor() { }
 
@@ -86,8 +89,14 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       category: a.category,
       xpos: a.xpos,
       ypos: a.ypos,
-      blurry: false
+      blurry: false,
+      shells: a.shells
     }));
+
+    this.allMetals = false;
+    this.allNonmetals = false;
+    this.atomDetails = false;
+    this.currentAtom = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -99,14 +108,14 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
   blurRowAtoms({ rowNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
-      (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 9) || (rowNum === 7 && atom.ypos === 10)) ?
+      (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)) ?
           atom : assign({}, atom, { blurry })
     );
   }
 
   blurColAtoms({ colNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
-      (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : assign({}, atom, { blurry }));
+      (colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9) ? atom : assign({}, atom, { blurry }));
   }
 
   updateRowHeaderSelected(rowNum: number, selected: boolean) {
@@ -117,5 +126,28 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   updateColHeaderSelected(colNum: number, selected: boolean) {
     this.colHeader[colNum-1].selected=selected;
     this.blurColAtoms({ colNum, blurry: selected })
+  }
+
+  showAtomDetails(atomNumber: number) {
+    this.atomDetails = (atomNumber !== null && typeof atomNumber !== 'undefined');
+    if (atomNumber) {
+      this.currentAtom = this.atoms.find(a => a.number === atomNumber);
+      const { xpos, ypos } = this.currentAtom;
+      if (ypos > MAX_ROW_INDEX) {
+        this.rowHeader[MAX_ROW_INDEX-1].selected = true;
+      } else {
+        this.rowHeader[ypos-1].selected = true;
+        this.colHeader[xpos-1].selected = true;
+      }
+    } else {
+      const { xpos, ypos } = this.currentAtom;
+      if (ypos > MAX_ROW_INDEX) {
+        this.rowHeader[MAX_ROW_INDEX-1].selected = false;
+      } else {
+        this.rowHeader[ypos-1].selected = false;
+        this.colHeader[xpos-1].selected = false;
+      }
+      this.currentAtom = null;
+    }
   }
 }
