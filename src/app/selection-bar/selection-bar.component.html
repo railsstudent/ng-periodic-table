@@ -1,6 +1,6 @@
 <div class="selection-bar">
   <div class="metal-container">
-    <p class="title" >Metals</p>
+    <p class="title-underline" (mouseenter)="selectAllMetals.emit(true)" (mouseleave)="selectAllMetals.emit(false)">Metals</p>
     <div class="buttons">
       <button class="alkali-metal"
         (mouseenter)="changeHighlightState('alkali', true)"
@@ -59,7 +59,7 @@
     </div>
   </div>
   <div class="nonmetal-container">
-    <p class="title">Nonmetals</p>
+    <p class="title-underline" (mouseenter)="selectAllNonmetals.emit(true)" (mouseleave)="selectAllNonmetals.emit(false)">Nonmetals</p>
     <div class="buttons">
       <button class="nonmetal"
         (mouseenter)="changeHighlightState('nonMetal', true)"

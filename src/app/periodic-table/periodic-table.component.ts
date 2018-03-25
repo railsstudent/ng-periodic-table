@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Atom, HighlightState } from '../shared';
 import * as assign from 'lodash/assign';
+import * as get from 'lodash/get';
 
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
@@ -14,6 +15,10 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
   @Input()
   selectedMetal: any;
+  @Input()
+  selectAllMetals: boolean;
+  @Input()
+  selectAllNonmetals: boolean;
 
   colHeader: { index: number, description: string, selected: boolean }[];
   atoms: Atom[];
@@ -50,6 +55,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   };
 
   metalClass: HighlightState;
+  allMetals: boolean;
+  allNonmetals: boolean;
 
   constructor() { }
 
@@ -84,19 +91,22 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.metalClass = assign({}, changes.selectedMetal.currentValue);
+    const { selectedMetal = null, selectAllMetals = null, selectAllNonmetals = null } = changes;
+    this.metalClass = get(selectedMetal, 'currentValue', null);
+    this.allMetals = get(selectAllMetals, 'currentValue', false);
+    this.allNonmetals = get(selectAllNonmetals, 'currentValue', false);
   }
 
   blurRowAtoms({ rowNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
       (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 9) || (rowNum === 7 && atom.ypos === 10)) ?
-          atom : Object.assign({}, atom, { blurry })
+          atom : assign({}, atom, { blurry })
     );
   }
 
   blurColAtoms({ colNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
-      (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : Object.assign({}, atom, { blurry }));
+      (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : assign({}, atom, { blurry }));
   }
 
   updateRowHeaderSelected(rowNum: number, selected: boolean) {

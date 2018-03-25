@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HighlightState } from '../shared';
 import * as get from 'lodash/get';
+import * as includes from 'lodash/includes';
 
 @Component({
   selector: 'app-atom',
@@ -26,6 +27,12 @@ export class AtomComponent implements OnInit, OnChanges {
 
   @Input()
   metalSelected: HighlightState;
+
+  @Input()
+  selectAllMetals: boolean
+
+  @Input()
+  selectAllNonmetals: boolean;
 
   phaseClass: {}
   backgroundStyles = {
@@ -54,7 +61,9 @@ export class AtomComponent implements OnInit, OnChanges {
         liquidSelected = null,
         gasSelected = null,
         unknownSelected = null,
-        metalSelected = null } = changes;
+        metalSelected = null,
+        selectAllMetals = null,
+        selectAllNonmetals = null } = changes;
 
       const blurry = get(data, 'currentValue.blurry', false);
       const solid = get(solidSelected, 'currentValue', false);
@@ -70,6 +79,8 @@ export class AtomComponent implements OnInit, OnChanges {
       const metalloid = get(metalSelected, 'currentValue.metalloid', false);
       const nonMetal = get(metalSelected, 'currentValue.nonMetal', false);
       const nobleGas = get(metalSelected, 'currentValue.nobleGas', false);
+      const allMetals = get(selectAllMetals, 'currentValue', false);
+      const allNonMetals = get(selectAllNonmetals, 'currentValue', false);
 
       this.backgroundStyles.blurry = blurry;
       this.backgroundStyles['solid-selected'] = solid && this.data.phase === 'solid';
@@ -84,7 +95,10 @@ export class AtomComponent implements OnInit, OnChanges {
         || postTransition && this.data.category !== 'post-transition-metal'
         || metalloid && this.data.category !== 'metalloid'
         || nonMetal && this.data.category !== 'nonmetal'
-        || nobleGas && this.data.category !== 'noble-gas';
+        || nobleGas && this.data.category !== 'noble-gas'
+        || allMetals && includes(['metalloid', 'nonmetal', 'noble-gas'], this.data.category)
+        || allNonMetals && includes(['alkali-metal', 'alkaline-earth-metal',
+          'lanthanide', 'actinide', 'transition-metal', 'post-transition-metal', 'metalloid'], this.data.category);
 
       this.phaseClass = {
         gas: !gas && this.data.phase === 'gas',

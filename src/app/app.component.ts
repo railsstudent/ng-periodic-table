@@ -10,6 +10,8 @@ import { HighlightState } from './shared/';
 export class AppComponent {
   title = 'app';
   highlightState: HighlightState;
+  selectAllMetals: boolean;
+  selectAllNonmetals: boolean;
 
   constructor(titleService: Title) {
     titleService.setTitle('Periodic Table');
@@ -17,5 +19,13 @@ export class AppComponent {
 
   highlightElement(highlightState: HighlightState) {
     this.highlightState = highlightState;
+  }
+
+  selectMetalCat(select: boolean) {
+    this.selectAllMetals = select;
+  }
+
+  selectNonmetalCat(select: boolean) {
+    this.selectAllNonmetals = select;
   }
 }
