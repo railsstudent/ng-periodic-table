@@ -57,6 +57,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   metalClass: HighlightState;
   allMetals: boolean;
   allNonmetals: boolean;
+  atomDetails: boolean;
+  currentAtom: any;
 
   constructor() { }
 
@@ -88,6 +90,11 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       ypos: a.ypos,
       blurry: false
     }));
+
+    this.allMetals = false;
+    this.allNonmetals = false;
+    this.atomDetails = false;
+    this.currentAtom = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -117,5 +124,23 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   updateColHeaderSelected(colNum: number, selected: boolean) {
     this.colHeader[colNum-1].selected=selected;
     this.blurColAtoms({ colNum, blurry: selected })
+  }
+
+  showAtomDetails(atomNumber: number) {
+    console.log(atomNumber);
+    this.atomDetails = (atomNumber !== null && typeof atomNumber !== 'undefined');
+    if (atomNumber) {
+      this.currentAtom = this.atoms.find(a => a.number === atomNumber);
+      const { xpos, ypos } = this.currentAtom;
+      console.log(xpos, ypos);
+      this.rowHeader[this.currentAtom.ypos-1].selected = true;
+      this.colHeader[this.currentAtom.xpos-1].selected = true;
+      console.log(this.rowHeader, this.colHeader);
+    } else {
+      this.rowHeader[this.currentAtom.ypos-1].selected = false;
+      this.colHeader[this.currentAtom.xpos-1].selected = false;
+      this.currentAtom = null;
+    }
+    console.log(this.currentAtom);
   }
 }
