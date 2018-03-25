@@ -5,6 +5,7 @@ import * as get from 'lodash/get';
 
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
+const MAX_ROW_INDEX = 7;
 
 @Component({
   selector: 'app-periodic-table',
@@ -127,18 +128,24 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   showAtomDetails(atomNumber: number) {
-    console.log(atomNumber);
     this.atomDetails = (atomNumber !== null && typeof atomNumber !== 'undefined');
     if (atomNumber) {
       this.currentAtom = this.atoms.find(a => a.number === atomNumber);
       const { xpos, ypos } = this.currentAtom;
-      console.log(xpos, ypos);
-      this.rowHeader[this.currentAtom.ypos-1].selected = true;
-      this.colHeader[this.currentAtom.xpos-1].selected = true;
-      console.log(this.rowHeader, this.colHeader);
+      if (ypos > MAX_ROW_INDEX) {
+        this.rowHeader[MAX_ROW_INDEX-1].selected = true;
+      } else {
+        this.rowHeader[ypos-1].selected = true;
+        this.colHeader[xpos-1].selected = true;
+      }
     } else {
-      this.rowHeader[this.currentAtom.ypos-1].selected = false;
-      this.colHeader[this.currentAtom.xpos-1].selected = false;
+      const { xpos, ypos } = this.currentAtom;
+      if (ypos > MAX_ROW_INDEX) {
+        this.rowHeader[MAX_ROW_INDEX-1].selected = false;
+      } else {
+        this.rowHeader[ypos-1].selected = false;
+        this.colHeader[xpos-1].selected = false;
+      }
       this.currentAtom = null;
     }
     console.log(this.currentAtom);
