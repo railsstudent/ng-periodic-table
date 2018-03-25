@@ -1,5 +1,9 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="container">
-  <app-selection-bar (highlightElement)=highlightElement($event)></app-selection-bar>
-  <app-periodic-table [selectedMetal]="highlightState"></app-periodic-table>
+  <app-selection-bar (highlightElement)=highlightElement($event)
+    (selectAllMetals)="selectMetalCat($event)"
+    (selectAllNonmetals)="selectNonmetalCat($event)"></app-selection-bar>
+  <app-periodic-table [selectedMetal]="highlightState"
+    [selectAllMetals]="selectAllMetals"
+    [selectAllNonmetals]="selectAllNonmetals"></app-periodic-table>
 </div>

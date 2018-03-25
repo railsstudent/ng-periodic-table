@@ -9,15 +9,27 @@
 
 $margin-size: 6px;
 
+@mixin metal-title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .selection-bar {
   display: flex;
   flex-direction: row;
 
   p {
     &.title {
-      text-align: center;
-      margin-top: 0;
-      margin-bottom: 0;
+      @include metal-title();
+    }
+
+    &.title-underline {
+      @include metal-title();
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
