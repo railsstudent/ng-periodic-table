@@ -16,7 +16,7 @@
       <span class="index">{{o.index}}</span>
     </div>
 
-    <div class="atom-details" [class.show]="atomDetails === true">Details</div>
+    <app-atom-details class="atom-details" [class.show]="atomDetails === true" [data]="currentAtom"></app-atom-details>
 
     <div class="phase-row-1 col-1">
       <div class="solid"

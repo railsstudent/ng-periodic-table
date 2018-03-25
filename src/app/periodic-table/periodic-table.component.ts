@@ -89,7 +89,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       category: a.category,
       xpos: a.xpos,
       ypos: a.ypos,
-      blurry: false
+      blurry: false,
+      shells: a.shells
     }));
 
     this.allMetals = false;
@@ -107,14 +108,14 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
   blurRowAtoms({ rowNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
-      (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 9) || (rowNum === 7 && atom.ypos === 10)) ?
+      (rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)) ?
           atom : assign({}, atom, { blurry })
     );
   }
 
   blurColAtoms({ colNum, blurry }) {
     this.atoms = this.atoms.map (atom =>
-      (colNum === atom.xpos && atom.ypos !== 9 && atom.ypos !== 10) ? atom : assign({}, atom, { blurry }));
+      (colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9) ? atom : assign({}, atom, { blurry }));
   }
 
   updateRowHeaderSelected(rowNum: number, selected: boolean) {
@@ -148,6 +149,5 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       }
       this.currentAtom = null;
     }
-    console.log(this.currentAtom);
   }
 }
