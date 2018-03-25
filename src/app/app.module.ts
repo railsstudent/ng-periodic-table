@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { SelectionBarComponent } from './selection-bar/selection-bar.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { AtomComponent } from './atom/atom.component';
+import { AtomDetailsComponent } from './atom-details/atom-details.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { AtomComponent } from './atom/atom.component';
     AppComponent,
     SelectionBarComponent,
     PeriodicTableComponent,
-    AtomComponent
+    AtomComponent,
+    AtomDetailsComponent
   ],
   imports: [
     BrowserModule
