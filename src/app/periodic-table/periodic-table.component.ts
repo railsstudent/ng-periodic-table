@@ -134,7 +134,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       this.currentAtom = this.atoms.find(a => a.number === atomNumber);
       const { xpos, ypos } = this.currentAtom;
       if (ypos > MAX_ROW_INDEX) {
-        this.rowHeader[MAX_ROW_INDEX-1].selected = true;
+        this.rowHeader[ypos - 2 - 1].selected = true;
       } else {
         this.rowHeader[ypos-1].selected = true;
         this.colHeader[xpos-1].selected = true;
@@ -142,7 +142,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     } else {
       const { xpos, ypos } = this.currentAtom;
       if (ypos > MAX_ROW_INDEX) {
-        this.rowHeader[MAX_ROW_INDEX-1].selected = false;
+        this.rowHeader[ypos - 2 - 1].selected = false;
       } else {
         this.rowHeader[ypos-1].selected = false;
         this.colHeader[xpos-1].selected = false;
