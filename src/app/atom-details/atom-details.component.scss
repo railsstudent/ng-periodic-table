@@ -1,20 +1,21 @@
 @import '../../variables';
 
-$default-font-size: 1.25em;
-$phase-font-size: 1.75em;
-$shell-font-size: 0.85em;
-$name-font-size: 0.7em;
+$default-font-size: 1.4rem;
+$phase-font-size: 2.5rem;
+$shell-font-size: 0.85rem;
+$name-font-size: 0.75rem;
 
 @mixin listItemStyle {
   list-style-type: none;
-  padding: 0 0 0 5px;
-  margin: 5px 0;
+  margin: 0;
+  padding: 0;
 }
-
 
 .atom {
   &-container {
       display: flex;
+      height: 100%;
+      padding: 3px;
 
       .gas {
         color: $gas-color;
@@ -50,6 +51,7 @@ $name-font-size: 0.7em;
           @include listItemStyle
           font-size: $shell-font-size;
           flex: 0 0 auto;
+          text-align: right;
       }
   }
 }

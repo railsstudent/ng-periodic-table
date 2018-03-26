@@ -1,10 +1,11 @@
-import { Component, OnInit, Input , OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input , OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import * as get from 'lodash/get';
 
 @Component({
   selector: 'app-atom-details',
   templateUrl: './atom-details.component.html',
-  styleUrls: ['./atom-details.component.scss']
+  styleUrls: ['./atom-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AtomDetailsComponent implements OnInit, OnChanges {
 
@@ -16,12 +17,10 @@ export class AtomDetailsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.data);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     const { data = null } = changes;
-    console.log(data);
     this.phaseClass = {
       gas: get(data, 'currentValue.phase', '') === 'gas',
       solid: get(data, 'currentValue.phase', '') === 'solid',

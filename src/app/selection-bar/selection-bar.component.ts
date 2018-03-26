@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { HighlightState } from '../shared/';
 
 const CATEGORIES = [
@@ -16,7 +16,8 @@ const CATEGORIES = [
 @Component({
   selector: 'app-selection-bar',
   templateUrl: './selection-bar.component.html',
-  styleUrls: ['./selection-bar.component.scss']
+  styleUrls: ['./selection-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectionBarComponent implements OnInit {
 
@@ -30,11 +31,12 @@ export class SelectionBarComponent implements OnInit {
   highlightState: HighlightState;
   grayButtonStyle: any = null;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
     this.resetHighlight();
     this.resetGrayButtons();
+  }
+
+  ngOnInit() {
   }
 
   resetHighlight() {
