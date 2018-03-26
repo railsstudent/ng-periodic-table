@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Atom, HighlightState } from '../shared';
 import * as assign from 'lodash/assign';
 import * as get from 'lodash/get';
@@ -6,11 +6,33 @@ import * as get from 'lodash/get';
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
 const MAX_ROW_INDEX = 7;
+const MAX_COL_INDEX = 18;
+const DESCRIPTION = {
+  number: 'Atomic',
+  symbol: 'SYM',
+  name: 'Name',
+  atomic_mass: 'Weight'
+};
+const LANT_ATOM_GROUP = {
+  number: '57-71',
+  category: 'lanthanide',
+  symbol: '',
+  name: '',
+  atomic_mass: null
+}
+const ACT_ATOM_GROUP =  {
+  number: '89-103',
+  category: 'actinide',
+  symbol: '',
+  name: '',
+  atomic_mass: null
+}
 
 @Component({
   selector: 'app-periodic-table',
   templateUrl: './periodic-table.component.html',
-  styleUrls: ['./periodic-table.component.scss']
+  styleUrls: ['./periodic-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PeriodicTableComponent implements OnInit, OnChanges {
 
@@ -21,50 +43,22 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   @Input()
   selectAllNonmetals: boolean;
 
+  description = DESCRIPTION;
+  lantAtomGroup = LANT_ATOM_GROUP;
+  actinideAtomGroup = ACT_ATOM_GROUP;
+
   colHeader: { index: number, description: string, selected: boolean }[];
   atoms: Atom[];
-  rowHeader: any;
-
-  description = {
-    number: 'Atomic',
-    symbol: 'SYM',
-    name: 'Name',
-    atomic_mass: 'Weight'
-  };
-
-  lantAtomGroup = {
-    number: '57-71',
-    category: 'lanthanide',
-    symbol: '',
-    name: '',
-    atomic_mass: null
-  }
-
-  actinideAtomGroup = {
-    number: '89-103',
-    category: 'actinide',
-    symbol: '',
-    name: '',
-    atomic_mass: null
-  }
-
-  matterClass = {
-    solid: false,
-    liquid: false,
-    gas: false,
-    unknown: false
-  };
-
+  rowHeader: { index: number, className: string, selected: boolean }[];
+  matterClass: { solid: boolean, liquid: boolean, gas: boolean, unknown: boolean };
   metalClass: HighlightState;
   allMetals: boolean;
   allNonmetals: boolean;
   atomDetails: boolean;
   currentAtom: any;
 
-  constructor() { }
-
-  ngOnInit() {
-    this.colHeader = Array(18).fill(1).map((v, i) => ({
+  constructor() {
+    this.colHeader = Array(MAX_COL_INDEX).fill(1).map((v, i) => ({
       index: i+1,
       description: i === 14 ? 'Pnictogens':  (i === 15? 'Chalcogens' : (i === 16 ? 'Halogens': '')),
       selected: false
@@ -93,10 +87,20 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       shells: a.shells
     }));
 
+    this.matterClass = {
+      solid: false,
+      liquid: false,
+      gas: false,
+      unknown: false
+    };
+
     this.allMetals = false;
     this.allNonmetals = false;
     this.atomDetails = false;
     this.currentAtom = null;
+  }
+
+  ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
