@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { HighlightState } from '../shared';
 import * as get from 'lodash/get';
 import * as includes from 'lodash/includes';
@@ -6,7 +6,8 @@ import * as includes from 'lodash/includes';
 @Component({
   selector: 'app-atom',
   templateUrl: './atom.component.html',
-  styleUrls: ['./atom.component.scss']
+  styleUrls: ['./atom.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AtomComponent implements OnInit, OnChanges {
 
@@ -37,17 +38,19 @@ export class AtomComponent implements OnInit, OnChanges {
   @Output()
   hoverAtom: EventEmitter<number> = new EventEmitter<number>();
 
-  phaseClass: {}
-  backgroundStyles = {
-    blurry: false,
-    "solid-selected": false,
-    "liquid-selected": false,
-    "gas-selected": false,
-    "unknown-selected": false,
-    grayout: false
-  };
+  phaseClass: any = {};
+  backgroundStyles: any = {};
 
-  constructor() { }
+  constructor() {
+    this.backgroundStyles = {
+      blurry: false,
+      "solid-selected": false,
+      "liquid-selected": false,
+      "gas-selected": false,
+      "unknown-selected": false,
+      grayout: false
+    };
+  }
 
   ngOnInit() {
     this.phaseClass = {
@@ -85,23 +88,25 @@ export class AtomComponent implements OnInit, OnChanges {
       const allMetals = get(selectAllMetals, 'currentValue', false);
       const allNonMetals = get(selectAllNonmetals, 'currentValue', false);
 
-      this.backgroundStyles.blurry = blurry;
-      this.backgroundStyles['solid-selected'] = solid && this.data.phase === 'solid';
-      this.backgroundStyles['liquid-selected'] = liquid && this.data.phase === 'liquid';
-      this.backgroundStyles['gas-selected'] = gas && this.data.phase === 'gas';
-      this.backgroundStyles['unknown-selected'] = unknown && this.data.phase === 'unknown';
-      this.backgroundStyles.grayout = alkali && this.data.category !== 'alkali-metal'
-        || alkaline && this.data.category !== 'alkaline-earth-metal'
-        || lant && this.data.category !== 'lanthanide'
-        || actinoid && this.data.category !== 'actinide'
-        || transition && this.data.category !== 'transition-metal'
-        || postTransition && this.data.category !== 'post-transition-metal'
-        || metalloid && this.data.category !== 'metalloid'
-        || nonMetal && this.data.category !== 'nonmetal'
-        || nobleGas && this.data.category !== 'noble-gas'
-        || allMetals && includes(['metalloid', 'nonmetal', 'noble-gas'], this.data.category)
-        || allNonMetals && includes(['alkali-metal', 'alkaline-earth-metal',
-          'lanthanide', 'actinide', 'transition-metal', 'post-transition-metal', 'metalloid'], this.data.category);
+      this.backgroundStyles = {
+        blurry,
+        'solid-selected': solid && this.data.phase === 'solid',
+        'liquid-selected': liquid && this.data.phase === 'liquid',
+        'gas-selected': gas && this.data.phase === 'gas',
+        'unknown-selected': unknown && this.data.phase === 'unknown',
+         grayout: alkali && this.data.category !== 'alkali-metal'
+                   || alkaline && this.data.category !== 'alkaline-earth-metal'
+                   || lant && this.data.category !== 'lanthanide'
+                   || actinoid && this.data.category !== 'actinide'
+                   || transition && this.data.category !== 'transition-metal'
+                   || postTransition && this.data.category !== 'post-transition-metal'
+                   || metalloid && this.data.category !== 'metalloid'
+                   || nonMetal && this.data.category !== 'nonmetal'
+                   || nobleGas && this.data.category !== 'noble-gas'
+                   || allMetals && includes(['metalloid', 'nonmetal', 'noble-gas'], this.data.category)
+                   || allNonMetals && includes(['alkali-metal', 'alkaline-earth-metal',
+                     'lanthanide', 'actinide', 'transition-metal', 'post-transition-metal', 'metalloid'], this.data.category)
+      }
 
       this.phaseClass = {
         gas: !gas && this.data.phase === 'gas',
@@ -109,6 +114,5 @@ export class AtomComponent implements OnInit, OnChanges {
         unknown: !unknown && this.data.phase === 'unknown',
         liquid: !liquid && this.data.phase === 'liquid'
       }
-
   }
 }
