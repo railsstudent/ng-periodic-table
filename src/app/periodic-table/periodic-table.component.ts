@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Atom, HighlightState } from '../shared';
 import * as assign from 'lodash/assign';
 import * as get from 'lodash/get';
@@ -42,6 +42,9 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   selectAllMetals: boolean;
   @Input()
   selectAllNonmetals: boolean;
+
+  @Output()
+  currentAtomCategory: EventEmitter<string> = new EventEmitter<string>();
 
   description = DESCRIPTION;
   lantAtomGroup = LANT_ATOM_GROUP;
@@ -143,6 +146,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         this.rowHeader[ypos-1].selected = true;
         this.colHeader[xpos-1].selected = true;
       }
+      this.currentAtomCategory.emit(get(this.currentAtom, 'category', null));
     } else {
       const { xpos, ypos } = this.currentAtom;
       if (ypos > MAX_ROW_INDEX) {
@@ -152,6 +156,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         this.colHeader[xpos-1].selected = false;
       }
       this.currentAtom = null;
+      this.currentAtomCategory.emit(null);
     }
   }
 }
