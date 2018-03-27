@@ -48,9 +48,9 @@ export class SelectionBarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const { currentAtomCategory = null } = changes;
-    console.log(currentAtomCategory);
+    //console.log(currentAtomCategory);
     const currentCategory = get(currentAtomCategory, 'currentValue', null);
-    console.log('currentCategory', currentCategory);
+    //console.log('currentCategory', currentCategory);
     this.resetHighlight();
     if (currentCategory) {
       let prop = '';
@@ -65,7 +65,7 @@ export class SelectionBarComponent implements OnInit, OnChanges {
           prop = 'lant';
           break;
         case 'actinide':
-          prop = 'actinide';
+          prop = 'actinoid';
           break;
         case 'transition-metal':
           prop = 'transition';
