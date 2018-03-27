@@ -169,7 +169,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       }
       this.currentAtom = null;
       this.prevAtomNumber = null;
-      this.currentAtomCategory.emit(null);
+      //this.currentAtomCategory.emit(null);
     }
   }
 }
