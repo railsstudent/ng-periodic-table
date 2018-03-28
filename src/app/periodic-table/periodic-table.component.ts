@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Atom, HighlightState } from '../shared';
-import * as assign from 'lodash/assign';
-import * as get from 'lodash/get';
+import  { get, assign } from 'lodash-es';
 
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
@@ -59,7 +58,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   allNonmetals: boolean;
   atomDetails: boolean;
   currentAtom: any;
-  prevAtomNumber: number;
 
   constructor() {
     this.colHeader = Array(MAX_COL_INDEX).fill(1).map((v, i) => ({
@@ -102,7 +100,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     this.allNonmetals = false;
     this.atomDetails = false;
     this.currentAtom = null;
-    this.prevAtomNumber = null;
   }
 
   ngOnInit() {
@@ -139,26 +136,21 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
   showAtomDetails(atomNumber: number) {
     this.atomDetails = (atomNumber !== null && typeof atomNumber !== 'undefined');
-    console.log({atomNumber});
     if (atomNumber) {
       this.currentAtom = this.atoms.find(a => a.number === atomNumber);
-      let prevAtom = null;
-      if (this.prevAtomNumber) {
-          prevAtom = this.atoms.find(a => a.number === this.prevAtomNumber);
-      }
+
       const { xpos, ypos } = this.currentAtom;
       if (ypos > MAX_ROW_INDEX) {
         this.rowHeader[ypos - 2 - 1].selected = true;
+        // this.prevRow = ypos - 2 - 1;
+        // this.prevCol = null;
       } else {
         this.rowHeader[ypos-1].selected = true;
         this.colHeader[xpos-1].selected = true;
+        // this.prevRow = ypos - 1;
+        // this.prevCol = xpos - 1;
       }
-      this.prevAtomNumber = atomNumber;
-      const prevCategory = get(prevAtom, 'category', null);
-      const category = get(this.currentAtom, 'category', null);
-      if (category != prevCategory) {
-        this.currentAtomCategory.emit(category);
-      }
+      this.currentAtomCategory.emit(get(this.currentAtom, 'category', null));
     } else {
       const { xpos, ypos } = this.currentAtom;
       if (ypos > MAX_ROW_INDEX) {
@@ -167,9 +159,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         this.rowHeader[ypos-1].selected = false;
         this.colHeader[xpos-1].selected = false;
       }
-      this.currentAtom = null;
-      this.prevAtomNumber = null;
-      //this.currentAtomCategory.emit(null);
     }
   }
 }

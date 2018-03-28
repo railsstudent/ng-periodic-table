@@ -1,7 +1,13 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output,
+  EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { HighlightState } from '../shared';
-import * as get from 'lodash/get';
-import * as includes from 'lodash/includes';
+import { get, includes } from 'lodash';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/debounceTime';
+
+// in milliseconds
+const STAY_AT_LEAST = 250;
 
 @Component({
   selector: 'app-atom',
@@ -9,7 +15,7 @@ import * as includes from 'lodash/includes';
   styleUrls: ['./atom.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AtomComponent implements OnInit, OnChanges {
+export class AtomComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   data: any;
@@ -41,6 +47,11 @@ export class AtomComponent implements OnInit, OnChanges {
   phaseClass: any = {};
   backgroundStyles: any = {};
 
+  mouseEnterSubject = new Subject<number>();
+  mouseLeaveSubject = new Subject<number>();
+  mouseEnterSubscription: Subscription;
+  mouseLeaveSubscription: Subscription;
+
   constructor() {
     this.backgroundStyles = {
       blurry: false,
@@ -59,6 +70,24 @@ export class AtomComponent implements OnInit, OnChanges {
       unknown: this.data.phase === 'unknown',
       liquid: this.data.phase === 'liquid'
     }
+
+    this.mouseEnterSubscription = this.mouseEnterSubject.debounceTime(STAY_AT_LEAST)
+      .subscribe(
+        (value: number) => {
+          this.hoverAtom.emit(value);
+          console.log(`denouce mouseEnter, ${value}`);
+        },
+        (err) => console.error(err)
+      );
+
+      this.mouseLeaveSubscription = this.mouseLeaveSubject.debounceTime(STAY_AT_LEAST)
+      .subscribe(
+        (value: number) => {
+          this.hoverAtom.emit(null);
+          console.log(`debounce mouseleave, ${value}`);
+        },
+        (err) => console.error(err)
+      );
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -114,5 +143,18 @@ export class AtomComponent implements OnInit, OnChanges {
         unknown: !unknown && this.data.phase === 'unknown',
         liquid: !liquid && this.data.phase === 'liquid'
       }
+  }
+
+  ngOnDestroy() {
+    this.mouseEnterSubscription.unsubscribe();
+    this.mouseLeaveSubscription.unsubscribe();
+  }
+
+  debounceMouseEnter() {
+    this.mouseEnterSubject.next(this.data.number);
+  }
+
+  debounceMouseLeave() {
+    this.mouseLeaveSubject.next(this.data.number);
   }
 }

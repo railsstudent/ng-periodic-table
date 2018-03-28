@@ -1,5 +1,5 @@
 import { Component, OnInit, Input , OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import * as get from 'lodash/get';
+import { get } from 'lodash-es';
 
 @Component({
   selector: 'app-atom-details',
