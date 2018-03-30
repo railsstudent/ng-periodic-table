@@ -94,7 +94,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-      this.http.get<Atom[]>('../../assets/periodic-table.json')
+      this.http.get<Atom[]>('./assets/periodic-table.json')
         .subscribe(
           (atoms: Atom[]) => {
             this.atoms = atoms.map(a => assign({}, a, { blurry: false }));
