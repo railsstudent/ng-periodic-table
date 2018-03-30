@@ -12,6 +12,7 @@ export class AppComponent {
   highlightState: HighlightState;
   selectAllMetals: boolean;
   selectAllNonmetals: boolean;
+  category: string;
 
   constructor(titleService: Title) {
     titleService.setTitle('Periodic Table');
@@ -27,5 +28,9 @@ export class AppComponent {
 
   selectNonmetalCat(select: boolean) {
     this.selectAllNonmetals = select;
+  }
+
+  setCurrentAtomCategory(category: string) {
+      this.category = category;
   }
 }

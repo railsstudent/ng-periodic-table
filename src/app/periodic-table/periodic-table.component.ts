@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Atom, HighlightState } from '../shared';
-import * as assign from 'lodash/assign';
-import * as get from 'lodash/get';
+import  { get, assign } from 'lodash-es';
 
 declare function require(url: string);
 const atomData = require('../../assets/periodic-table.json');
@@ -43,6 +42,9 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   @Input()
   selectAllNonmetals: boolean;
 
+  @Output()
+  currentAtomCategory: EventEmitter<string> = new EventEmitter<string>();
+
   description = DESCRIPTION;
   lantAtomGroup = LANT_ATOM_GROUP;
   actinideAtomGroup = ACT_ATOM_GROUP;
@@ -56,6 +58,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   allNonmetals: boolean;
   atomDetails: boolean;
   currentAtom: any;
+  currentRowHeader: number;
+  currentColHeader: number;
 
   constructor() {
     this.colHeader = Array(MAX_COL_INDEX).fill(1).map((v, i) => ({
@@ -98,6 +102,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     this.allNonmetals = false;
     this.atomDetails = false;
     this.currentAtom = null;
+    this.currentRowHeader = null;
+    this.currentColHeader = null;
   }
 
   ngOnInit() {
@@ -123,19 +129,39 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   updateRowHeaderSelected(rowNum: number, selected: boolean) {
+    this.unselectAllHeaders();
+    this.currentRowHeader = selected ? rowNum : null;
     this.rowHeader[rowNum-1].selected = selected;
     this.blurRowAtoms({ rowNum, blurry: selected })
   }
 
   updateColHeaderSelected(colNum: number, selected: boolean) {
-    this.colHeader[colNum-1].selected=selected;
+    this.unselectAllHeaders();
+    this.currentColHeader = selected ? colNum : null;
+    this.colHeader[colNum-1].selected = selected;
     this.blurColAtoms({ colNum, blurry: selected })
+  }
+
+  unselectAllHeaders() {
+    this.rowHeader.forEach(r => r.selected = false);
+    this.colHeader.forEach(c => c.selected = false);
   }
 
   showAtomDetails(atomNumber: number) {
     this.atomDetails = (atomNumber !== null && typeof atomNumber !== 'undefined');
+    this.rowHeader.forEach((r, index) => {
+      if (r && r.selected && (!this.currentRowHeader || index !== this.currentRowHeader - 1)) {
+        r.selected = false;
+      }
+    });
+    this.colHeader.forEach((c, index) => {
+      if (c && c.selected && (!this.currentColHeader || index !== this.currentColHeader - 1)) {
+        c.selected = false;
+      }
+    });
     if (atomNumber) {
       this.currentAtom = this.atoms.find(a => a.number === atomNumber);
+
       const { xpos, ypos } = this.currentAtom;
       if (ypos > MAX_ROW_INDEX) {
         this.rowHeader[ypos - 2 - 1].selected = true;
@@ -143,15 +169,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         this.rowHeader[ypos-1].selected = true;
         this.colHeader[xpos-1].selected = true;
       }
-    } else {
-      const { xpos, ypos } = this.currentAtom;
-      if (ypos > MAX_ROW_INDEX) {
-        this.rowHeader[ypos - 2 - 1].selected = false;
-      } else {
-        this.rowHeader[ypos-1].selected = false;
-        this.colHeader[xpos-1].selected = false;
-      }
-      this.currentAtom = null;
+      this.currentAtomCategory.emit(get(this.currentAtom, 'category', null));
     }
   }
 }

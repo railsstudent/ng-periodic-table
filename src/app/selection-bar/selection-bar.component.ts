@@ -1,5 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy, Input ,
+  OnChanges, SimpleChanges } from '@angular/core';
 import { HighlightState } from '../shared/';
+import { get } from 'lodash-es';
 
 const CATEGORIES = [
   'alkali',
@@ -19,7 +21,7 @@ const CATEGORIES = [
   styleUrls: ['./selection-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectionBarComponent implements OnInit {
+export class SelectionBarComponent implements OnInit, OnChanges {
 
   @Output()
   highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
@@ -28,15 +30,63 @@ export class SelectionBarComponent implements OnInit {
   @Output()
   selectAllNonmetals: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @Input()
+  currentAtomCategory: string;
+
   highlightState: HighlightState;
   grayButtonStyle: any = null;
+  prevAtomCategory: string;
 
   constructor() {
     this.resetHighlight();
     this.resetGrayButtons();
+    this.prevAtomCategory = null;
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const { currentAtomCategory = null } = changes;
+    //console.log(currentAtomCategory);
+    const currentCategory = get(currentAtomCategory, 'currentValue', null);
+    //console.log('currentCategory', currentCategory);
+    this.resetHighlight();
+    if (currentCategory) {
+      let prop = '';
+      switch (currentCategory) {
+        case 'alkali-metal':
+          prop = 'alkali';
+          break;
+        case 'alkaline-earth-metal':
+          prop = 'alkaline';
+          break;
+        case 'lanthanide' :
+          prop = 'lant';
+          break;
+        case 'actinide':
+          prop = 'actinoid';
+          break;
+        case 'transition-metal':
+          prop = 'transition';
+          break;
+        case 'post-transition-metal':
+          prop = 'postTransition';
+          break;
+        case 'metalloid':
+          prop = 'metalloid';
+          break;
+        case 'nonmetal':
+          prop = 'nonMetal';
+          break;
+        case 'noble-gas':
+          prop = 'nobleGas';
+          break;
+      }
+      if (prop) {
+        this.highlightState[prop] = true;
+      }
+    }
   }
 
   resetHighlight() {
