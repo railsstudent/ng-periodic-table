@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output,
   EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { HighlightState } from '../shared';
-import { get, includes } from 'lodash';
+import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
