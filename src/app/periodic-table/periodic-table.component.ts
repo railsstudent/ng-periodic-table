@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Atom, HighlightState } from '../shared';
-import  { get, assign } from 'lodash-es';
+import { get, assign } from 'lodash-es';
+import { HttpClient } from '@angular/common/http';
 
-declare function require(url: string);
-const atomData = require('../../assets/periodic-table.json');
 const MAX_ROW_INDEX = 7;
 const MAX_COL_INDEX = 18;
 const DESCRIPTION = {
@@ -61,7 +60,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   currentRowHeader: number;
   currentColHeader: number;
 
-  constructor() {
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {
     this.colHeader = Array(MAX_COL_INDEX).fill(1).map((v, i) => ({
       index: i+1,
       description: i === 14 ? 'Pnictogens':  (i === 15? 'Chalcogens' : (i === 16 ? 'Halogens': '')),
@@ -78,19 +77,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
       { index: 7, className: 'seven', selected: false }
     ];
 
-    this.atoms = atomData.map(a => ({
-      number: a.number,
-      symbol: a.symbol,
-      name: a.name,
-      atomic_mass: a.atomic_mass,
-      phase: a.phase,
-      category: a.category,
-      xpos: a.xpos,
-      ypos: a.ypos,
-      blurry: false,
-      shells: a.shells
-    }));
-
     this.matterClass = {
       solid: false,
       liquid: false,
@@ -104,12 +90,25 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     this.currentAtom = null;
     this.currentRowHeader = null;
     this.currentColHeader = null;
+    this.atoms = null;
   }
 
   ngOnInit() {
+      this.http.get<Atom[]>('../../assets/periodic-table.json')
+        .subscribe(
+          (atoms: Atom[]) => {
+            this.atoms = atoms.map(a => assign({}, a, { blurry: false }));
+            this.cd.markForCheck();
+        },
+        (err) => {
+           console.error(err);
+           this.atoms = [];
+         }
+      )
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
     const { selectedMetal = null, selectAllMetals = null, selectAllNonmetals = null } = changes;
     this.metalClass = get(selectedMetal, 'currentValue', null);
     this.allMetals = get(selectAllMetals, 'currentValue', false);

@@ -1,6 +1,6 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { SelectionBarComponent } from './selection-bar/selection-bar.component';
@@ -18,7 +18,8 @@ import { AtomDetailsComponent } from './atom-details/atom-details.component';
     AtomDetailsComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [Title],
   bootstrap: [AppComponent]
