@@ -21,3 +21,10 @@ export interface Atom {
   ypos: number,
   blurry: boolean
 };
+
+export interface MatterType {
+  solid: boolean,
+  liquid: boolean,
+  gas: boolean,
+  unknown: boolean
+}
