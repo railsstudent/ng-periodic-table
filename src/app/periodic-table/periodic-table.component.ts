@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { Atom, HighlightState } from '../shared';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy,
+  Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Atom, HighlightState, MatterType } from '../shared';
 import { get, assign } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 
@@ -49,14 +50,14 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   actinideAtomGroup = ACT_ATOM_GROUP;
 
   colHeader: { index: number, description: string, selected: boolean }[];
-  atoms: Atom[];
   rowHeader: { index: number, className: string, selected: boolean }[];
-  matterClass: { solid: boolean, liquid: boolean, gas: boolean, unknown: boolean };
+  atoms: Atom[];
+  matterClass: MatterType;
   metalClass: HighlightState;
   allMetals: boolean;
   allNonmetals: boolean;
   atomDetails: boolean;
-  currentAtom: any;
+  currentAtom: Atom;
   currentRowHeader: number;
   currentColHeader: number;
 
@@ -108,7 +109,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     const { selectedMetal = null, selectAllMetals = null, selectAllNonmetals = null } = changes;
     this.metalClass = get(selectedMetal, 'currentValue', null);
     this.allMetals = get(selectAllMetals, 'currentValue', false);

@@ -50,10 +50,7 @@
     </div>
 
     <app-atom *ngFor="let atom of atoms" class="periodic-atom-{{atom.number}}" [data]="atom"
-      [solidSelected]="matterClass.solid"
-      [liquidSelected]="matterClass.liquid"
-      [gasSelected]="matterClass.gas"
-      [unknownSelected]="matterClass.unknown"
+      [matterSelected]="matterClass"
       [metalSelected]="metalClass"
       [selectAllMetals]="allMetals"
       [selectAllNonmetals]="allNonmetals"

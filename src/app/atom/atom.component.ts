@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output,
-  EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { HighlightState } from '../shared';
+  EventEmitter, ChangeDetectionStrategy, OnDestroy, DoCheck, KeyValueDiffers,
+  KeyValueChangeRecord, ChangeDetectorRef } from '@angular/core';
+import { HighlightState, MatterType } from '../shared';
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
@@ -15,22 +16,13 @@ const STAY_AT_LEAST = 250;
   styleUrls: ['./atom.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AtomComponent implements OnInit, OnChanges, OnDestroy {
+export class AtomComponent implements OnInit, OnChanges, OnDestroy, DoCheck {
 
   @Input()
   data: any;
 
   @Input()
-  solidSelected: boolean;
-
-  @Input()
-  liquidSelected: boolean;
-
-  @Input()
-  gasSelected: boolean;
-
-  @Input()
-  unknownSelected: boolean;
+  matterSelected: MatterType;
 
   @Input()
   metalSelected: HighlightState;
@@ -51,8 +43,9 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
   mouseLeaveSubject = new Subject<number>();
   mouseEnterSubscription: Subscription;
   mouseLeaveSubscription: Subscription;
+  differ: any;
 
-  constructor() {
+  constructor(private differs: KeyValueDiffers, private cd: ChangeDetectorRef) {
     this.backgroundStyles = {
       blurry: false,
       "solid-selected": false,
@@ -61,6 +54,8 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
       "unknown-selected": false,
       grayout: false
     };
+
+    this.differ = this.differs.find({}).create();
   }
 
   ngOnInit() {
@@ -80,31 +75,45 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
         (err) => console.error(err)
       );
 
-      this.mouseLeaveSubscription = this.mouseLeaveSubject.debounceTime(STAY_AT_LEAST)
-      .subscribe(
-        (value: number) => {
-          this.hoverAtom.emit(null);
-          console.log(`debounce mouseleave, ${value}`);
-        },
-        (err) => console.error(err)
-      );
+    this.mouseLeaveSubscription = this.mouseLeaveSubject.debounceTime(STAY_AT_LEAST)
+    .subscribe(
+      (value: number) => {
+        this.hoverAtom.emit(null);
+        console.log(`debounce mouseleave, ${value}`);
+      },
+      (err) => console.error(err)
+    );
+  }
+
+  ngDoCheck() {
+    const changes = this.differ.diff(this.matterSelected);
+    if (changes) {
+      changes.forEachChangedItem(c => {
+        if (c.key === 'solid') {
+          this.backgroundStyles['solid-selected'] = c.currentValue && this.data.phase === 'solid';
+          this.phaseClass.solid = this.data.phase === 'solid' && !c.currentValue
+        } else if (c.key === 'gas') {
+          this.backgroundStyles['gas-selected'] = c.currentValue && this.data.phase === 'gas';
+          this.phaseClass.gas = this.data.phase === 'gas' && !c.currentValue
+        } else if (c.key === 'liquid') {
+          this.backgroundStyles['liquid-selected'] = c.currentValue && this.data.phase === 'liquid';
+          this.phaseClass.liquid = this.data.phase === 'liquid' && !c.currentValue
+        } else if (c.key === 'unknown') {
+          this.backgroundStyles['unknown-selected'] = c.currentValue && this.data.phase === 'unknown';
+          this.phaseClass.unknown = this.data.phase === 'unknown' && !c.currentValue
+        }
+      });
+      this.cd.markForCheck();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
       const { data = null,
-        solidSelected = null,
-        liquidSelected = null,
-        gasSelected = null,
-        unknownSelected = null,
         metalSelected = null,
         selectAllMetals = null,
         selectAllNonmetals = null } = changes;
 
       const blurry = get(data, 'currentValue.blurry', false);
-      const solid = get(solidSelected, 'currentValue', false);
-      const liquid = get(liquidSelected, 'currentValue', false);
-      const gas = get(gasSelected, 'currentValue', false);
-      const unknown = get(unknownSelected, 'currentValue', false);
       const alkali = get(metalSelected, 'currentValue.alkali', false);
       const alkaline = get(metalSelected, 'currentValue.alkaline', false);
       const lant = get(metalSelected, 'currentValue.lant', false);
@@ -119,10 +128,10 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
 
       this.backgroundStyles = {
         blurry,
-        'solid-selected': solid && this.data.phase === 'solid',
-        'liquid-selected': liquid && this.data.phase === 'liquid',
-        'gas-selected': gas && this.data.phase === 'gas',
-        'unknown-selected': unknown && this.data.phase === 'unknown',
+        "solid-selected": false,
+        "liquid-selected": false,
+        "gas-selected": false,
+        "unknown-selected": false,
          grayout: alkali && this.data.category !== 'alkali-metal'
                    || alkaline && this.data.category !== 'alkaline-earth-metal'
                    || lant && this.data.category !== 'lanthanide'
@@ -135,13 +144,6 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
                    || allMetals && includes(['metalloid', 'nonmetal', 'noble-gas'], this.data.category)
                    || allNonMetals && includes(['alkali-metal', 'alkaline-earth-metal',
                      'lanthanide', 'actinide', 'transition-metal', 'post-transition-metal', 'metalloid'], this.data.category)
-      }
-
-      this.phaseClass = {
-        gas: !gas && this.data.phase === 'gas',
-        solid: !solid && this.data.phase === 'solid',
-        unknown: !unknown && this.data.phase === 'unknown',
-        liquid: !liquid && this.data.phase === 'liquid'
       }
   }
 
