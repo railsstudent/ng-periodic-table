@@ -12,6 +12,8 @@ import {
 import { Atom, HighlightState, MatterType } from "../shared";
 import { get, assign } from "lodash-es";
 import { HttpClient } from "@angular/common/http";
+import { Observable, Subject, of } from "rxjs";
+import { map, takeUntil, tap, catchError } from "rxjs/operators";
 
 const MAX_ROW_INDEX = 7;
 const MAX_COL_INDEX = 18;
@@ -59,6 +61,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
   colHeader: { index: number; description: string; selected: boolean }[];
   rowHeader: { index: number; className: string; selected: boolean }[];
+  // atoms$: Observable<Atom[]>;
+  unsubscribe$ = new Subject<void>();
   atoms: Atom[];
   matterClass: MatterType;
   metalClass: HighlightState;
@@ -112,16 +116,30 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.http.get<Atom[]>("./assets/periodic-table.json").subscribe(
-      (atoms: Atom[]) => {
-        this.atoms = atoms.map(a => assign({}, a, { blurry: false }));
+    // this.http.get<Atom[]>("./assets/periodic-table.json").subscribe(
+    //   (atoms: Atom[]) => {
+    //     this.atoms = atoms.map(a => assign({}, a, { blurry: false }));
+    //     this.cd.markForCheck();
+    //   },
+    //   err => {
+    //     console.error(err);
+    //     this.atoms = [];
+    //   }
+    // );
+
+    this.http
+      .get<Atom[]>("./assets/periodic-table.json")
+      .pipe(
+        map((atoms: Atom[]) =>
+          atoms.map(a => assign({}, a, { blurry: false }))
+        ),
+        catchError(() => of([])),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((atoms: Atom[]) => {
+        this.atoms = atoms;
         this.cd.markForCheck();
-      },
-      err => {
-        console.error(err);
-        this.atoms = [];
-      }
-    );
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {

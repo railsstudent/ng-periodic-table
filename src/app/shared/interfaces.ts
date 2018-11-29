@@ -8,23 +8,23 @@ export interface HighlightState {
   metalloid: boolean;
   nonMetal: boolean;
   nobleGas: boolean;
-};
+}
 
 export interface Atom {
-  number: number,
-  category: string,
-  symbol: string,
-  name: string,
-  atomic_mass: number,
-  phase: string,
-  xpos: number,
-  ypos: number,
-  blurry: boolean
-};
+  number: number;
+  category: string;
+  symbol: string;
+  name: string;
+  atomic_mass: number;
+  phase: string;
+  xpos: number;
+  ypos: number;
+  blurry: boolean;
+}
 
 export interface MatterType {
-  solid: boolean,
-  liquid: boolean,
-  gas: boolean,
-  unknown: boolean
+  solid: boolean;
+  liquid: boolean;
+  gas: boolean;
+  unknown: boolean;
 }

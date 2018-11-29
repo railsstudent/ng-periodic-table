@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { HighlightState } from './shared/';
+import { Component } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { HighlightState } from "./shared/";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  title = 'app';
+  // title = "app";
   highlightState: HighlightState;
   selectAllMetals: boolean;
   selectAllNonmetals: boolean;
   category: string;
 
   constructor(titleService: Title) {
-    titleService.setTitle('Periodic Table');
+    titleService.setTitle("Periodic Table");
   }
 
   highlightElement(highlightState: HighlightState) {
@@ -31,6 +31,6 @@ export class AppComponent {
   }
 
   setCurrentAtomCategory(category: string) {
-      this.category = category;
+    this.category = category;
   }
 }
