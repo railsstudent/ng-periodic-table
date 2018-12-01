@@ -1,19 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
-    OnInit,
+    EventEmitter,
     Input,
     OnChanges,
-    SimpleChanges,
-    ChangeDetectionStrategy,
+    OnInit,
     Output,
-    EventEmitter,
-    ChangeDetectorRef,
+    SimpleChanges,
 } from '@angular/core';
+import { assign, get } from 'lodash-es';
+import { of, Subject } from 'rxjs';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 import { Atom, HighlightState, MatterType } from '../shared';
-import { get, assign } from 'lodash-es';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, of, combineLatest } from 'rxjs';
-import { map, takeUntil, tap, catchError } from 'rxjs/operators';
 
 const MAX_ROW_INDEX = 7;
 const MAX_COL_INDEX = 18;

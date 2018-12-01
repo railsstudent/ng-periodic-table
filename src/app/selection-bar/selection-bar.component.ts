@@ -1,15 +1,15 @@
 import {
-    Component,
-    OnInit,
-    Output,
-    EventEmitter,
     ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
     Input,
     OnChanges,
+    OnInit,
+    Output,
     SimpleChanges,
 } from '@angular/core';
-import { HighlightState } from '../shared/';
 import { get } from 'lodash-es';
+import { HighlightState } from '../shared/';
 
 const CATEGORIES = [
     'alkali',
