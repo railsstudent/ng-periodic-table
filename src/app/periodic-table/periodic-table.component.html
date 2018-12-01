@@ -23,7 +23,7 @@
 
         <app-atom-details
             class="atom-details"
-            [class.show]="atomDetails === true"
+            [class.show]="currentAtom !== null"
             [data]="currentAtom"
         ></app-atom-details>
 
@@ -72,16 +72,18 @@
             <div class="unknown">Unknown</div>
         </div>
 
-        <app-atom
-            *ngFor="let atom of atoms"
-            class="periodic-atom-{{ atom.number }}"
-            [data]="atom"
-            [matterSelected]="matterClass"
-            [metalSelected]="metalClass"
-            [selectAllMetals]="allMetals"
-            [selectAllNonmetals]="allNonmetals"
-            (hoverAtom)="showAtomDetails($event)"
-        ></app-atom>
+        <ng-container *ngIf="(atoms$ | async) as atoms">
+            <app-atom
+                *ngFor="let atom of atoms"
+                class="periodic-atom-{{ atom.number }}"
+                [data]="atom"
+                [matterSelected]="matterClass"
+                [metalSelected]="metalClass"
+                [selectAllMetals]="allMetals"
+                [selectAllNonmetals]="allNonmetals"
+                (hoverAtom)="showAtomDetails($event)"
+            ></app-atom>
+        </ng-container>
         <app-atom class="description" [data]="description"></app-atom>
         <app-atom class="periodic-atom-57-71" [data]="lantAtomGroup"></app-atom>
         <app-atom class="periodic-atom-89-103" [data]="actinideAtomGroup"></app-atom>

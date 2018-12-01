@@ -50,8 +50,6 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy, DoCheck {
 
     mouseEnterSubject = new Subject<number>();
     mouseLeaveSubject = new Subject<number>();
-    // mouseEnterSubscription: Subscription;
-    // mouseLeaveSubscription: Subscription;
     differ: any;
     private unsubscribe$ = new Subject<void>();
 

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -11,8 +10,8 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { assign, get } from 'lodash-es';
-import { of, Subject } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { debounceTime, map, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Atom, HighlightState, MatterType } from '../shared';
 
 const MAX_ROW_INDEX = 7;
@@ -37,6 +36,14 @@ const ACT_ATOM_GROUP = {
     name: '',
     atomic_mass: null,
 };
+// in milliseconds
+const STAY_AT_LEAST = 25;
+
+interface HeaderInfo {
+    rowNum: number;
+    colNum: number;
+    inside: boolean;
+}
 
 @Component({
     selector: 'app-periodic-table',
@@ -61,19 +68,21 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
     colHeader: { index: number; description: string; selected: boolean }[];
     rowHeader: { index: number; className: string; selected: boolean }[];
-    // atoms$: Observable<Atom[]>;
     unsubscribe$ = new Subject<void>();
+    rowHeaderSub$ = new Subject<HeaderInfo>();
+    headerMove$: Observable<HeaderInfo>;
+    atoms$: Observable<Atom[]>;
+
     atoms: Atom[];
     matterClass: MatterType;
     metalClass: HighlightState;
     allMetals: boolean;
     allNonmetals: boolean;
-    atomDetails: boolean;
     currentAtom: Atom;
     currentRowHeader: number;
     currentColHeader: number;
 
-    constructor(private http: HttpClient, private cd: ChangeDetectorRef) {
+    constructor(private http: HttpClient) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
             .map((v, i) => ({
@@ -101,7 +110,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
         this.allMetals = false;
         this.allNonmetals = false;
-        this.atomDetails = false;
         this.currentAtom = null;
         this.currentRowHeader = null;
         this.currentColHeader = null;
@@ -109,17 +117,39 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.http
-            .get<Atom[]>('./assets/periodic-table.json')
-            .pipe(
-                map((atoms: Atom[]) => atoms.map(a => assign({}, a, { blurry: false }))),
-                catchError(() => of([])),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe((atoms: Atom[]) => {
-                this.atoms = atoms;
-                this.cd.markForCheck();
-            });
+        this.headerMove$ = this.rowHeaderSub$.pipe(
+            startWith({
+                rowNum: -1,
+                colNum: -1,
+                inside: false,
+            }),
+            debounceTime(STAY_AT_LEAST)
+        );
+
+        this.atoms$ = combineLatest(
+            this.http.get<Atom[]>('./assets/periodic-table.json').pipe(startWith([] as Atom[])),
+            this.headerMove$
+        ).pipe(
+            map(([atoms, headerMove]) => {
+                const { rowNum, colNum, inside } = headerMove;
+                if (rowNum >= 1) {
+                    return atoms.map(atom =>
+                        rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
+                            ? atom
+                            : assign({}, atom, { blurry: inside })
+                    );
+                } else if (colNum >= 1) {
+                    return atoms.map(atom =>
+                        colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9
+                            ? atom
+                            : assign({}, atom, { blurry: inside })
+                    );
+                }
+                return atoms;
+            }),
+            tap(atoms => (this.atoms = atoms)),
+            takeUntil(this.unsubscribe$)
+        );
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -129,32 +159,18 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         this.allNonmetals = get(selectAllNonmetals, 'currentValue', false);
     }
 
-    blurRowAtoms({ rowNum, blurry }) {
-        this.atoms = this.atoms.map(atom =>
-            rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
-                ? atom
-                : assign({}, atom, { blurry })
-        );
-    }
-
-    blurColAtoms({ colNum, blurry }) {
-        this.atoms = this.atoms.map(atom =>
-            colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9 ? atom : assign({}, atom, { blurry })
-        );
-    }
-
-    updateRowHeaderSelected(rowNum: number, selected: boolean) {
+    updateRowHeaderSelected(rowNum: number, inside: boolean) {
         this.unselectAllHeaders();
-        this.currentRowHeader = selected ? rowNum : null;
-        this.rowHeader[rowNum - 1].selected = selected;
-        this.blurRowAtoms({ rowNum, blurry: selected });
+        this.currentRowHeader = inside ? rowNum : null;
+        this.rowHeader[rowNum - 1].selected = inside;
+        this.rowHeaderSub$.next({ rowNum, colNum: -1, inside });
     }
 
-    updateColHeaderSelected(colNum: number, selected: boolean) {
+    updateColHeaderSelected(colNum: number, inside: boolean) {
         this.unselectAllHeaders();
-        this.currentColHeader = selected ? colNum : null;
-        this.colHeader[colNum - 1].selected = selected;
-        this.blurColAtoms({ colNum, blurry: selected });
+        this.currentColHeader = inside ? colNum : null;
+        this.colHeader[colNum - 1].selected = inside;
+        this.rowHeaderSub$.next({ rowNum: -1, colNum, inside });
     }
 
     unselectAllHeaders() {
@@ -163,7 +179,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     }
 
     showAtomDetails(atomNumber: number) {
-        this.atomDetails = atomNumber !== null && typeof atomNumber !== 'undefined';
         this.rowHeader.forEach((r, index) => {
             if (r && r.selected && (!this.currentRowHeader || index !== this.currentRowHeader - 1)) {
                 r.selected = false;
@@ -176,7 +191,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         });
         if (atomNumber) {
             this.currentAtom = this.atoms.find(a => a.number === atomNumber);
-
             const { xpos, ypos } = this.currentAtom;
             if (ypos > MAX_ROW_INDEX) {
                 this.rowHeader[ypos - 2 - 1].selected = true;
