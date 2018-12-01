@@ -14,9 +14,6 @@ export class AppComponent {
     selectAllNonmetals: boolean;
     category: string;
 
-    highlightElement(highlightState: HighlightState) {
-        this.highlightState = highlightState;
-    }
     constructor(titleService: Title) {
         titleService.setTitle('Periodic Table');
     }
