@@ -1,1 +1,1 @@
-export { HighlightState, Atom, MatterType } from './interfaces';
+export { Atom, HighlightState } from './interfaces';

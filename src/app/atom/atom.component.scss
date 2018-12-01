@@ -56,26 +56,22 @@ $selected-color: #fff;
     &.liquid-selected,
     &.gas-selected,
     &.unknown-selected {
-        color: #fff;
+        color: $selected-color;
     }
 
     &.solid-selected {
-        color: $selected-color;
         background: $solid-background-color;
     }
 
     &.liquid-selected {
-        color: $selected-color;
         background: $liquid-background-color;
     }
 
     &.gas-selected {
-        color: $selected-color;
         background: $gas-background-color;
     }
 
     &.unknown-selected {
-        color: $selected-color;
         background: $unknown-background-color;
     }
 

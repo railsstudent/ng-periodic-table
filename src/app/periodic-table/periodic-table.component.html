@@ -28,44 +28,38 @@
         ></app-atom-details>
 
         <div class="phase-row-1 col-1">
-            <div
-                class="solid"
-                (mouseenter)="matterClass.solid = true"
-                (mouseleave)="matterClass.solid = false"
-                [class.selected]="matterClass.solid == true"
-            >
-                C
-            </div>
-            <div
-                class="liquid"
-                (mouseenter)="matterClass.liquid = true"
-                (mouseleave)="matterClass.liquid = false"
-                [class.selected]="matterClass.liquid == true"
-            >
-                Hg
-            </div>
+            <app-phase
+                [type]="'solid'"
+                [selected]="selectedPhase === 'solid'"
+                [symbol]="'C'"
+                (enter)="enterPhase($event)"
+            ></app-phase>
+            <app-phase
+                class="gap"
+                [type]="'liquid'"
+                [selected]="selectedPhase === 'liquid'"
+                [symbol]="'Hg'"
+                (enter)="enterPhase($event)"
+            ></app-phase>
         </div>
         <div class="phase-row-1 col-2">
             <div class="solid">Solid</div>
             <div class="liquid">Liquid</div>
         </div>
         <div class="phase-row-2 col-1">
-            <div
-                class="gas"
-                (mouseenter)="matterClass.gas = true"
-                (mouseleave)="matterClass.gas = false"
-                [class.selected]="matterClass.gas == true"
-            >
-                H
-            </div>
-            <div
-                class="unknown"
-                (mouseenter)="matterClass.unknown = true"
-                (mouseleave)="matterClass.unknown = false"
-                [class.selected]="matterClass.unknown == true"
-            >
-                Rf
-            </div>
+            <app-phase
+                [type]="'gas'"
+                [selected]="selectedPhase === 'gas'"
+                [symbol]="'H'"
+                (enter)="enterPhase($event)"
+            ></app-phase>
+            <app-phase
+                class="gap"
+                [type]="'unknown'"
+                [selected]="selectedPhase === 'unknown'"
+                [symbol]="'Rf'"
+                (enter)="enterPhase($event)"
+            ></app-phase>
         </div>
         <div class="phase-row-2 col-2">
             <div class="gas">Gas</div>
@@ -77,7 +71,7 @@
                 *ngFor="let atom of atoms"
                 class="periodic-atom-{{ atom.number }}"
                 [data]="atom"
-                [matterSelected]="matterClass"
+                [selectedPhase]="selectedPhase"
                 [metalSelected]="metalClass"
                 [selectAllMetals]="allMetals"
                 [selectAllNonmetals]="allNonmetals"

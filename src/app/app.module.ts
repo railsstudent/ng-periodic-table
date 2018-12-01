@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { AppPhaseComponent } from './app-phase/app-phase.component';
 import { AppComponent } from './app.component';
 import { AtomDetailsComponent } from './atom-details/atom-details.component';
 import { AtomComponent } from './atom/atom.component';
@@ -16,6 +17,7 @@ import { SelectionBarComponent } from './selection-bar/selection-bar.component';
         AtomComponent,
         AtomDetailsComponent,
         FooterComponent,
+        AppPhaseComponent,
     ],
     imports: [BrowserModule, HttpClientModule],
     providers: [Title],

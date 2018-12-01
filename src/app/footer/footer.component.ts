@@ -16,7 +16,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
             }
 
             div {
-                padding-top: 20px;
+                padding: 10px 0;
                 display: flex;
                 flex-direction: column;
                 align-items: center;

@@ -12,7 +12,7 @@ import {
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith, takeUntil, tap } from 'rxjs/operators';
-import { Atom, HighlightState, MatterType } from '../shared';
+import { Atom, HighlightState } from '../shared';
 
 const MAX_ROW_INDEX = 7;
 const MAX_COL_INDEX = 18;
@@ -74,13 +74,13 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     atoms$: Observable<Atom[]>;
 
     atoms: Atom[];
-    matterClass: MatterType;
     metalClass: HighlightState;
     allMetals: boolean;
     allNonmetals: boolean;
     currentAtom: Atom;
     currentRowHeader: number;
     currentColHeader: number;
+    selectedPhase: string;
 
     constructor(private http: HttpClient) {
         this.colHeader = Array(MAX_COL_INDEX)
@@ -101,19 +101,13 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
             { index: 7, className: 'seven', selected: false },
         ];
 
-        this.matterClass = {
-            solid: false,
-            liquid: false,
-            gas: false,
-            unknown: false,
-        };
-
         this.allMetals = false;
         this.allNonmetals = false;
         this.currentAtom = null;
         this.currentRowHeader = null;
         this.currentColHeader = null;
         this.atoms = null;
+        this.selectedPhase = '';
     }
 
     ngOnInit() {
@@ -200,5 +194,9 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
             }
             this.currentAtomCategory.emit(get(this.currentAtom, 'category', null));
         }
+    }
+
+    enterPhase(type: string) {
+        this.selectedPhase = type;
     }
 }

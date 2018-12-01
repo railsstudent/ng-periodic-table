@@ -22,6 +22,10 @@ $selected-color: #fff;
         grid-template-columns: 20px repeat(18, $square);
         grid-auto-rows: $square;
 
+        app-phase.gap {
+            margin-top: 5px;
+        }
+
         .phase-row-1 {
             .solid,
             .liquid {
@@ -36,22 +40,6 @@ $selected-color: #fff;
 
             .liquid {
                 color: $liquid-color;
-            }
-
-            .solid.selected,
-            .liquid.selected {
-                color: $selected-color;
-            }
-
-            .solid.selected {
-                background: $solid-background-color;
-            }
-
-            .liquid.selected {
-                background: $liquid-background-color;
-            }
-
-            .liquid {
                 margin-top: 5px;
             }
 
@@ -93,22 +81,6 @@ $selected-color: #fff;
 
             .unknown {
                 color: $unknown-color;
-            }
-
-            .unknown.selected,
-            .gas.selected {
-                color: $selected-color;
-            }
-
-            .gas.selected {
-                background: $gas-background-color;
-            }
-
-            .unknown.selected {
-                background: $unknown-background-color;
-            }
-
-            .unknown {
                 margin-top: 5px;
             }
 
