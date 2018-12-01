@@ -1,49 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  min-height: 100vh;
-  background: #FFF;
+    min-height: 100vh;
+    background: #fff;
 }
 
 .alkali-metal {
-  background: #FFCC33;
+    background: #ffcc33;
 }
 
 .alkaline-earth-metal {
-  background: #FFFF44;
+    background: #ffff44;
 }
 
 .lanthanide {
-  background: #FFBB99;
+    background: #ffbb99;
 }
 
 .actinide {
-  background: #EEBBDD;
+    background: #eebbdd;
 }
 
 .transition-metal {
-  background: #DDBBBB;
+    background: #ddbbbb;
 }
 
 .post-transition-metal {
-  background: #99DDCC;
+    background: #99ddcc;
 }
 
 .metalloid {
-  background: #77DD88;
+    background: #77dd88;
 }
 
 .nonmetal {
-  background: #22FF22;
+    background: #22ff22;
 }
 
 .noble-gas {
-  background: #77CCFF;
+    background: #77ccff;
 }
 
 .unknown-metal {
-  background: #DDDDDD;
+    background: #dddddd;
 }

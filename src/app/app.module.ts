@@ -4,11 +4,19 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AtomDetailsComponent } from './atom-details/atom-details.component';
 import { AtomComponent } from './atom/atom.component';
+import { FooterComponent } from './footer/footer.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { SelectionBarComponent } from './selection-bar/selection-bar.component';
 
 @NgModule({
-    declarations: [AppComponent, SelectionBarComponent, PeriodicTableComponent, AtomComponent, AtomDetailsComponent],
+    declarations: [
+        AppComponent,
+        SelectionBarComponent,
+        PeriodicTableComponent,
+        AtomComponent,
+        AtomDetailsComponent,
+        FooterComponent,
+    ],
     imports: [BrowserModule, HttpClientModule],
     providers: [Title],
     bootstrap: [AppComponent],
