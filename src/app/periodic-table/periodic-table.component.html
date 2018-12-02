@@ -74,10 +74,13 @@
                 [selectedPhase]="selectedPhase"
                 [metalSelected]="metalClass"
                 (hoverAtom)="showAtomDetails($event)"
+                (click)="open(atom.name)"
             ></app-atom>
         </ng-container>
         <app-atom class="description" [data]="description"></app-atom>
         <app-atom class="periodic-atom-57-71" [data]="lantAtomGroup"></app-atom>
         <app-atom class="periodic-atom-89-103" [data]="actinideAtomGroup"></app-atom>
     </div>
+
+    <app-wiki *ngIf="wikiAtomName" [atomName]="wikiAtomName"></app-wiki>
 </div>

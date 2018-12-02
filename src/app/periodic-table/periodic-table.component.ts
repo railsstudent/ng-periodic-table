@@ -76,6 +76,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     currentColHeader: number;
     selectedPhase: string;
 
+    wikiAtomName = '';
+
     constructor(private http: HttpClient) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
@@ -188,5 +190,9 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
     enterPhase(type: string) {
         this.selectedPhase = type;
+    }
+
+    open(atomName) {
+        this.wikiAtomName = atomName;
     }
 }
