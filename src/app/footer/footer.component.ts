@@ -20,7 +20,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                background: #e1e1e1;
+                background: #4a4a4a;
+                color: #fff;
             }
 
             p {

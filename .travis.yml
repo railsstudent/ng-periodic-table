@@ -1,0 +1,25 @@
+language: node_js
+cache: yarn
+
+env:
+    global:
+        - GITHUB_ORG="https://GH_TOKEN@github.com"
+        - REPO_NAME="ng-periodic-table"
+        - GITHUB_NAME="railsstudent"
+        - GITHUB_EMAIL="cleung334@gmail.com"
+
+deploy:
+    skip_cleanup: true
+
+before_script:
+    - yarn install
+
+script:
+    - echo "*** Build production build ***"
+    - ng build --prod --base-href "https://railsstudent.github.io/ng-periodic-table/"
+    - echo "*** Deploy ng-periodic-table to github pages ****"
+    - ngh --repo="$GITHUB_ORG/$GITHUB_NAME/$REPO_NAME.git" --name="$GITHUB_NAME" --email="$GITHUB_EMAIL";
+
+branches:
+    only:
+        - master
