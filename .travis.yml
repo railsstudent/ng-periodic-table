@@ -8,11 +8,6 @@ env:
         - GITHUB_NAME="railsstudent"
         - GITHUB_EMAIL="cleung334@gmail.com"
 
-deploy:
-    provider: pages
-    skip-cleanup: true
-    github-token: $GH_TOKEN # Set in the settings page of your repository, as a secure variable
-
 before_script:
     - yarn install
 
@@ -20,7 +15,7 @@ script:
     - echo "*** Build production build ***"
     - ng build --prod --base-href "https://railsstudent.github.io/ng-periodic-table/"
     - echo "*** Deploy ng-periodic-table to github pages ****"
-    - ngh --repo="$GITHUB_ORG/$GITHUB_NAME/$REPO_NAME.git" --name="$GITHUB_NAME" --email="$GITHUB_EMAIL";
+    - ngh --repo="$GITHUB_ORG/$GITHUB_NAME/$REPO_NAME.git" --name="$GITHUB_NAME" --email="$GITHUB_EMAIL" --no-silent
 
 branches:
     only:
