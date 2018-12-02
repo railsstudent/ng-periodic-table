@@ -8,9 +8,6 @@ env:
         - GITHUB_NAME="railsstudent"
         - GITHUB_EMAIL="cleung334@gmail.com"
 
-deploy:
-    skip_cleanup: true
-
 before_script:
     - yarn install
 
