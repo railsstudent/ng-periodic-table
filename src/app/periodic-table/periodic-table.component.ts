@@ -65,7 +65,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     colHeader: { index: number; description: string; selected: boolean }[];
     rowHeader: { index: number; className: string; selected: boolean }[];
     unsubscribe$ = new Subject<void>();
-    rowHeaderSub$ = new Subject<HeaderInfo>();
+    headerSub$ = new Subject<HeaderInfo>();
     headerMove$: Observable<HeaderInfo>;
     atoms$: Observable<Atom[]>;
 
@@ -103,7 +103,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.headerMove$ = this.rowHeaderSub$.pipe(
+        this.headerMove$ = this.headerSub$.pipe(
             startWith({
                 rowNum: -1,
                 colNum: -1,
@@ -147,14 +147,14 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
         this.unselectAllHeaders();
         this.currentRowHeader = inside ? rowNum : null;
         this.rowHeader[rowNum - 1].selected = inside;
-        this.rowHeaderSub$.next({ rowNum, colNum: -1, inside });
+        this.headerSub$.next({ rowNum, colNum: -1, inside });
     }
 
     updateColHeaderSelected(colNum: number, inside: boolean) {
         this.unselectAllHeaders();
         this.currentColHeader = inside ? colNum : null;
         this.colHeader[colNum - 1].selected = inside;
-        this.rowHeaderSub$.next({ rowNum: -1, colNum, inside });
+        this.headerSub$.next({ rowNum: -1, colNum, inside });
     }
 
     unselectAllHeaders() {

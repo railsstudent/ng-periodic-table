@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { HighlightState } from '../shared';
 
 // in milliseconds
@@ -57,7 +57,6 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
         this.mouseEnterSubject
             .pipe(
                 debounceTime(STAY_AT_LEAST),
-                distinctUntilChanged(),
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((value: number) => this.hoverAtom.emit(value), err => console.error(err));
