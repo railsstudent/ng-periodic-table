@@ -3,8 +3,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
+    EventEmitter,
     Input,
     OnInit,
+    Output,
     Renderer2,
     ViewChild,
 } from '@angular/core';
@@ -15,7 +17,8 @@ const BASE_URL = 'https://en.wikipedia.org/wiki';
 @Component({
     selector: 'app-wiki',
     template: `
-        <div class="modal-content">
+        <div class="modal-content" #modalContent>
+            <div class="close-modal" #closeModalDiv><p class="close-icon" (click)="closeModal.emit()">X</p></div>
             <iframe [src]="url" #iframe></iframe>
             <div class="loader" #loader><p class="text">Loading Content...</p></div>
         </div>
@@ -41,7 +44,22 @@ const BASE_URL = 'https://en.wikipedia.org/wiki';
                 height: 80%;
             }
 
+            .close-modal {
+                display: none;
+                position: absolute;
+                top: 0.625rem;
+                right: 0.625rem;
+            }
+
+            .close-icon {
+                padding: 0.25rem;
+                border: 1px solid black;
+                border-radius: 50%;
+            }
+
             iframe {
+                position: absolute;
+                top: 3rem;
                 opacity: 0;
                 width: 0;
                 height: 0;
@@ -51,8 +69,11 @@ const BASE_URL = 'https://en.wikipedia.org/wiki';
             .loader {
                 position: absolute;
                 opacity: 1;
-                width: 100%;
-                height: 100%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 40%;
+                height: 20%;
                 background: #fff;
 
                 display: flex;
@@ -69,11 +90,20 @@ export class AppWikiComponent implements OnInit, AfterViewInit {
     @Input()
     atomName: string;
 
+    @Output()
+    closeModal = new EventEmitter<void>();
+
     @ViewChild('iframe')
     iframe: ElementRef<HTMLIFrameElement>;
 
+    @ViewChild('closeModalDiv')
+    closeModalDiv: ElementRef<HTMLDivElement>;
+
     @ViewChild('loader')
     loader: ElementRef<HTMLDivElement>;
+
+    @ViewChild('modalContent')
+    modalContent: ElementRef<any>;
 
     url: SafeUrl;
 
@@ -86,12 +116,18 @@ export class AppWikiComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         const el = this.iframe.nativeElement;
         el.onload = () => {
-            this.renderer.setStyle(this.loader.nativeElement, 'opacity', '0');
-            this.renderer.setStyle(this.loader.nativeElement, 'width', '0');
-            this.renderer.setStyle(this.loader.nativeElement, 'height', '0');
+            this.renderer.setStyle(this.getNativeElement(this.loader), 'opacity', '0');
+            this.renderer.setStyle(this.getNativeElement(this.loader), 'width', '0');
+            this.renderer.setStyle(this.getNativeElement(this.loader), 'height', '0');
             this.renderer.setStyle(el, 'opacity', '1');
             this.renderer.setStyle(el, 'width', '100%');
-            this.renderer.setStyle(el, 'height', '100%');
+            this.renderer.setStyle(el, 'height', 'calc(100% - 3rem)');
+            this.renderer.setStyle(this.getNativeElement(this.closeModalDiv), 'display', 'block');
+            this.renderer.setStyle(this.getNativeElement(this.modalContent), 'background', '#fff');
         };
+    }
+
+    private getNativeElement(el: ElementRef) {
+        return el.nativeElement;
     }
 }

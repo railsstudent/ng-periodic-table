@@ -82,5 +82,5 @@
         <app-atom class="periodic-atom-89-103" [data]="actinideAtomGroup"></app-atom>
     </div>
 
-    <app-wiki *ngIf="wikiAtomName" [atomName]="wikiAtomName"></app-wiki>
+    <app-wiki *ngIf="wikiAtomName" [atomName]="wikiAtomName" (closeModal)="wikiAtomName = ''"></app-wiki>
 </div>
