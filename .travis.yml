@@ -8,6 +8,11 @@ env:
         - GITHUB_NAME="railsstudent"
         - GITHUB_EMAIL="cleung334@gmail.com"
 
+deploy:
+    provider: pages
+    skip-cleanup: true
+    github-token: $GH_TOKEN # Set in the settings page of your repository, as a secure variable
+
 before_script:
     - yarn install
 
