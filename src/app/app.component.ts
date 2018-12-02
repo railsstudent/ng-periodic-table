@@ -8,10 +8,7 @@ import { HighlightState } from './shared/';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    // title = "app";
     highlightState: HighlightState;
-    selectAllMetals: boolean;
-    selectAllNonmetals: boolean;
     category: string;
 
     constructor(titleService: Title) {
@@ -20,14 +17,6 @@ export class AppComponent {
 
     highlightElement(highlightState: HighlightState) {
         this.highlightState = highlightState;
-    }
-
-    selectMetalCat(select: boolean) {
-        this.selectAllMetals = select;
-    }
-
-    selectNonmetalCat(select: boolean) {
-        this.selectAllNonmetals = select;
     }
 
     setCurrentAtomCategory(category: string) {

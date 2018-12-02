@@ -54,10 +54,6 @@ interface HeaderInfo {
 export class PeriodicTableComponent implements OnInit, OnChanges {
     @Input()
     selectedMetal: any;
-    @Input()
-    selectAllMetals: boolean;
-    @Input()
-    selectAllNonmetals: boolean;
 
     @Output()
     currentAtomCategory: EventEmitter<string> = new EventEmitter<string>();
@@ -75,8 +71,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
     atoms: Atom[];
     metalClass: HighlightState;
-    allMetals: boolean;
-    allNonmetals: boolean;
     currentAtom: Atom;
     currentRowHeader: number;
     currentColHeader: number;
@@ -101,8 +95,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
             { index: 7, className: 'seven', selected: false },
         ];
 
-        this.allMetals = false;
-        this.allNonmetals = false;
         this.currentAtom = null;
         this.currentRowHeader = null;
         this.currentColHeader = null;
@@ -147,10 +139,8 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        const { selectedMetal = null, selectAllMetals = null, selectAllNonmetals = null } = changes;
+        const { selectedMetal = null } = changes;
         this.metalClass = get(selectedMetal, 'currentValue', null);
-        this.allMetals = get(selectAllMetals, 'currentValue', false);
-        this.allNonmetals = get(selectAllNonmetals, 'currentValue', false);
     }
 
     updateRowHeaderSelected(rowNum: number, inside: boolean) {

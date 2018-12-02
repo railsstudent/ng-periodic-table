@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { HighlightState } from '../shared';
 
 // in milliseconds
@@ -29,12 +29,6 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input()
     metalSelected: HighlightState;
-
-    @Input()
-    selectAllMetals: boolean;
-
-    @Input()
-    selectAllNonmetals: boolean;
 
     @Input()
     selectedPhase: string;
@@ -63,6 +57,7 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
         this.mouseEnterSubject
             .pipe(
                 debounceTime(STAY_AT_LEAST),
+                distinctUntilChanged(),
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((value: number) => this.hoverAtom.emit(value), err => console.error(err));
@@ -76,13 +71,7 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        const {
-            data = null,
-            metalSelected = null,
-            selectAllMetals = null,
-            selectAllNonmetals = null,
-            selectedPhase = null,
-        } = changes;
+        const { data = null, metalSelected = null, selectedPhase = null } = changes;
 
         const blurry = get(data, 'currentValue.blurry', false);
         const alkali = get(metalSelected, 'currentValue.alkali', false);
@@ -94,9 +83,9 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
         const metalloid = get(metalSelected, 'currentValue.metalloid', false);
         const nonMetal = get(metalSelected, 'currentValue.nonMetal', false);
         const nobleGas = get(metalSelected, 'currentValue.nobleGas', false);
-        const allMetals = get(selectAllMetals, 'currentValue', false);
-        const allNonMetals = get(selectAllNonmetals, 'currentValue', false);
         const currentPhase = get(selectedPhase, 'currentValue', '');
+        const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition;
+        const allNonMetals = nonMetal && nobleGas;
 
         this.backgroundStyles = {
             blurry,
@@ -105,15 +94,15 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
             'gas-selected': currentPhase === 'gas' && this.data.phase === 'gas',
             'unknown-selected': currentPhase === 'unknown' && this.data.phase === 'unknown',
             grayout:
-                (alkali && this.data.category !== 'alkali-metal') ||
-                (alkaline && this.data.category !== 'alkaline-earth-metal') ||
-                (lant && this.data.category !== 'lanthanide') ||
-                (actinoid && this.data.category !== 'actinide') ||
-                (transition && this.data.category !== 'transition-metal') ||
-                (postTransition && this.data.category !== 'post-transition-metal') ||
+                (!allMetals && alkali && this.data.category !== 'alkali-metal') ||
+                (!allMetals && alkaline && this.data.category !== 'alkaline-earth-metal') ||
+                (!allMetals && lant && this.data.category !== 'lanthanide') ||
+                (!allMetals && actinoid && this.data.category !== 'actinide') ||
+                (!allMetals && transition && this.data.category !== 'transition-metal') ||
+                (!allMetals && postTransition && this.data.category !== 'post-transition-metal') ||
                 (metalloid && this.data.category !== 'metalloid') ||
-                (nonMetal && this.data.category !== 'nonmetal') ||
-                (nobleGas && this.data.category !== 'noble-gas') ||
+                (!allNonMetals && nonMetal && this.data.category !== 'nonmetal') ||
+                (!allNonMetals && nobleGas && this.data.category !== 'noble-gas') ||
                 (allMetals && includes(['metalloid', 'nonmetal', 'noble-gas'], this.data.category)) ||
                 (allNonMetals &&
                     includes(

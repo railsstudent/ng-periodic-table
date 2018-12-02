@@ -32,32 +32,27 @@ const CATEGORIES = [
 export class SelectionBarComponent implements OnInit, OnChanges {
     @Output()
     highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
-    @Output()
-    selectAllMetals: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output()
-    selectAllNonmetals: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @Input()
     currentAtomCategory: string;
 
     highlightState: HighlightState;
     grayButtonStyle: any = null;
-    prevAtomCategory: string;
+    allMetals = ['alkali', 'alkaline', 'lant', 'actinoid', 'transition', 'postTransition'];
+    allNonMetals = ['nonMetal', 'nobleGas'];
 
     constructor() {
         this.resetHighlight();
         this.resetGrayButtons();
-        this.prevAtomCategory = null;
     }
 
     ngOnInit() {}
 
     ngOnChanges(changes: SimpleChanges) {
         const { currentAtomCategory = null } = changes;
-        // console.log(currentAtomCategory);
         const currentCategory = get(currentAtomCategory, 'currentValue', null);
-        // console.log('currentCategory', currentCategory);
         this.resetHighlight();
+
         if (currentCategory) {
             let prop = '';
             switch (currentCategory) {
@@ -116,13 +111,17 @@ export class SelectionBarComponent implements OnInit, OnChanges {
         }, {});
     }
 
-    changeHighlightState(key: string, value: boolean) {
+    numHighlightState() {
+        return Object.keys(this.highlightState).filter(k => this.highlightState[k] === true).length;
+    }
+
+    changeHighlightState(keys: string[], value: boolean) {
         this.resetHighlight();
-        this.highlightState[key] = value;
+        keys.forEach(key => (this.highlightState[key] = value));
+
         this.highlightElement.emit(this.highlightState);
 
-        const hasTrueValue = Object.keys(this.highlightState).some(k => this.highlightState[k] === true);
-        if (hasTrueValue === true) {
+        if (this.numHighlightState() === 1) {
             this.grayButtonStyle = CATEGORIES.reduce((acc, c) => {
                 acc[c] = this.highlightState[c] !== true;
                 return acc;
