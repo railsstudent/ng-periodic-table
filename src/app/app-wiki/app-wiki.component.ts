@@ -73,7 +73,7 @@ const BASE_URL = 'https://en.wikipedia.org/wiki';
                 left: 50%;
                 transform: translate(-50%, -50%);
                 width: 40%;
-                height: 20%;
+                height: 15%;
                 background: #fff;
 
                 display: flex;
