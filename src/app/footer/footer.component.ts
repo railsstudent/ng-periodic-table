@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-footer',
@@ -6,6 +6,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         <div>
             <p>Made by Connie Leung @2017</p>
             <p>Powered by Angular 7</p>
+            <p>Version: {{ version }}</p>
         </div>
     `,
     styles: [
@@ -33,7 +34,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent implements OnInit {
+    @Input()
+    version: string;
+
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        console.log('version', this.version);
+    }
 }
