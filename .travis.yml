@@ -18,6 +18,8 @@ before_script:
     - yarn install
 
 script:
+    - echo "*** lint ***"
+    - yarn lint
     - echo "*** Build production build ***"
     - ng build --prod --base-href "https://railsstudent.github.io/ng-periodic-table/"
     - echo "*** Deploy ng-periodic-table to github pages ****"
