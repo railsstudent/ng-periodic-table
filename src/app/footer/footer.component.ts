@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-footer',
     template: `
         <div>
-            <p>Made by Connie Leung @2017</p>
-            <p>Powered by Angular 7</p>
+            <p>Made by Connie Leung @2017. Powered by Angular 7</p>
             <p>Version: {{ version }}</p>
         </div>
     `,
@@ -33,13 +32,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
     @Input()
     version: string;
-
-    constructor() {}
-
-    ngOnInit() {
-        console.log('version', this.version);
-    }
 }
