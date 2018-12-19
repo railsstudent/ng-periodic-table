@@ -68,7 +68,7 @@ const INIT_GRAY: HighlightState = {
 })
 export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     @Output()
-    highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
+    highlightElement = new EventEmitter<HighlightState>();
 
     highlightState: HighlightState;
     grayButtonStyle = {
@@ -166,16 +166,29 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                 this.cd.markForCheck();
             });
 
-        fromEvent($allMetals, 'mouseenter')
+        const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(
+            mapTo({
+                alkali: true,
+                alkaline: true,
+                lant: true,
+                actinoid: true,
+                transition: true,
+                postTransition: true,
+            })
+        );
+
+        const allNonMetalsEnter$ = fromEvent($allNonMetals, 'mouseenter').pipe(
+            mapTo({
+                nonMetal: true,
+                nobleGas: true,
+            })
+        );
+
+        merge(allMetalsEnter$, allNonMetalsEnter$)
             .pipe(
-                map(() => ({
+                map(results => ({
                     ...INIT_HIGHLIGHT_STATE,
-                    alkali: true,
-                    alkaline: true,
-                    lant: true,
-                    actinoid: true,
-                    transition: true,
-                    postTransition: true,
+                    ...results,
                 })),
                 tap(results => this.highlightElement.emit(results)),
                 takeUntil(this.unsubscribe$)
@@ -196,22 +209,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                 this.cd.markForCheck();
             });
 
-        fromEvent($allNonMetals, 'mouseenter')
-            .pipe(
-                map(() => ({
-                    ...INIT_HIGHLIGHT_STATE,
-                    nonMetal: true,
-                    nobleGas: true,
-                })),
-                tap(results => this.highlightElement.emit(results)),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe(results => {
-                this.highlightState = results;
-                this.cd.markForCheck();
-            });
-
-        this.service.currentAtomCategory$.subscribe(v => {
+        this.service.currentAtomCategory$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
             const category = CATEGORY_MAP[v];
             if (category) {
                 this.highlightState = { ...INIT_HIGHLIGHT_STATE, [category]: true };
