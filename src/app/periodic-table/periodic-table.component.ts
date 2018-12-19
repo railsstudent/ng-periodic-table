@@ -1,18 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import {
-    ChangeDetectionStrategy,
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Atom, HighlightState } from '../shared';
+import { PeriodTableService } from './periodic-table.service';
 
 const MAX_ROW_INDEX = 7;
 const MAX_COL_INDEX = 18;
@@ -55,9 +47,6 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
     @Input()
     selectedMetal: any;
 
-    @Output()
-    currentAtomCategory: EventEmitter<string> = new EventEmitter<string>();
-
     description = DESCRIPTION;
     lantAtomGroup = LANT_ATOM_GROUP;
     actinideAtomGroup = ACT_ATOM_GROUP;
@@ -78,7 +67,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
     wikiAtomName = '';
 
-    constructor(private http: HttpClient) {
+    constructor(private service: PeriodTableService, private http: HttpClient) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
             .map((v, i) => ({
@@ -184,7 +173,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
                 this.rowHeader[ypos - 1].selected = true;
                 this.colHeader[xpos - 1].selected = true;
             }
-            this.currentAtomCategory.emit(get(this.currentAtom, 'category', null));
+            this.service.changeCurrentAtomCategory(get(this.currentAtom, 'category', ''));
         }
     }
 

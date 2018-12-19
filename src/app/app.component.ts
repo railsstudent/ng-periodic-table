@@ -18,8 +18,4 @@ export class AppComponent {
     highlightElement(highlightState: HighlightState) {
         this.highlightState = highlightState;
     }
-
-    setCurrentAtomCategory(category: string) {
-        this.category = category;
-    }
 }

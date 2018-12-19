@@ -1,15 +1,28 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
+    OnDestroy,
     Output,
-    SimpleChanges,
 } from '@angular/core';
-import { get } from 'lodash-es';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators';
+import { PeriodTableService } from '../periodic-table/periodic-table.service';
 import { HighlightState } from '../shared/';
+
+const CATEGORY_MAP = {
+    'alkali-metal': 'alkali',
+    'alkaline-earth-metal': 'alkaline',
+    lanthanide: 'lant',
+    actinide: 'actinoid',
+    'transition-metal': 'transition',
+    'post-transition-metal': 'postTransition',
+    metalloid: 'metalloid',
+    nonmetal: 'nonMetal',
+    'noble-gas': 'nobleGas',
+};
 
 const CATEGORIES = [
     'alkali',
@@ -23,111 +36,214 @@ const CATEGORIES = [
     'nobleGas',
 ];
 
+const INIT_HIGHLIGHT_STATE: HighlightState = {
+    alkali: false,
+    alkaline: false,
+    lant: false,
+    actinoid: false,
+    transition: false,
+    postTransition: false,
+    metalloid: false,
+    nonMetal: false,
+    nobleGas: false,
+};
+
+const INIT_GRAY: HighlightState = {
+    alkali: true,
+    alkaline: true,
+    lant: true,
+    actinoid: true,
+    transition: true,
+    postTransition: true,
+    metalloid: true,
+    nonMetal: true,
+    nobleGas: true,
+};
+
 @Component({
     selector: 'app-selection-bar',
     templateUrl: './selection-bar.component.html',
     styleUrls: ['./selection-bar.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectionBarComponent implements OnInit, OnChanges {
+export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     @Output()
     highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
 
-    @Input()
-    currentAtomCategory: string;
+    // @Input()
+    // currentAtomCategory: string;
 
     highlightState: HighlightState;
-    grayButtonStyle: any = null;
-    allMetals = ['alkali', 'alkaline', 'lant', 'actinoid', 'transition', 'postTransition'];
-    allNonMetals = ['nonMetal', 'nobleGas'];
+    grayButtonStyle = {
+        alkali: false,
+        alkaline: false,
+        lant: false,
+        actinoid: false,
+        transition: false,
+        postTransition: false,
+        metalloid: false,
+        nonMetal: false,
+        nobleGas: false,
+    };
+    unsubscribe$ = new Subject();
 
-    constructor() {
-        this.resetHighlight();
-        this.resetGrayButtons();
-    }
-
-    ngOnInit() {}
-
-    ngOnChanges(changes: SimpleChanges) {
-        const { currentAtomCategory = null } = changes;
-        const currentCategory = get(currentAtomCategory, 'currentValue', null);
-        this.resetHighlight();
-
-        if (currentCategory) {
-            let prop = '';
-            switch (currentCategory) {
-                case 'alkali-metal':
-                    prop = 'alkali';
-                    break;
-                case 'alkaline-earth-metal':
-                    prop = 'alkaline';
-                    break;
-                case 'lanthanide':
-                    prop = 'lant';
-                    break;
-                case 'actinide':
-                    prop = 'actinoid';
-                    break;
-                case 'transition-metal':
-                    prop = 'transition';
-                    break;
-                case 'post-transition-metal':
-                    prop = 'postTransition';
-                    break;
-                case 'metalloid':
-                    prop = 'metalloid';
-                    break;
-                case 'nonmetal':
-                    prop = 'nonMetal';
-                    break;
-                case 'noble-gas':
-                    prop = 'nobleGas';
-                    break;
-            }
-            if (prop) {
-                this.highlightState[prop] = true;
-            }
-        }
-    }
-
-    resetHighlight() {
+    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
         this.highlightState = {
-            alkali: false,
-            alkaline: false,
-            lant: false,
-            actinoid: false,
-            transition: false,
-            postTransition: false,
-            metalloid: false,
-            nonMetal: false,
-            nobleGas: false,
+            ...INIT_HIGHLIGHT_STATE,
         };
     }
 
-    resetGrayButtons() {
-        this.grayButtonStyle = CATEGORIES.reduce((acc, c) => {
-            acc[c] = false;
-            return acc;
-        }, {});
+    ngAfterViewInit() {
+        const btnMouseEnter$ = CATEGORIES.map(category => {
+            const $el = document.getElementById(category);
+            const o = fromEvent($el, 'mouseenter').pipe(
+                distinctUntilChanged(),
+                mapTo({ [category]: true }),
+                takeUntil(this.unsubscribe$)
+            );
+            return o;
+        });
+
+        const btnMouseLeave$ = CATEGORIES.map(category => {
+            const $el = document.getElementById(category);
+            const o = fromEvent($el, 'mouseleave').pipe(
+                distinctUntilChanged(),
+                mapTo({ [category]: false }),
+                takeUntil(this.unsubscribe$)
+            );
+            return o;
+        });
+        const $allMetals = document.getElementById('all-metals');
+        const $allNonMetals = document.getElementById('all-nonmetals');
+
+        // mouse hovers category
+        const categorySelection$ = merge(...btnMouseEnter$, ...btnMouseLeave$).pipe(share());
+        categorySelection$
+            .pipe(
+                map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
+                tap(highlightState => this.highlightElement.emit(highlightState)),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(highlightState => {
+                this.highlightState = highlightState;
+                this.cd.markForCheck();
+            });
+
+        // gray out unselected categories
+        categorySelection$
+            .pipe(
+                filter(current => {
+                    const key = Object.keys(current)[0];
+                    return current[key];
+                }),
+                map(current => {
+                    const key = Object.keys(current)[0];
+                    return { [key]: !current[key] };
+                }),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(currentSelection => {
+                this.grayButtonStyle = { ...INIT_GRAY, ...currentSelection };
+                this.cd.markForCheck();
+            });
+
+        // remove gray background
+        categorySelection$
+            .pipe(
+                filter(current => {
+                    const k = Object.keys(current)[0];
+                    return !current[k];
+                }),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(() => {
+                this.grayButtonStyle = {
+                    alkali: false,
+                    alkaline: false,
+                    lant: false,
+                    actinoid: false,
+                    transition: false,
+                    postTransition: false,
+                    metalloid: false,
+                    nonMetal: false,
+                    nobleGas: false,
+                };
+                this.cd.markForCheck();
+            });
+
+        fromEvent($allMetals, 'mouseenter')
+            .pipe(
+                map(() => ({
+                    ...INIT_HIGHLIGHT_STATE,
+                    alkali: true,
+                    alkaline: true,
+                    lant: true,
+                    actinoid: true,
+                    transition: true,
+                    postTransition: true,
+                })),
+                tap(results => this.highlightElement.emit(results)),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(results => {
+                this.highlightState = results;
+                this.cd.markForCheck();
+            });
+
+        fromEvent($allMetals, 'mouseleave')
+            .pipe(
+                map(() => INIT_HIGHLIGHT_STATE),
+                tap(results => this.highlightElement.emit(results)),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(results => {
+                this.highlightState = results;
+                this.cd.markForCheck();
+            });
+
+        fromEvent($allNonMetals, 'mouseenter')
+            .pipe(
+                map(() => ({
+                    ...INIT_HIGHLIGHT_STATE,
+                    nonMetal: true,
+                    nobleGas: true,
+                })),
+                tap(results => this.highlightElement.emit(results)),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(results => {
+                this.highlightState = results;
+                this.cd.markForCheck();
+            });
+
+        fromEvent($allNonMetals, 'mouseleave')
+            .pipe(
+                map(() => INIT_HIGHLIGHT_STATE),
+                tap(results => this.highlightElement.emit(results)),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(results => {
+                this.highlightState = results;
+                this.cd.markForCheck();
+            });
+
+        this.service.currentAtomCategory$.subscribe(v => {
+            const category = CATEGORY_MAP[v];
+            if (category) {
+                this.highlightState = { ...INIT_HIGHLIGHT_STATE, [category]: true };
+                this.cd.markForCheck();
+            }
+        });
     }
 
     numHighlightState() {
         return Object.keys(this.highlightState).filter(k => this.highlightState[k] === true).length;
     }
 
-    changeHighlightState(keys: string[], value: boolean) {
-        this.resetHighlight();
-        keys.forEach(key => (this.highlightState[key] = value));
-
-        this.highlightElement.emit(this.highlightState);
-
-        if (this.numHighlightState() === 1) {
-            this.grayButtonStyle = CATEGORIES.reduce((acc, c) => {
-                acc[c] = this.highlightState[c] !== true;
-                return acc;
-            }, {});
-        } else {
-            this.resetGrayButtons();
+    ngOnDestroy() {
+        if (this.unsubscribe$) {
+            this.unsubscribe$.next();
+            this.unsubscribe$.complete();
         }
     }
 }

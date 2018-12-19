@@ -1,12 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="container">
-    <app-selection-bar
-        (highlightElement)="highlightElement($event)"
-        [currentAtomCategory]="category"
-    ></app-selection-bar>
-    <app-periodic-table
-        [selectedMetal]="highlightState"
-        (currentAtomCategory)="setCurrentAtomCategory($event)"
-    ></app-periodic-table>
+    <app-selection-bar (highlightElement)="highlightElement($event)"></app-selection-bar>
+    <app-periodic-table [selectedMetal]="highlightState"></app-periodic-table>
     <app-footer [version]="'0.0.2'"></app-footer>
 </div>
