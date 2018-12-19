@@ -8,7 +8,7 @@ import {
     Output,
 } from '@angular/core';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators';
 import { PeriodTableService } from '../periodic-table/periodic-table.service';
 import { HighlightState } from '../shared/';
 
@@ -94,7 +94,6 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         const btnMouseEnter$ = CATEGORIES.map(category => {
             const $el = document.getElementById(category);
             const o = fromEvent($el, 'mouseenter').pipe(
-                distinctUntilChanged(),
                 mapTo({ [category]: true }),
                 takeUntil(this.unsubscribe$)
             );
@@ -104,7 +103,6 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         const btnMouseLeave$ = CATEGORIES.map(category => {
             const $el = document.getElementById(category);
             const o = fromEvent($el, 'mouseleave').pipe(
-                distinctUntilChanged(),
                 mapTo({ [category]: false }),
                 takeUntil(this.unsubscribe$)
             );
