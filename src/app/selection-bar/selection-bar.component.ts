@@ -70,9 +70,6 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     @Output()
     highlightElement: EventEmitter<HighlightState> = new EventEmitter<HighlightState>();
 
-    // @Input()
-    // currentAtomCategory: string;
-
     highlightState: HighlightState;
     grayButtonStyle = {
         alkali: false,
@@ -190,7 +187,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                 this.cd.markForCheck();
             });
 
-        fromEvent($allMetals, 'mouseleave')
+        merge(fromEvent($allMetals, 'mouseleave'), fromEvent($allNonMetals, 'mouseleave'))
             .pipe(
                 map(() => INIT_HIGHLIGHT_STATE),
                 tap(results => this.highlightElement.emit(results)),
@@ -208,17 +205,6 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                     nonMetal: true,
                     nobleGas: true,
                 })),
-                tap(results => this.highlightElement.emit(results)),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe(results => {
-                this.highlightState = results;
-                this.cd.markForCheck();
-            });
-
-        fromEvent($allNonMetals, 'mouseleave')
-            .pipe(
-                map(() => INIT_HIGHLIGHT_STATE),
                 tap(results => this.highlightElement.emit(results)),
                 takeUntil(this.unsubscribe$)
             )
