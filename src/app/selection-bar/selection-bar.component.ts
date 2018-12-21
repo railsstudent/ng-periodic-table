@@ -48,13 +48,24 @@ const INIT_HIGHLIGHT_STATE: HighlightState = {
 })
 export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     highlightState: HighlightState;
-    grayButtonStyle = { ...this.getGrayColor(false) };
+    grayButtonStyle = {
+        alkali: false,
+        alkaline: false,
+        lant: false,
+        actinoid: false,
+        transition: false,
+        postTransition: false,
+        metalloid: false,
+        nonMetal: false,
+        nobleGas: false,
+    };
     unsubscribe$ = new Subject();
 
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
         this.highlightState = {
             ...INIT_HIGHLIGHT_STATE,
         };
+        console.log(this.grayButtonStyle);
     }
 
     getGrayColor(isGray: boolean) {
@@ -144,9 +155,20 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             )
             .subscribe(currentSelection => {
                 const numKeys = Object.keys(currentSelection).length;
-                this.grayButtonStyle = { ...this.getGrayColor(false) };
+                this.grayButtonStyle = {
+                    alkali: false,
+                    alkaline: false,
+                    lant: false,
+                    actinoid: false,
+                    transition: false,
+                    postTransition: false,
+                    metalloid: false,
+                    nonMetal: false,
+                    nobleGas: false,
+                };
                 if (numKeys === 1) {
-                    this.grayButtonStyle = { ...this.getGrayColor(true), ...currentSelection };
+                    const key = Object.keys(currentSelection)[0];
+                    this.grayButtonStyle[key] = currentSelection[key];
                 }
                 this.cd.markForCheck();
             });
@@ -161,7 +183,17 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe(() => {
-                this.grayButtonStyle = { ...this.getGrayColor(false) };
+                this.grayButtonStyle = {
+                    alkali: false,
+                    alkaline: false,
+                    lant: false,
+                    actinoid: false,
+                    transition: false,
+                    postTransition: false,
+                    metalloid: false,
+                    nonMetal: false,
+                    nobleGas: false,
+                };
                 this.cd.markForCheck();
             });
 

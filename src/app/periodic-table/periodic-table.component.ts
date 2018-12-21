@@ -126,7 +126,6 @@ export class PeriodicTableComponent implements OnInit {
         );
 
         this.service.selectedMetal$.subscribe(selectedMetal => {
-            console.log(selectedMetal);
             this.metalClass = selectedMetal;
             this.cd.markForCheck();
         });
