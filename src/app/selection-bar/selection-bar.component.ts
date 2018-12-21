@@ -65,14 +65,6 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         this.highlightState = {
             ...INIT_HIGHLIGHT_STATE,
         };
-        console.log(this.grayButtonStyle);
-    }
-
-    getGrayColor(isGray: boolean) {
-        return CATEGORIES.reduce((acc, key) => {
-            acc[key] = isGray;
-            return acc;
-        }, {});
     }
 
     ngAfterViewInit() {
