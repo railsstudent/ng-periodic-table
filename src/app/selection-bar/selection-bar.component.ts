@@ -1,12 +1,4 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    OnDestroy,
-    Output,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators';
 import { PeriodTableService } from '../periodic-table/periodic-table.service';
@@ -55,9 +47,6 @@ const INIT_HIGHLIGHT_STATE: HighlightState = {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectionBarComponent implements OnDestroy, AfterViewInit {
-    @Output()
-    highlightElement = new EventEmitter<HighlightState>();
-
     highlightState: HighlightState;
     grayButtonStyle = { ...this.getGrayColor(false) };
     unsubscribe$ = new Subject();
@@ -130,7 +119,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         categorySelection$
             .pipe(
                 map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
-                tap(highlightState => this.highlightElement.emit(highlightState)),
+                tap(highlightState => this.service.setHighlightState(highlightState)),
                 takeUntil(this.unsubscribe$)
             )
             .subscribe(highlightState => {

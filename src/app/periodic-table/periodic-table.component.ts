@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith, takeUntil, tap } from 'rxjs/operators';
@@ -43,10 +43,7 @@ interface HeaderInfo {
     styleUrls: ['./periodic-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PeriodicTableComponent implements OnInit, OnChanges {
-    @Input()
-    selectedMetal: any;
-
+export class PeriodicTableComponent implements OnInit {
     description = DESCRIPTION;
     lantAtomGroup = LANT_ATOM_GROUP;
     actinideAtomGroup = ACT_ATOM_GROUP;
@@ -67,7 +64,7 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
 
     wikiAtomName = '';
 
-    constructor(private service: PeriodTableService, private http: HttpClient) {
+    constructor(private service: PeriodTableService, private http: HttpClient, private cd: ChangeDetectorRef) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
             .map((v, i) => ({
@@ -127,11 +124,12 @@ export class PeriodicTableComponent implements OnInit, OnChanges {
             tap(atoms => (this.atoms = atoms)),
             takeUntil(this.unsubscribe$)
         );
-    }
 
-    ngOnChanges(changes: SimpleChanges) {
-        const { selectedMetal = null } = changes;
-        this.metalClass = get(selectedMetal, 'currentValue', null);
+        this.service.selectedMetal$.subscribe(selectedMetal => {
+            console.log(selectedMetal);
+            this.metalClass = selectedMetal;
+            this.cd.markForCheck();
+        });
     }
 
     updateRowHeaderSelected(rowNum: number, inside: boolean) {
