@@ -48,18 +48,6 @@ const INIT_HIGHLIGHT_STATE: HighlightState = {
     nobleGas: false,
 };
 
-const INIT_GRAY: HighlightState = {
-    alkali: true,
-    alkaline: true,
-    lant: true,
-    actinoid: true,
-    transition: true,
-    postTransition: true,
-    metalloid: true,
-    nonMetal: true,
-    nobleGas: true,
-};
-
 @Component({
     selector: 'app-selection-bar',
     templateUrl: './selection-bar.component.html',
@@ -71,23 +59,20 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     highlightElement = new EventEmitter<HighlightState>();
 
     highlightState: HighlightState;
-    grayButtonStyle = {
-        alkali: false,
-        alkaline: false,
-        lant: false,
-        actinoid: false,
-        transition: false,
-        postTransition: false,
-        metalloid: false,
-        nonMetal: false,
-        nobleGas: false,
-    };
+    grayButtonStyle = { ...this.getGrayColor(false) };
     unsubscribe$ = new Subject();
 
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
         this.highlightState = {
             ...INIT_HIGHLIGHT_STATE,
         };
+    }
+
+    getGrayColor(isGray: boolean) {
+        return CATEGORIES.reduce((acc, key) => {
+            acc[key] = isGray;
+            return acc;
+        }, {});
     }
 
     ngAfterViewInit() {
@@ -108,63 +93,9 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             );
             return o;
         });
+
         const $allMetals = document.getElementById('all-metals');
         const $allNonMetals = document.getElementById('all-nonmetals');
-
-        // mouse hovers category
-        const categorySelection$ = merge(...btnMouseEnter$, ...btnMouseLeave$).pipe(share());
-        categorySelection$
-            .pipe(
-                map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
-                tap(highlightState => this.highlightElement.emit(highlightState)),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe(highlightState => {
-                this.highlightState = highlightState;
-                this.cd.markForCheck();
-            });
-
-        // gray out unselected categories
-        categorySelection$
-            .pipe(
-                filter(current => {
-                    const key = Object.keys(current)[0];
-                    return current[key];
-                }),
-                map(current => {
-                    const key = Object.keys(current)[0];
-                    return { [key]: !current[key] };
-                }),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe(currentSelection => {
-                this.grayButtonStyle = { ...INIT_GRAY, ...currentSelection };
-                this.cd.markForCheck();
-            });
-
-        // remove gray background
-        categorySelection$
-            .pipe(
-                filter(current => {
-                    const k = Object.keys(current)[0];
-                    return !current[k];
-                }),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe(() => {
-                this.grayButtonStyle = {
-                    alkali: false,
-                    alkaline: false,
-                    lant: false,
-                    actinoid: false,
-                    transition: false,
-                    postTransition: false,
-                    metalloid: false,
-                    nonMetal: false,
-                    nobleGas: false,
-                };
-                this.cd.markForCheck();
-            });
 
         const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(
             mapTo({
@@ -184,28 +115,64 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             })
         );
 
-        merge(allMetalsEnter$, allNonMetalsEnter$)
+        const metalsLeave$ = fromEvent($allMetals, 'mouseleave').pipe(mapTo({}));
+        const allMetalsLeave$ = fromEvent($allNonMetals, 'mouseleave').pipe(mapTo({}));
+
+        // mouse hovers category
+        const categorySelection$ = merge(
+            ...btnMouseEnter$,
+            ...btnMouseLeave$,
+            allMetalsEnter$,
+            allNonMetalsEnter$,
+            metalsLeave$,
+            allMetalsLeave$
+        ).pipe(share());
+        categorySelection$
             .pipe(
-                map(results => ({
-                    ...INIT_HIGHLIGHT_STATE,
-                    ...results,
-                })),
-                tap(results => this.highlightElement.emit(results)),
+                map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
+                tap(highlightState => this.highlightElement.emit(highlightState)),
                 takeUntil(this.unsubscribe$)
             )
-            .subscribe(results => {
-                this.highlightState = results;
+            .subscribe(highlightState => {
+                this.highlightState = highlightState;
                 this.cd.markForCheck();
             });
 
-        merge(fromEvent($allMetals, 'mouseleave'), fromEvent($allNonMetals, 'mouseleave'))
+        // gray out unselected categories
+        categorySelection$
             .pipe(
-                map(() => INIT_HIGHLIGHT_STATE),
-                tap(results => this.highlightElement.emit(results)),
+                filter(current => {
+                    const key = Object.keys(current)[0];
+                    return current[key];
+                }),
+                map(current => {
+                    return Object.keys(current).reduce((acc, key) => {
+                        acc[key] = !current[key];
+                        return acc;
+                    }, {});
+                }),
                 takeUntil(this.unsubscribe$)
             )
-            .subscribe(results => {
-                this.highlightState = results;
+            .subscribe(currentSelection => {
+                const numKeys = Object.keys(currentSelection).length;
+                this.grayButtonStyle = { ...this.getGrayColor(false) };
+                if (numKeys === 1) {
+                    this.grayButtonStyle = { ...this.getGrayColor(true), ...currentSelection };
+                }
+                this.cd.markForCheck();
+            });
+
+        // remove gray background
+        categorySelection$
+            .pipe(
+                filter(current => {
+                    const k = Object.keys(current)[0];
+                    return !current[k];
+                }),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe(() => {
+                this.grayButtonStyle = { ...this.getGrayColor(false) };
                 this.cd.markForCheck();
             });
 
