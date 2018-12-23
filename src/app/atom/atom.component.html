@@ -7,10 +7,10 @@
     <p class="atomic">{{ data.number }}</p>
     <p
         class="symbol"
-        [class.solid]="data.phase === 'solid' && !backgroundStyles['solid-selected']"
-        [class.liquid]="data.phase === 'liquid' && !backgroundStyles['liquid-selected']"
-        [class.gas]="data.phase === 'gas' && !backgroundStyles['gas-selected']"
-        [class.unknown]="data.phase === 'unknown' && !backgroundStyles['unknown-selected']"
+        [class.solid]="data.phase === 'solid' && selectedPhase === 'solid'"
+        [class.liquid]="data.phase === 'liquid' && selectedPhase === 'liquid'"
+        [class.gas]="data.phase === 'gas' && selectedPhase === 'gas'"
+        [class.unknown]="data.phase === 'unknown' && selectedPhase === 'unknown'"
         *ngIf="data.symbol; else blankSymbol"
     >
         {{ data.symbol }}

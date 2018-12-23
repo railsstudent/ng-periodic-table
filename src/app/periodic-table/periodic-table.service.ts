@@ -12,11 +12,18 @@ export class PeriodTableService {
     private selectedMetalSub$ = new Subject<HighlightState>();
     selectedMetal$ = this.selectedMetalSub$.asObservable();
 
+    private selectedPhaseSub$ = new Subject<string>();
+    selectedPhase$ = this.selectedPhaseSub$.asObservable();
+
     changeCurrentAtomCategory(atomCategory: string) {
         this.currentAtomCategorySub$.next(atomCategory);
     }
 
     setHighlightState(highlightState: HighlightState) {
         this.selectedMetalSub$.next(highlightState);
+    }
+
+    setSelectedPhase(phase: string) {
+        this.selectedPhaseSub$.next(phase);
     }
 }

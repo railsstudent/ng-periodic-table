@@ -1,16 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { mapTo, takeUntil } from 'rxjs/operators';
+import { PeriodTableService } from '../periodic-table/periodic-table.service';
 
 @Component({
     selector: 'app-phase',
     template: `
-        <div
-            class="{{ type }}"
-            (mouseenter)="enter.emit(type)"
-            (mouseleave)="enter.emit('')"
-            [class.selected]="selected"
-        >
-            {{ symbol }}
-        </div>
+        <div class="{{ type }}" [class.selected]="selected">{{ symbol }}</div>
     `,
     styles: [
         `
@@ -80,20 +76,48 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppPhaseComponent implements OnInit {
-    @Output()
-    enter = new EventEmitter<string>();
-
-    @Input()
-    selected: boolean;
-
+export class AppPhaseComponent implements AfterViewInit, OnDestroy {
     @Input()
     symbol: string;
 
     @Input()
     type: string;
 
-    constructor() {}
+    unsubscribe$ = new Subject<void>();
+    selected = false;
 
-    ngOnInit() {}
+    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
+
+    ngAfterViewInit() {
+        const $el = document.getElementsByClassName(this.type)[0];
+
+        const enter$ = fromEvent($el, 'mouseenter').pipe(
+            mapTo({
+                selected: true,
+                type: this.type,
+            })
+        );
+
+        const leave$ = fromEvent($el, 'mouseleave').pipe(
+            mapTo({
+                selected: false,
+                type: '',
+            })
+        );
+
+        merge(enter$, leave$)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(({ selected, type }) => {
+                this.selected = selected;
+                this.service.setSelectedPhase(type);
+                this.cd.markForCheck();
+            });
+    }
+
+    ngOnDestroy() {
+        if (this.unsubscribe$) {
+            this.unsubscribe$.next();
+            this.unsubscribe$.complete();
+        }
+    }
 }

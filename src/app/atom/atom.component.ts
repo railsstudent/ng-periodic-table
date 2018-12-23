@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -12,7 +13,8 @@ import {
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { HighlightState } from '../shared';
+import { PeriodTableService } from '../periodic-table/periodic-table.service';
+import { Atom, HighlightState } from '../shared';
 
 // in milliseconds
 const STAY_AT_LEAST = 250;
@@ -25,24 +27,22 @@ const STAY_AT_LEAST = 250;
 })
 export class AtomComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
-    data: any;
+    data: Atom;
 
     @Input()
     metalSelected: HighlightState;
 
-    @Input()
-    selectedPhase: string;
-
     @Output()
-    hoverAtom: EventEmitter<number> = new EventEmitter<number>();
+    hoverAtom: EventEmitter<Atom> = new EventEmitter<Atom>();
 
     backgroundStyles: any = {};
+    selectedPhase: string;
 
-    mouseEnterSubject = new Subject<number>();
-    mouseLeaveSubject = new Subject<number>();
+    mouseEnterSubject = new Subject<Atom>();
+    mouseLeaveSubject = new Subject<void>();
     private unsubscribe$ = new Subject<void>();
 
-    constructor() {
+    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
         this.backgroundStyles = {
             blurry: false,
             'solid-selected': false,
@@ -59,7 +59,7 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
                 debounceTime(STAY_AT_LEAST),
                 takeUntil(this.unsubscribe$)
             )
-            .subscribe((value: number) => this.hoverAtom.emit(value), err => console.error(err));
+            .subscribe((atom: Atom) => this.hoverAtom.emit(atom), err => console.error(err));
 
         this.mouseLeaveSubject
             .pipe(
@@ -67,10 +67,15 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe(() => this.hoverAtom.emit(null), err => console.error(err));
+
+        this.service.selectedPhase$.subscribe(selectedPhase => {
+            this.selectedPhase = selectedPhase;
+            this.cd.markForCheck();
+        });
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        const { data = null, metalSelected = null, selectedPhase = null } = changes;
+        const { data = null, metalSelected = null } = changes;
 
         const blurry = get(data, 'currentValue.blurry', false);
         const alkali = get(metalSelected, 'currentValue.alkali', false);
@@ -82,16 +87,11 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
         const metalloid = get(metalSelected, 'currentValue.metalloid', false);
         const nonMetal = get(metalSelected, 'currentValue.nonMetal', false);
         const nobleGas = get(metalSelected, 'currentValue.nobleGas', false);
-        const currentPhase = get(selectedPhase, 'currentValue', '');
         const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition;
         const allNonMetals = nonMetal && nobleGas;
 
         this.backgroundStyles = {
             blurry,
-            'solid-selected': currentPhase === 'solid' && this.data.phase === 'solid',
-            'liquid-selected': currentPhase === 'liquid' && this.data.phase === 'liquid',
-            'gas-selected': currentPhase === 'gas' && this.data.phase === 'gas',
-            'unknown-selected': currentPhase === 'unknown' && this.data.phase === 'unknown',
             grayout:
                 (!allMetals && alkali && this.data.category !== 'alkali-metal') ||
                 (!allMetals && alkaline && this.data.category !== 'alkaline-earth-metal') ||
@@ -127,10 +127,10 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     debounceMouseEnter() {
-        this.mouseEnterSubject.next(this.data.number);
+        this.mouseEnterSubject.next(this.data);
     }
 
     debounceMouseLeave() {
-        this.mouseLeaveSubject.next(this.data.number);
+        this.mouseLeaveSubject.next();
     }
 }

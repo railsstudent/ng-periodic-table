@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { debounceTime, map, startWith, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, map, shareReplay, startWith, takeUntil } from 'rxjs/operators';
 import { Atom, HighlightState } from '../shared';
 import { PeriodTableService } from './periodic-table.service';
 
@@ -55,12 +55,10 @@ export class PeriodicTableComponent implements OnInit {
     headerMove$: Observable<HeaderInfo>;
     atoms$: Observable<Atom[]>;
 
-    atoms: Atom[];
     metalClass: HighlightState;
     currentAtom: Atom;
     currentRowHeader: number;
     currentColHeader: number;
-    selectedPhase: string;
 
     wikiAtomName = '';
 
@@ -86,8 +84,6 @@ export class PeriodicTableComponent implements OnInit {
         this.currentAtom = null;
         this.currentRowHeader = null;
         this.currentColHeader = null;
-        this.atoms = null;
-        this.selectedPhase = '';
     }
 
     ngOnInit() {
@@ -100,11 +96,10 @@ export class PeriodicTableComponent implements OnInit {
             debounceTime(STAY_AT_LEAST)
         );
 
-        this.atoms$ = combineLatest(
-            this.http.get<Atom[]>('./assets/periodic-table.json').pipe(startWith([] as Atom[])),
-            this.headerMove$
-        ).pipe(
-            map(([atoms, headerMove]) => {
+        const cachedAtoms$ = this.http.get<Atom[]>('./assets/periodic-table.json').pipe(shareReplay(1));
+
+        this.atoms$ = combineLatest(this.headerMove$, cachedAtoms$).pipe(
+            map(([headerMove, atoms]) => {
                 const { rowNum, colNum, inside } = headerMove;
                 if (rowNum >= 1) {
                     return atoms.map(atom =>
@@ -121,7 +116,6 @@ export class PeriodicTableComponent implements OnInit {
                 }
                 return atoms;
             }),
-            tap(atoms => (this.atoms = atoms)),
             takeUntil(this.unsubscribe$)
         );
 
@@ -150,7 +144,7 @@ export class PeriodicTableComponent implements OnInit {
         this.colHeader.forEach(c => (c.selected = false));
     }
 
-    showAtomDetails(atomNumber: number) {
+    showAtomDetails(atom: Atom) {
         this.rowHeader.forEach((r, index) => {
             if (r && r.selected && (!this.currentRowHeader || index !== this.currentRowHeader - 1)) {
                 r.selected = false;
@@ -161,8 +155,8 @@ export class PeriodicTableComponent implements OnInit {
                 c.selected = false;
             }
         });
-        if (atomNumber) {
-            this.currentAtom = this.atoms.find(a => a.number === atomNumber);
+        if (atom) {
+            this.currentAtom = atom;
             const { xpos, ypos } = this.currentAtom;
             if (ypos > MAX_ROW_INDEX) {
                 this.rowHeader[ypos - 2 - 1].selected = true;
@@ -172,10 +166,6 @@ export class PeriodicTableComponent implements OnInit {
             }
             this.service.changeCurrentAtomCategory(get(this.currentAtom, 'category', ''));
         }
-    }
-
-    enterPhase(type: string) {
-        this.selectedPhase = type;
     }
 
     open(atomName) {
