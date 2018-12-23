@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { get } from 'lodash-es';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-atom-details',
@@ -7,23 +6,7 @@ import { get } from 'lodash-es';
     styleUrls: ['./atom-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtomDetailsComponent implements OnInit, OnChanges {
+export class AtomDetailsComponent {
     @Input()
     data = null;
-
-    phaseClass = {};
-
-    constructor() {}
-
-    ngOnInit() {}
-
-    ngOnChanges(changes: SimpleChanges) {
-        const { data = null } = changes;
-        this.phaseClass = {
-            gas: get(data, 'currentValue.phase', '') === 'gas',
-            solid: get(data, 'currentValue.phase', '') === 'solid',
-            unknown: get(data, 'currentValue.phase', '') === 'unknown',
-            liquid: get(data, 'currentValue.phase', '') === 'liquid',
-        };
-    }
 }
