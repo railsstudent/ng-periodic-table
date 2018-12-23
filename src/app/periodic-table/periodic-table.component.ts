@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, startWith, takeUntil } from 'rxjs/operators';
-import { Atom, HighlightState } from '../shared';
+import { Atom } from '../shared';
 import { PeriodTableService } from './periodic-table.service';
 
 const MAX_ROW_INDEX = 7;
@@ -55,14 +55,13 @@ export class PeriodicTableComponent implements OnInit {
     headerMove$: Observable<HeaderInfo>;
     atoms$: Observable<Atom[]>;
 
-    metalClass: HighlightState;
     currentAtom: Atom;
     currentRowHeader: number;
     currentColHeader: number;
 
     wikiAtomName = '';
 
-    constructor(private service: PeriodTableService, private http: HttpClient, private cd: ChangeDetectorRef) {
+    constructor(private service: PeriodTableService, private http: HttpClient) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
             .map((v, i) => ({
@@ -118,11 +117,6 @@ export class PeriodicTableComponent implements OnInit {
             }),
             takeUntil(this.unsubscribe$)
         );
-
-        this.service.selectedMetal$.subscribe(selectedMetal => {
-            this.metalClass = selectedMetal;
-            this.cd.markForCheck();
-        });
     }
 
     updateRowHeaderSelected(rowNum: number, inside: boolean) {

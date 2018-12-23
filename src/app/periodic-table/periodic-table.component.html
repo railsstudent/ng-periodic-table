@@ -49,7 +49,6 @@
                 *ngFor="let atom of atoms"
                 class="periodic-atom-{{ atom.number }}"
                 [data]="atom"
-                [metalSelected]="metalClass"
                 (hoverAtom)="showAtomDetails($event)"
                 (click)="open(atom.name)"
             ></app-atom>

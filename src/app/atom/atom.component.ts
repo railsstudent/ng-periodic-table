@@ -4,17 +4,15 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
 } from '@angular/core';
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { PeriodTableService } from '../periodic-table/periodic-table.service';
-import { Atom, HighlightState } from '../shared';
+import { Atom } from '../shared';
 
 // in milliseconds
 const STAY_AT_LEAST = 250;
@@ -25,12 +23,9 @@ const STAY_AT_LEAST = 250;
     styleUrls: ['./atom.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtomComponent implements OnInit, OnChanges, OnDestroy {
+export class AtomComponent implements OnInit, OnDestroy {
     @Input()
     data: Atom;
-
-    @Input()
-    metalSelected: HighlightState;
 
     @Output()
     hoverAtom: EventEmitter<Atom> = new EventEmitter<Atom>();
@@ -70,29 +65,28 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
 
         this.service.selectedPhase$.subscribe(selectedPhase => {
             this.selectedPhase = selectedPhase;
+
+            this.backgroundStyles['solid-selected'] = selectedPhase === 'solid' && this.data.phase === 'solid';
+            this.backgroundStyles['liquid-selected'] = selectedPhase === 'liquid' && this.data.phase === 'liquid';
+            this.backgroundStyles['gas-selected'] = selectedPhase === 'gas' && this.data.phase === 'gas';
+            this.backgroundStyles['unknown-selected'] = selectedPhase === 'unknown' && this.data.phase === 'unknown';
             this.cd.markForCheck();
         });
-    }
 
-    ngOnChanges(changes: SimpleChanges) {
-        const { data = null, metalSelected = null } = changes;
+        this.service.selectedMetal$.subscribe(metalSelected => {
+            const alkali = get(metalSelected, 'alkali', false);
+            const alkaline = get(metalSelected, 'alkaline', false);
+            const lant = get(metalSelected, 'lant', false);
+            const actinoid = get(metalSelected, 'actinoid', false);
+            const transition = get(metalSelected, 'transition', false);
+            const postTransition = get(metalSelected, 'postTransition', false);
+            const metalloid = get(metalSelected, 'metalloid', false);
+            const nonMetal = get(metalSelected, 'nonMetal', false);
+            const nobleGas = get(metalSelected, 'nobleGas', false);
+            const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition;
+            const allNonMetals = nonMetal && nobleGas;
 
-        const blurry = get(data, 'currentValue.blurry', false);
-        const alkali = get(metalSelected, 'currentValue.alkali', false);
-        const alkaline = get(metalSelected, 'currentValue.alkaline', false);
-        const lant = get(metalSelected, 'currentValue.lant', false);
-        const actinoid = get(metalSelected, 'currentValue.actinoid', false);
-        const transition = get(metalSelected, 'currentValue.transition', false);
-        const postTransition = get(metalSelected, 'currentValue.postTransition', false);
-        const metalloid = get(metalSelected, 'currentValue.metalloid', false);
-        const nonMetal = get(metalSelected, 'currentValue.nonMetal', false);
-        const nobleGas = get(metalSelected, 'currentValue.nobleGas', false);
-        const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition;
-        const allNonMetals = nonMetal && nobleGas;
-
-        this.backgroundStyles = {
-            blurry,
-            grayout:
+            (this.backgroundStyles['grayout'] =
                 (!allMetals && alkali && this.data.category !== 'alkali-metal') ||
                 (!allMetals && alkaline && this.data.category !== 'alkaline-earth-metal') ||
                 (!allMetals && lant && this.data.category !== 'lanthanide') ||
@@ -115,8 +109,9 @@ export class AtomComponent implements OnInit, OnChanges, OnDestroy {
                             'metalloid',
                         ],
                         this.data.category
-                    )),
-        };
+                    ))),
+                this.cd.markForCheck();
+        });
     }
 
     ngOnDestroy() {
