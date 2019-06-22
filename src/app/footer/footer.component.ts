@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     selector: 'app-footer',
     template: `
         <div>
-            <p>Made by Connie Leung @2017. Powered by Angular 7</p>
+            <p>Made by Connie Leung @{{ currentYear }}. Powered by Angular 7</p>
             <p>Version: {{ version }}</p>
         </div>
     `,
@@ -35,4 +35,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class FooterComponent {
     @Input()
     version: string;
+
+    @Input()
+    currentYear: number;
 }
