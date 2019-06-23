@@ -25,6 +25,16 @@ script:
     - echo "*** Deploy ng-periodic-table to github pages ****"
     - ngh --repo="$GITHUB_ORG/$GITHUB_NAME/$REPO_NAME.git" --name="$GITHUB_NAME" --email="$GITHUB_EMAIL" --no-silent
 
+after_success:
+    - ngh --repo="$GITHUB_ORG/$GITHUB_NAME/$REPO_NAME.git" --name="$GITHUB_NAME" --email="$GITHUB_EMAIL" --no-silent
+
 branches:
     only:
         - master
+
+notifications:
+    email:
+        recipients:
+            - $GITHUB_EMAIL
+        on_success: never # default: change
+        on_failure: always # default: always
