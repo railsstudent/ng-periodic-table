@@ -19,6 +19,8 @@ before_script:
     - yarn install
 
 script:
+    - echo "*** audit ***"
+    - yarn audit
     - echo "*** lint ***"
     - yarn lint
     - echo "*** Build production build ***"
