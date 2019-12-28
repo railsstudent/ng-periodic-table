@@ -93,16 +93,16 @@ export class AppWikiComponent implements OnInit, AfterViewInit {
     @Output()
     closeModal = new EventEmitter<void>();
 
-    @ViewChild('iframe')
+    @ViewChild('iframe', { static: true })
     iframe: ElementRef<HTMLIFrameElement>;
 
-    @ViewChild('closeModalDiv')
+    @ViewChild('closeModalDiv', { static: true })
     closeModalDiv: ElementRef<HTMLDivElement>;
 
-    @ViewChild('loader')
+    @ViewChild('loader', { static: true })
     loader: ElementRef<HTMLDivElement>;
 
-    @ViewChild('modalContent')
+    @ViewChild('modalContent', { static: true })
     modalContent: ElementRef<any>;
 
     url: SafeUrl;

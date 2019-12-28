@@ -97,7 +97,7 @@ export class PeriodicTableComponent implements OnInit {
 
         const cachedAtoms$ = this.http.get<Atom[]>('./assets/periodic-table.json').pipe(shareReplay(1));
 
-        this.atoms$ = combineLatest(this.headerMove$, cachedAtoms$).pipe(
+        this.atoms$ = combineLatest([this.headerMove$, cachedAtoms$]).pipe(
             map(([headerMove, atoms]) => {
                 const { rowNum, colNum, inside } = headerMove;
                 if (rowNum >= 1) {
