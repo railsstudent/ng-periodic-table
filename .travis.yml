@@ -25,7 +25,7 @@ script:
     - echo "*** lint ***"
     - yarn lint
     - echo "*** Build production build ***"
-    - ng build --prod --base-href "$BASE_HREF/$REPO_NAME/"
+    - ng build --prod --base-href "https://railsstudent.github.io/ng-periodic-table/"
 
 after_success:
     - echo "*** Deploy ng-periodic-table to github pages ****"
