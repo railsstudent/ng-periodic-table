@@ -19,6 +19,7 @@ import { environment } from './../../environments/environment';
                 <fa-icon
                     [icon]="['fab', 'angular']"
                     size="2x"
+                    class="icon-angular"
                     (click)="openExternalLocation(angularUrl)"
                     [attr.aria-label]="'angular.io'"
                 ></fa-icon>
@@ -63,6 +64,10 @@ import { environment } from './../../environments/environment';
 
             fa-icon:not(:last-of-type) {
                 margin-right: 1em;
+            }
+
+            .icon-angular {
+                color: red;
             }
         `,
     ],
