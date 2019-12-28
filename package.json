@@ -8,8 +8,7 @@
         "build": "ng build --prod",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e",
-        "deploy": "ng build --prod --base-href \"https://railsstudent.github.io/ng-periodic-table/\" && ngh --no-silent"
+        "e2e": "ng e2e"
     },
     "private": true,
     "dependencies": {
@@ -41,7 +40,7 @@
         "@types/jasminewd2": "~2.0.2",
         "@types/lodash-es": "^4.17.3",
         "@types/node": "^6.0.106",
-        "angular-cli-ghpages": "0.5.3",
+        "angular-cli-ghpages": "0.6.1",
         "codelyzer": "^4.0.1",
         "husky": "^1.3.1",
         "jasmine-core": "~2.8.0",
