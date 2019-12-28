@@ -6,4 +6,5 @@
 export const environment = {
     production: false,
     githubUrl: 'https://github.com/railsstudent/ng-periodic-table',
+    angularUrl: 'https://angular.io/',
 };

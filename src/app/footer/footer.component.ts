@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-// import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-// import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { environment } from './../../environments/environment';
 
 @Component({
@@ -8,11 +6,22 @@ import { environment } from './../../environments/environment';
     template: `
         <div class="container">
             <div class="description">
-                <p>Made by Connie Leung @{{ currentYear }}. Powered by Angular 8</p>
+                <p>Made by Connie Leung @{{ currentYear }}. Powered by Angular {{ frameworkVersion }}</p>
                 <p>Version: {{ version }}</p>
             </div>
             <div class="source-code">
-                <fa-icon [icon]="['fab', 'github']" size="2x" (click)="openSourceCodeTab()"></fa-icon>
+                <fa-icon
+                    [icon]="['fab', 'github']"
+                    size="2x"
+                    (click)="openExternalLocation(githubUrl)"
+                    [attr.aria-label]="'github source code'"
+                ></fa-icon>
+                <fa-icon
+                    [icon]="['fab', 'angular']"
+                    size="2x"
+                    (click)="openExternalLocation(angularUrl)"
+                    [attr.aria-label]="'angular.io'"
+                ></fa-icon>
             </div>
         </div>
     `,
@@ -24,7 +33,7 @@ import { environment } from './../../environments/environment';
             }
 
             div.container {
-                padding: 1rem;
+                padding: 1em;
                 background: #4c4c4c;
                 color: #fff;
 
@@ -51,6 +60,10 @@ import { environment } from './../../environments/environment';
                 font-size: 1em;
                 line-height: 120%;
             }
+
+            fa-icon:not(:last-of-type) {
+                margin-right: 1em;
+            }
         `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,15 +75,15 @@ export class FooterComponent {
     @Input()
     currentYear: number;
 
-    url = environment.githubUrl;
+    @Input()
+    frameworkVersion: string;
 
-    // constructor(private library: FaIconLibrary) {
-    //   this.library.addIcons(faGithub);
-    // }
+    githubUrl = environment.githubUrl;
+    angularUrl = environment.angularUrl;
 
-    openSourceCodeTab() {
+    openExternalLocation(link: string) {
         if (window) {
-            window.open(environment.githubUrl, '_blank');
+            window.open(link, '_blank');
         }
     }
 }
