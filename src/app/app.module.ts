@@ -9,6 +9,7 @@ import { AtomComponent } from './atom/atom.component';
 import { FooterComponent } from './footer/footer.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { SelectionBarComponent } from './selection-bar/selection-bar.component';
+import { SharedModule } from './shared';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,7 @@ import { SelectionBarComponent } from './selection-bar/selection-bar.component';
         AppPhaseComponent,
         AppWikiComponent,
     ],
-    imports: [BrowserModule, HttpClientModule],
+    imports: [BrowserModule, HttpClientModule, SharedModule],
     providers: [Title],
     bootstrap: [AppComponent],
 })

@@ -22,6 +22,10 @@
         "@angular/platform-browser": "7.2.15",
         "@angular/platform-browser-dynamic": "7.2.15",
         "@angular/router": "7.2.15",
+        "@fortawesome/angular-fontawesome": "0.3.0",
+        "@fortawesome/fontawesome-svg-core": "^1.2.26",
+        "@fortawesome/free-brands-svg-icons": "^5.12.0",
+        "@fortawesome/free-solid-svg-icons": "^5.12.0",
         "core-js": "^2.5.5",
         "lodash-es": "^4.17.8",
         "rxjs": "^6.3.3",
@@ -44,7 +48,7 @@
         "jasmine-spec-reporter": "~4.2.1",
         "karma": "~4.1.0",
         "karma-chrome-launcher": "~2.2.0",
-        "karma-coverage-istanbul-reporter": "^2.0.5",
+        "karma-coverage-istanbul-reporter": "^2.1.1",
         "karma-jasmine": "~1.1.0",
         "karma-jasmine-html-reporter": "^0.2.2",
         "prettier": "1.15.3",
@@ -65,5 +69,11 @@
         "tabWidth": 4,
         "semi": true,
         "singleQuote": true
+    },
+    "resolutions": {
+        "https-proxy-agent": "2.2.3",
+        "serialize-javascript": "2.1.1",
+        "handlebars": "4.5.3",
+        "lodash": ">=4.17.12"
     }
 }
