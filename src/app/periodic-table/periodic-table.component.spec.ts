@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PeriodicTableComponent } from './periodic-table.component';
 
@@ -6,7 +6,7 @@ describe('PeriodicTableComponent', () => {
   let component: PeriodicTableComponent;
   let fixture: ComponentFixture<PeriodicTableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PeriodicTableComponent ]
     })
