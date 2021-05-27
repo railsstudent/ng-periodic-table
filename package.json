@@ -1,80 +1,80 @@
 {
-    "name": "ng-periodic-table",
-    "version": "1.0.0",
-    "license": "MIT",
-    "scripts": {
-        "ng": "ng",
-        "start": "ng serve",
-        "build": "ng build --prod",
-        "test": "ng test",
-        "lint": "ng lint",
-        "e2e": "ng e2e"
-    },
-    "private": true,
-    "dependencies": {
-        "@angular/animations": "11.2.14",
-        "@angular/common": "11.2.14",
-        "@angular/compiler": "11.2.14",
-        "@angular/core": "11.2.14",
-        "@angular/forms": "11.2.14",
-        "@angular/platform-browser": "11.2.14",
-        "@angular/platform-browser-dynamic": "11.2.14",
-        "@angular/router": "11.2.14",
-        "@fortawesome/angular-fontawesome": "0.5.0",
-        "@fortawesome/fontawesome-svg-core": "^1.2.26",
-        "@fortawesome/free-brands-svg-icons": "^5.12.0",
-        "@fortawesome/free-solid-svg-icons": "^5.12.0",
-        "core-js": "^2.5.5",
-        "lodash-es": "^4.17.14",
-        "rxjs": "^6.3.3",
-        "tslib": "^2.0.0",
-        "zone.js": "~0.11.4"
-    },
-    "devDependencies": {
-        "@angular-devkit/build-angular": "~12.0.1",
-        "@angular/cli": "^12.0.1",
-        "@angular/compiler-cli": "11.2.14",
-        "@angular/language-service": "11.2.14",
-        "@types/jasmine": "~3.6.0",
-        "@types/jasminewd2": "~2.0.2",
-        "@types/lodash-es": "^4.17.3",
-        "@types/node": "^12.11.1",
-        "angular-cli-ghpages": "0.6.1",
-        "codelyzer": "^6.0.0",
-        "husky": "^3.1.0",
-        "jasmine-core": "~3.6.0",
-        "jasmine-spec-reporter": "~5.0.0",
-        "karma": "~6.3.2",
-        "karma-chrome-launcher": "~3.1.0",
-        "karma-coverage-istanbul-reporter": "~3.0.2",
-        "karma-jasmine": "~4.0.0",
-        "karma-jasmine-html-reporter": "^1.5.0",
-        "prettier": "1.15.3",
-        "pretty-quick": "1.8.0",
-        "protractor": "~7.0.0",
-        "ts-node": "~4.1.0",
-        "tslint": "~6.1.0",
-        "typescript": "4.2.4"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": [
-                "pretty-quick --staged",
-                "npm run lint",
-                "git add"
-            ]
-        }
-    },
-    "prettier": {
-        "printWidth": 120,
-        "trailingComma": "es5",
-        "tabWidth": 4,
-        "semi": true,
-        "singleQuote": true
-    },
-    "volta": {
-        "node": "12.22.1",
-        "npm": "6.14.13",
-        "yarn": "1.22.10"
+  "name": "ng-periodic-table",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "12.0.2",
+    "@angular/common": "12.0.2",
+    "@angular/compiler": "12.0.2",
+    "@angular/core": "12.0.2",
+    "@angular/forms": "12.0.2",
+    "@angular/platform-browser": "12.0.2",
+    "@angular/platform-browser-dynamic": "12.0.2",
+    "@angular/router": "12.0.2",
+    "@fortawesome/angular-fontawesome": "0.5.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-brands-svg-icons": "^5.12.0",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "core-js": "^2.5.5",
+    "lodash-es": "^4.17.14",
+    "rxjs": "^6.3.3",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~12.0.1",
+    "@angular/cli": "^12.0.1",
+    "@angular/compiler-cli": "12.0.2",
+    "@angular/language-service": "12.0.2",
+    "@types/jasmine": "~3.6.0",
+    "@types/jasminewd2": "~2.0.2",
+    "@types/lodash-es": "^4.17.3",
+    "@types/node": "^12.11.1",
+    "angular-cli-ghpages": "0.6.1",
+    "codelyzer": "^6.0.0",
+    "husky": "^3.1.0",
+    "jasmine-core": "~3.6.0",
+    "jasmine-spec-reporter": "~5.0.0",
+    "karma": "~6.3.2",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "~3.0.2",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "^1.5.0",
+    "prettier": "1.15.3",
+    "pretty-quick": "1.8.0",
+    "protractor": "~7.0.0",
+    "ts-node": "~4.1.0",
+    "tslint": "~6.1.0",
+    "typescript": "4.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": [
+        "pretty-quick --staged",
+        "npm run lint",
+        "git add"
+      ]
     }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": true,
+    "singleQuote": true
+  },
+  "volta": {
+    "node": "12.22.1",
+    "npm": "6.14.13",
+    "yarn": "1.22.10"
+  }
 }
