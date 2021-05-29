@@ -122,7 +122,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     }
 
     updateRowHeaderSelected(rowNum: number, inside: boolean) {
-        console.log('row number', rowNum, inside)
+        console.log('row number', rowNum, inside);
         this.unselectAllHeaders();
         this.currentRowHeader = inside ? rowNum : null;
         this.rowHeader[rowNum - 1].selected = inside;
@@ -170,6 +170,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-      this.unsubscribe$.next()
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }
