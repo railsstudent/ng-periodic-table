@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, startWith, takeUntil } from 'rxjs/operators';
@@ -43,7 +43,7 @@ interface HeaderInfo {
     styleUrls: ['./periodic-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PeriodicTableComponent implements OnInit {
+export class PeriodicTableComponent implements OnInit, OnDestroy {
     description = DESCRIPTION;
     lantAtomGroup = LANT_ATOM_GROUP;
     actinideAtomGroup = ACT_ATOM_GROUP;
@@ -122,6 +122,7 @@ export class PeriodicTableComponent implements OnInit {
     }
 
     updateRowHeaderSelected(rowNum: number, inside: boolean) {
+        console.log('row number', rowNum, inside)
         this.unselectAllHeaders();
         this.currentRowHeader = inside ? rowNum : null;
         this.rowHeader[rowNum - 1].selected = inside;
@@ -166,5 +167,9 @@ export class PeriodicTableComponent implements OnInit {
 
     open(atomName) {
         this.wikiAtomName = atomName;
+    }
+
+    ngOnDestroy(): void {
+      this.unsubscribe$.next()
     }
 }
