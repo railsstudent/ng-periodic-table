@@ -50,7 +50,7 @@
         "@typescript-eslint/parser": "^4.23.0",
         "angular-cli-ghpages": "0.6.1",
         "eslint": "^7.26.0",
-        "eslint-plugin-rxjs": "^3.3.2",
+        "eslint-plugin-rxjs": "^3.3.3",
         "eslint-plugin-rxjs-angular": "^1.0.6",
         "husky": "^3.1.0",
         "jasmine-core": "~3.6.0",
