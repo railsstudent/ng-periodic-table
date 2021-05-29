@@ -7,6 +7,8 @@ import {
     OnDestroy,
     OnInit,
     Output,
+    OnChanges,
+    SimpleChanges,
 } from '@angular/core';
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -23,7 +25,7 @@ const STAY_AT_LEAST = 250;
     styleUrls: ['./atom.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtomComponent implements OnInit, OnDestroy {
+export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     @Input()
     data: Atom;
 
@@ -45,6 +47,16 @@ export class AtomComponent implements OnInit, OnDestroy {
             'gas-selected': false,
             'unknown-selected': false,
             grayout: false,
+        };
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const { data } = changes;
+        const { currentValue } = data;
+        const { blurry = false } = currentValue;
+        this.backgroundStyles = {
+            ...this.backgroundStyles,
+            blurry,
         };
     }
 
