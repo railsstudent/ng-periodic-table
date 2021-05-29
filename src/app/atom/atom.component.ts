@@ -54,14 +54,14 @@ export class AtomComponent implements OnInit, OnDestroy {
                 debounceTime(STAY_AT_LEAST),
                 takeUntil(this.unsubscribe$)
             )
-            .subscribe((atom: Atom) => this.hoverAtom.emit(atom), err => console.error(err));
+            .subscribe((atom: Atom) => this.hoverAtom.emit(atom), (err: unknown) => console.error(err));
 
         this.mouseLeaveSubject
             .pipe(
                 debounceTime(STAY_AT_LEAST),
                 takeUntil(this.unsubscribe$)
             )
-            .subscribe(() => this.hoverAtom.emit(null), err => console.error(err));
+            .subscribe(() => this.hoverAtom.emit(null), (err: unknown) => console.error(err));
 
         this.service.selectedPhase$.subscribe(selectedPhase => {
             this.selectedPhase = selectedPhase;

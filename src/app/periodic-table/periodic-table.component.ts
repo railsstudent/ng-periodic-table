@@ -95,7 +95,9 @@ export class PeriodicTableComponent implements OnInit {
             debounceTime(STAY_AT_LEAST)
         );
 
-        const cachedAtoms$ = this.http.get<Atom[]>('./assets/periodic-table.json').pipe(shareReplay(1));
+        const cachedAtoms$ = this.http
+            .get<Atom[]>('./assets/periodic-table.json')
+            .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
         this.atoms$ = combineLatest([this.headerMove$, cachedAtoms$]).pipe(
             map(([headerMove, atoms]) => {
