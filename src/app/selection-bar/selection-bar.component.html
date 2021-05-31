@@ -7,6 +7,7 @@
                 class="alkali-metal"
                 [class.selected]="highlightState.alkali === true && numHighlightState() === 1"
                 [class.gray]="grayButtonStyle.alkali && grayButtonStyle.alkali === true"
+                #alkali
             >
                 <span>Alkali metals</span>
             </button>
@@ -15,6 +16,7 @@
                 class="alkaline-earth-metal"
                 [class.selected]="highlightState.alkaline === true && numHighlightState() === 1"
                 [class.gray]="grayButtonStyle.alkaline && grayButtonStyle.alkaline === true"
+                #alkaline
             >
                 <span>Alkaline earth metals</span>
             </button>

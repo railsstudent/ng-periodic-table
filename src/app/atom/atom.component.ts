@@ -13,11 +13,8 @@ import {
 import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { Atom, STAY_AT_LEAST } from '../constant';
 import { PeriodTableService } from '../periodic-table/periodic-table.service';
-import { Atom } from '../shared';
-
-// in milliseconds
-const STAY_AT_LEAST = 250;
 
 @Component({
     selector: 'app-atom',
@@ -30,7 +27,7 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     data: Atom;
 
     @Output()
-    hoverAtom: EventEmitter<Atom> = new EventEmitter<Atom>();
+    hoverAtom: EventEmitter<Atom | null> = new EventEmitter<Atom | null>();
 
     backgroundStyles: any = {};
     selectedPhase: string;

@@ -3,33 +3,16 @@ import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/
 import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, startWith, takeUntil } from 'rxjs/operators';
-import { Atom } from '../shared';
+import {
+    ACT_ATOM_GROUP,
+    Atom,
+    DESCRIPTION,
+    HEADER_STAY_AT_LEAST,
+    LANT_ATOM_GROUP,
+    MAX_COL_INDEX,
+    MAX_ROW_INDEX,
+} from '../constant';
 import { PeriodTableService } from './periodic-table.service';
-
-const MAX_ROW_INDEX = 7;
-const MAX_COL_INDEX = 18;
-const DESCRIPTION = {
-    number: 'Atomic',
-    symbol: 'SYM',
-    name: 'Name',
-    atomic_mass: 'Weight',
-};
-const LANT_ATOM_GROUP = {
-    number: '57-71',
-    category: 'lanthanide',
-    symbol: '',
-    name: '',
-    atomic_mass: null,
-};
-const ACT_ATOM_GROUP = {
-    number: '89-103',
-    category: 'actinide',
-    symbol: '',
-    name: '',
-    atomic_mass: null,
-};
-// in milliseconds
-const STAY_AT_LEAST = 25;
 
 interface HeaderInfo {
     rowNum: number;
@@ -55,16 +38,16 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     headerMove$: Observable<HeaderInfo>;
     atoms$: Observable<Atom[]>;
 
-    currentAtom: Atom;
-    currentRowHeader: number;
-    currentColHeader: number;
+    currentAtom: Atom | null;
+    currentRowHeader: number | null;
+    currentColHeader: number | null;
 
     wikiAtomName = '';
 
     constructor(private service: PeriodTableService, private http: HttpClient) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
-            .map((v, i) => ({
+            .map((_, i) => ({
                 index: i + 1,
                 description: i === 14 ? 'Pnictogens' : i === 15 ? 'Chalcogens' : i === 16 ? 'Halogens' : '',
                 selected: false,
@@ -92,7 +75,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
                 colNum: -1,
                 inside: false,
             }),
-            debounceTime(STAY_AT_LEAST)
+            debounceTime(HEADER_STAY_AT_LEAST)
         );
 
         const cachedAtoms$ = this.http
@@ -165,7 +148,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    open(atomName) {
+    open(atomName: string) {
         this.wikiAtomName = atomName;
     }
 

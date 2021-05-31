@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { HighlightState } from './../shared/interfaces';
+import { HighlightState } from '../constant';
 
 @Injectable({
     providedIn: 'root',

@@ -11,8 +11,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
-const BASE_URL = 'https://en.wikipedia.org/wiki';
+import { BASE_URL } from '../constant';
 
 @Component({
     selector: 'app-wiki',

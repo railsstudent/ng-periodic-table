@@ -1,44 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { fromEvent, merge, Subject } from 'rxjs';
+import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
 import { filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators';
-import { PeriodTableService } from '../periodic-table/periodic-table.service';
-import { HighlightState } from '../shared/';
-
-const CATEGORY_MAP = {
-    'alkali-metal': 'alkali',
-    'alkaline-earth-metal': 'alkaline',
-    lanthanide: 'lant',
-    actinide: 'actinoid',
-    'transition-metal': 'transition',
-    'post-transition-metal': 'postTransition',
-    metalloid: 'metalloid',
-    nonmetal: 'nonMetal',
-    'noble-gas': 'nobleGas',
-};
-
-const CATEGORIES = [
-    'alkali',
-    'alkaline',
-    'lant',
-    'actinoid',
-    'transition',
-    'postTransition',
-    'metalloid',
-    'nonMetal',
-    'nobleGas',
-];
-
-const INIT_HIGHLIGHT_STATE: HighlightState = {
-    alkali: false,
-    alkaline: false,
-    lant: false,
-    actinoid: false,
-    transition: false,
-    postTransition: false,
-    metalloid: false,
-    nonMetal: false,
-    nobleGas: false,
-};
+import { CATEGORIES, CATEGORY_MAP, HighlightState, INIT_HIGHLIGHT_STATE } from '../constant';
+import { PeriodTableService } from '../periodic-table';
 
 @Component({
     selector: 'app-selection-bar',
@@ -69,7 +34,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
 
     ngAfterViewInit() {
         const btnMouseEnter$ = CATEGORIES.map(category => {
-            const $el = document.getElementById(category);
+            const $el = document.getElementById(category) as FromEventTarget<Event>;
             const o = fromEvent($el, 'mouseenter').pipe(
                 mapTo({ [category]: true }),
                 takeUntil(this.unsubscribe$)
@@ -78,7 +43,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         });
 
         const btnMouseLeave$ = CATEGORIES.map(category => {
-            const $el = document.getElementById(category);
+            const $el = document.getElementById(category) as FromEventTarget<Event>;
             const o = fromEvent($el, 'mouseleave').pipe(
                 mapTo({ [category]: false }),
                 takeUntil(this.unsubscribe$)
@@ -86,8 +51,8 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             return o;
         });
 
-        const $allMetals = document.getElementById('all-metals');
-        const $allNonMetals = document.getElementById('all-nonmetals');
+        const $allMetals = document.getElementById('all-metals') as FromEventTarget<Event>;
+        const $allNonMetals = document.getElementById('all-nonmetals') as FromEventTarget<Event>;
 
         const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(
             mapTo({
@@ -107,11 +72,11 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             })
         );
 
-        const metalsLeave$ = fromEvent($allMetals, 'mouseleave').pipe(mapTo({}));
-        const allMetalsLeave$ = fromEvent($allNonMetals, 'mouseleave').pipe(mapTo({}));
+        const metalsLeave$ = fromEvent($allMetals, 'mouseleave').pipe(mapTo(INIT_HIGHLIGHT_STATE));
+        const allMetalsLeave$ = fromEvent($allNonMetals, 'mouseleave').pipe(mapTo(INIT_HIGHLIGHT_STATE));
 
         // mouse hovers category
-        const categorySelection$ = merge(
+        const categorySelection$ = merge<HighlightState>(
             ...btnMouseEnter$,
             ...btnMouseLeave$,
             allMetalsEnter$,
@@ -119,6 +84,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             metalsLeave$,
             allMetalsLeave$
         ).pipe(share());
+
         categorySelection$
             .pipe(
                 map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
@@ -135,7 +101,8 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             .pipe(
                 filter(current => {
                     const key = Object.keys(current)[0];
-                    return current[key];
+                    const xxx = key as keyof HighlightState;
+                    return current[xxx];
                 }),
                 map(current => {
                     return Object.keys(current).reduce((acc, key) => {
@@ -199,7 +166,8 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     }
 
     numHighlightState() {
-        return Object.keys(this.highlightState).filter(k => this.highlightState[k] === true).length;
+        return Object.keys(this.highlightState).filter(k => this.highlightState[k as keyof HighlightState] === true)
+            .length;
     }
 
     ngOnDestroy() {

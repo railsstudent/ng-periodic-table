@@ -13,6 +13,11 @@
         "typeRoots": ["node_modules/@types"],
         "lib": ["es2017", "dom"],
         "module": "es2020",
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "strict": false,
+        "strictPropertyInitialization": false
     }
 }
