@@ -27,42 +27,7 @@ export const ACT_ATOM_GROUP = {
 // in milliseconds
 export const HEADER_STAY_AT_LEAST = 25
 
-export interface HighlightState {
-    alkali: boolean
-    alkaline: boolean
-    lant: boolean
-    actinoid: boolean
-    transition: boolean
-    postTransition: boolean
-    metalloid: boolean
-    nonMetal: boolean
-    nobleGas: boolean
-}
-
 export type Phase = 'solid' | 'liquid' | 'unknown' | 'gas' | ''
-
-export interface Atom {
-    number: number
-    category: string
-    symbol: string
-    name: string
-    atomic_mass: number
-    phase: Phase
-    xpos: number
-    ypos: number
-    blurry: boolean
-}
-
-export interface StyleAtom extends Atom {
-    solidStyle: boolean
-    gasStyle: boolean
-    liquidStyle: boolean
-    unknownStyle: boolean
-    solidSelectedStyle: boolean
-    gasSelectedStyle: boolean
-    liquidSelectedStyle: boolean
-    unknownSelectedStyle: boolean
-}
 
 export const CATEGORY_MAP: Record<string, string> = {
     'alkali-metal': 'alkali',
@@ -87,21 +52,3 @@ export const CATEGORIES = [
     'nonMetal',
     'nobleGas',
 ]
-
-export const INIT_HIGHLIGHT_STATE: HighlightState = {
-    alkali: false,
-    alkaline: false,
-    lant: false,
-    actinoid: false,
-    transition: false,
-    postTransition: false,
-    metalloid: false,
-    nonMetal: false,
-    nobleGas: false,
-}
-
-export interface HeaderInfo {
-    rowNum: number
-    colNum: number
-    inside: boolean
-}

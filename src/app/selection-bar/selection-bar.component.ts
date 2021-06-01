@@ -2,7 +2,8 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, O
 import { fromEvent, merge, Subject } from 'rxjs'
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent'
 import { filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators'
-import { CATEGORIES, CATEGORY_MAP, HighlightState, INIT_HIGHLIGHT_STATE } from '../constant'
+import { CATEGORIES, CATEGORY_MAP } from '../constant'
+import { HighlightState, INIT_HIGHLIGHT_STATE } from '../types'
 import { PeriodTableService } from '../periodic-table'
 
 @Component({

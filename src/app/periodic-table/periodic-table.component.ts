@@ -4,14 +4,13 @@ import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
     DESCRIPTION,
-    HeaderInfo,
     HEADER_STAY_AT_LEAST,
     LANT_ATOM_GROUP,
     MAX_COL_INDEX,
     MAX_ROW_INDEX,
-    StyleAtom,
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
+import { HeaderInfo, StyleAtom } from '../types'
 
 @Component({
     selector: 'app-periodic-table',

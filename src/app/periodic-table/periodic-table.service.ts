@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, Subject } from 'rxjs'
 import { map, shareReplay } from 'rxjs/operators'
-import { HighlightState, Phase, StyleAtom } from '../constant'
+import { Phase } from '../constant'
+import { HighlightState, StyleAtom } from '../types'
 
 @Injectable({
     providedIn: 'root',
@@ -44,6 +45,7 @@ export class PeriodTableService {
                     gasSelectedStyle: false,
                     liquidSelectedStyle: false,
                     unknownSelectedStyle: false,
+                    grayout: false,
                 })),
             ),
             shareReplay({ bufferSize: 1, refCount: true }),

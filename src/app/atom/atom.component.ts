@@ -12,8 +12,9 @@ import {
 } from '@angular/core'
 import { Subject } from 'rxjs'
 import { debounceTime, takeUntil } from 'rxjs/operators'
-import { STAY_AT_LEAST, StyleAtom } from '../constant'
-import { PeriodTableService } from '../periodic-table/periodic-table.service'
+import { STAY_AT_LEAST } from '../constant'
+import { PeriodTableService } from '../periodic-table/'
+import { StyleAtom } from '../types'
 
 @Component({
     selector: 'app-atom',

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
-import { StyleAtom } from '../constant'
+import { StyleAtom } from '../types'
 
 @Component({
     selector: 'app-atom-details',
