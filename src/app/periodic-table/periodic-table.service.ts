@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Subject } from 'rxjs'
-import { HighlightState } from '../constant'
+import { BehaviorSubject, Observable, Subject } from 'rxjs'
+import { shareReplay } from 'rxjs/operators'
+import { Atom, HighlightState } from '../constant'
 
 @Injectable({
     providedIn: 'root',
@@ -15,6 +17,8 @@ export class PeriodTableService {
     private selectedPhaseSub$ = new Subject<string>()
     selectedPhase$ = this.selectedPhaseSub$.asObservable()
 
+    constructor(private http: HttpClient) {}
+
     changeCurrentAtomCategory(atomCategory: string) {
         this.currentAtomCategorySub$.next(atomCategory)
     }
@@ -25,5 +29,11 @@ export class PeriodTableService {
 
     setSelectedPhase(phase: string) {
         this.selectedPhaseSub$.next(phase)
+    }
+
+    getAtoms(): Observable<Atom[]> {
+        return this.http
+            .get<Atom[]>('./assets/periodic-table.json')
+            .pipe(shareReplay({ bufferSize: 1, refCount: true }))
     }
 }

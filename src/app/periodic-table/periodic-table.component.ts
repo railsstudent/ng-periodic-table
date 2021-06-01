@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core'
-import { combineLatest, Observable, Subject } from 'rxjs'
-import { debounceTime, map, shareReplay, startWith, takeUntil } from 'rxjs/operators'
+import { Observable, Subject } from 'rxjs'
+import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
     Atom,
@@ -36,6 +35,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     headerSub$ = new Subject<HeaderInfo>()
     headerMove$: Observable<HeaderInfo>
     atoms$: Observable<Atom[]>
+    source: Atom[]
 
     currentAtom: Atom | null
     currentRowHeader: number | null
@@ -43,7 +43,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
 
     wikiAtomName = ''
 
-    constructor(private service: PeriodTableService, private http: HttpClient) {
+    constructor(private service: PeriodTableService) {
         this.colHeader = Array(MAX_COL_INDEX)
             .fill(1)
             .map((_, i) => ({
@@ -77,27 +77,28 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             debounceTime(HEADER_STAY_AT_LEAST),
         )
 
-        const cachedAtoms$ = this.http
-            .get<Atom[]>('./assets/periodic-table.json')
-            .pipe(shareReplay({ bufferSize: 1, refCount: true }))
+        this.service
+            .getAtoms()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(atoms => (this.source = atoms))
 
-        this.atoms$ = combineLatest([this.headerMove$, cachedAtoms$]).pipe(
-            map(([headerMove, atoms]) => {
+        this.atoms$ = this.headerMove$.pipe(
+            map(headerMove => {
                 const { rowNum, colNum, inside } = headerMove
                 if (rowNum >= 1) {
-                    return atoms.map(atom =>
+                    return this.source.map(atom =>
                         rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
                             ? atom
                             : Object.assign({}, atom, { blurry: inside }),
                     )
                 } else if (colNum >= 1) {
-                    return atoms.map(atom =>
+                    return this.source.map(atom =>
                         colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9
                             ? atom
                             : Object.assign({}, atom, { blurry: inside }),
                     )
                 }
-                return atoms
+                return this.source
             }),
             takeUntil(this.unsubscribe$),
         )
