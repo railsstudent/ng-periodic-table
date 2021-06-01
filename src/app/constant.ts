@@ -39,16 +39,25 @@ export interface HighlightState {
     nobleGas: boolean
 }
 
+export type Phase = 'solid' | 'liquid' | 'unknown' | 'gas'
+
 export interface Atom {
     number: number
     category: string
     symbol: string
     name: string
     atomic_mass: number
-    phase: string
+    phase: Phase
     xpos: number
     ypos: number
     blurry: boolean
+}
+
+export interface StyleAtom extends Atom {
+    solidStyle: boolean
+    gasStyle: boolean
+    liquidStyle: boolean
+    unknownStyle: boolean
 }
 
 export const CATEGORY_MAP: Record<string, string> = {
@@ -85,4 +94,10 @@ export const INIT_HIGHLIGHT_STATE: HighlightState = {
     metalloid: false,
     nonMetal: false,
     nobleGas: false,
+}
+
+export interface HeaderInfo {
+    rowNum: number
+    colNum: number
+    inside: boolean
 }

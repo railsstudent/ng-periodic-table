@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
-import { fromEvent, merge, Subject } from 'rxjs';
-import { mapTo, takeUntil } from 'rxjs/operators';
-import { PeriodTableService } from '../periodic-table/periodic-table.service';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core'
+import { fromEvent, merge, Subject } from 'rxjs'
+import { mapTo, takeUntil } from 'rxjs/operators'
+import { PeriodTableService } from '../periodic-table'
 
 @Component({
     selector: 'app-phase',
@@ -78,46 +78,44 @@ import { PeriodTableService } from '../periodic-table/periodic-table.service';
 })
 export class AppPhaseComponent implements AfterViewInit, OnDestroy {
     @Input()
-    symbol: string;
+    symbol: string
 
     @Input()
-    type: string;
+    type: string
 
-    unsubscribe$ = new Subject<void>();
-    selected = false;
+    unsubscribe$ = new Subject<boolean>()
+    selected = false
 
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
 
     ngAfterViewInit() {
-        const $el = document.getElementsByClassName(this.type)[0];
+        const $el = document.getElementsByClassName(this.type)[0]
 
         const enter$ = fromEvent($el, 'mouseenter').pipe(
             mapTo({
                 selected: true,
                 type: this.type,
-            })
-        );
+            }),
+        )
 
         const leave$ = fromEvent($el, 'mouseleave').pipe(
             mapTo({
                 selected: false,
                 type: '',
-            })
-        );
+            }),
+        )
 
         merge(enter$, leave$)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(({ selected, type }) => {
-                this.selected = selected;
-                this.service.setSelectedPhase(type);
-                this.cd.markForCheck();
-            });
+                this.selected = selected
+                this.service.setSelectedPhase(type)
+                this.cd.markForCheck()
+            })
     }
 
     ngOnDestroy() {
-        if (this.unsubscribe$) {
-            this.unsubscribe$.next();
-            this.unsubscribe$.complete();
-        }
+        this.unsubscribe$.next(true)
+        this.unsubscribe$.complete()
     }
 }

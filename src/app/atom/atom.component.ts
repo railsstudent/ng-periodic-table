@@ -12,7 +12,7 @@ import {
 } from '@angular/core'
 import { Subject } from 'rxjs'
 import { debounceTime, takeUntil } from 'rxjs/operators'
-import { Atom, STAY_AT_LEAST } from '../constant'
+import { STAY_AT_LEAST, StyleAtom } from '../constant'
 import { PeriodTableService } from '../periodic-table/periodic-table.service'
 
 @Component({
@@ -23,15 +23,15 @@ import { PeriodTableService } from '../periodic-table/periodic-table.service'
 })
 export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     @Input()
-    data: Atom
+    data: StyleAtom
 
     @Output()
-    hoverAtom: EventEmitter<Atom | null> = new EventEmitter<Atom | null>()
+    hoverAtom: EventEmitter<StyleAtom | null> = new EventEmitter<StyleAtom | null>()
 
     backgroundStyles: any = {}
     selectedPhase: string
 
-    mouseEnterSubject = new Subject<Atom>()
+    mouseEnterSubject = new Subject<StyleAtom>()
     mouseLeaveSubject = new Subject<void>()
     private unsubscribe$ = new Subject<void>()
 
@@ -62,7 +62,7 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
                 debounceTime(STAY_AT_LEAST),
                 takeUntil(this.unsubscribe$),
             )
-            .subscribe((atom: Atom) => this.hoverAtom.emit(atom), (err: unknown) => console.error(err))
+            .subscribe((atom: StyleAtom) => this.hoverAtom.emit(atom), (err: unknown) => console.error(err))
 
         this.mouseLeaveSubject
             .pipe(

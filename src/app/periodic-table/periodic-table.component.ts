@@ -1,22 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core'
-import { Observable, Subject } from 'rxjs'
+import { combineLatest, Observable, Subject } from 'rxjs'
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
-    Atom,
     DESCRIPTION,
+    HeaderInfo,
     HEADER_STAY_AT_LEAST,
     LANT_ATOM_GROUP,
     MAX_COL_INDEX,
     MAX_ROW_INDEX,
+    StyleAtom,
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
-
-interface HeaderInfo {
-    rowNum: number
-    colNum: number
-    inside: boolean
-}
 
 @Component({
     selector: 'app-periodic-table',
@@ -34,10 +29,9 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     unsubscribe$ = new Subject<void>()
     headerSub$ = new Subject<HeaderInfo>()
     headerMove$: Observable<HeaderInfo>
-    atoms$: Observable<Atom[]>
-    source: Atom[]
+    atoms$: Observable<StyleAtom[]>
 
-    currentAtom: Atom | null
+    currentAtom: StyleAtom | null
     currentRowHeader: number | null
     currentColHeader: number | null
 
@@ -77,28 +71,23 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             debounceTime(HEADER_STAY_AT_LEAST),
         )
 
-        this.service
-            .getAtoms()
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(atoms => (this.source = atoms))
-
-        this.atoms$ = this.headerMove$.pipe(
-            map(headerMove => {
+        this.atoms$ = combineLatest([this.headerMove$, this.service.getAtoms()]).pipe(
+            map(([headerMove, atoms]) => {
                 const { rowNum, colNum, inside } = headerMove
                 if (rowNum >= 1) {
-                    return this.source.map(atom =>
+                    return atoms.map(atom =>
                         rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
                             ? atom
                             : Object.assign({}, atom, { blurry: inside }),
                     )
                 } else if (colNum >= 1) {
-                    return this.source.map(atom =>
+                    return atoms.map(atom =>
                         colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9
                             ? atom
                             : Object.assign({}, atom, { blurry: inside }),
                     )
                 }
-                return this.source
+                return atoms
             }),
             takeUntil(this.unsubscribe$),
         )
@@ -123,7 +112,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         this.colHeader.forEach(c => (c.selected = false))
     }
 
-    showAtomDetails(atom: Atom) {
+    showAtomDetails(atom: StyleAtom) {
         this.rowHeader.forEach((r, index) => {
             if (r && r.selected && (!this.currentRowHeader || index !== this.currentRowHeader - 1)) {
                 r.selected = false
