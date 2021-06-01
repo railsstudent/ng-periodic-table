@@ -1,16 +1,23 @@
 <div
     class="atom-container {{ data.category }}"
-    [ngClass]="backgroundStyles"
+    [ngClass]="{
+        'solid-selected': data.solidSelectedStyle,
+        'gas-selected': data.gasSelectedStyle,
+        'liquid-selected': data.liquidSelectedStyle,
+        'unknown-selected': data.unknownSelectedStyle
+    }"
     (mouseenter)="debounceMouseEnter()"
     (mouseleave)="debounceMouseLeave()"
 >
     <p class="atomic">{{ data.number }}</p>
     <p
         class="symbol"
-        [class.solid]="data.phase === 'solid' && selectedPhase !== 'solid'"
-        [class.liquid]="data.phase === 'liquid' && selectedPhase !== 'liquid'"
-        [class.gas]="data.phase === 'gas' && selectedPhase !== 'gas'"
-        [class.unknown]="data.phase === 'unknown' && selectedPhase !== 'unknown'"
+        [ngClass]="{
+            solid: data.solidStyle,
+            liquid: data.liquidStyle,
+            gas: data.gasStyle,
+            unknown: data.unknownStyle
+        }"
         *ngIf="data.symbol; else blankSymbol"
     >
         {{ data.symbol }}

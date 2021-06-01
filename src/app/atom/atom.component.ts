@@ -71,16 +71,6 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
             )
             .subscribe(() => this.hoverAtom.emit(null), (err: unknown) => console.error(err))
 
-        this.service.selectedPhase$.subscribe(selectedPhase => {
-            this.selectedPhase = selectedPhase
-
-            this.backgroundStyles['solid-selected'] = selectedPhase === 'solid' && this.data.phase === 'solid'
-            this.backgroundStyles['liquid-selected'] = selectedPhase === 'liquid' && this.data.phase === 'liquid'
-            this.backgroundStyles['gas-selected'] = selectedPhase === 'gas' && this.data.phase === 'gas'
-            this.backgroundStyles['unknown-selected'] = selectedPhase === 'unknown' && this.data.phase === 'unknown'
-            this.cd.markForCheck()
-        })
-
         this.service.selectedMetal$.subscribe(metalSelected => {
             const alkali = metalSelected.alkali
             const alkaline = metalSelected.alkaline

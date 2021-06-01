@@ -71,8 +71,8 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             debounceTime(HEADER_STAY_AT_LEAST),
         )
 
-        this.atoms$ = combineLatest([this.headerMove$, this.service.getAtoms()]).pipe(
-            map(([headerMove, atoms]) => {
+        this.atoms$ = combineLatest([this.headerMove$, this.service.getAtoms(), this.service.selectedPhase$]).pipe(
+            map(([headerMove, atoms, selectedPhase]) => {
                 const { rowNum, colNum, inside } = headerMove
                 if (rowNum >= 1) {
                     return atoms.map(atom =>
@@ -87,7 +87,17 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
                             : Object.assign({}, atom, { blurry: inside }),
                     )
                 }
-                return atoms
+                return atoms.map(atom => ({
+                    ...atom,
+                    solidStyle: atom.phase === 'solid' && selectedPhase !== 'solid',
+                    gasStyle: atom.phase === 'gas' && selectedPhase !== 'gas',
+                    unknownStyle: atom.phase === 'unknown' && selectedPhase !== 'unknown',
+                    liquidStyle: atom.phase === 'liquid' && selectedPhase !== 'liquid',
+                    solidSelectedStyle: atom.phase === 'solid' && selectedPhase === 'solid',
+                    gasSelectedStyle: atom.phase === 'gas' && selectedPhase === 'gas',
+                    unknownSelectedStyle: atom.phase === 'unknown' && selectedPhase === 'unknown',
+                    liquidSelectedStyle: atom.phase === 'liquid' && selectedPhase === 'liquid',
+                }))
             }),
             takeUntil(this.unsubscribe$),
         )

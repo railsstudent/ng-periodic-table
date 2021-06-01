@@ -14,7 +14,7 @@ export class PeriodTableService {
     private selectedMetalSub$ = new Subject<HighlightState>()
     selectedMetal$ = this.selectedMetalSub$.asObservable()
 
-    private selectedPhaseSub$ = new Subject<Phase>()
+    private selectedPhaseSub$ = new BehaviorSubject<Phase>('')
     selectedPhase$ = this.selectedPhaseSub$.asObservable()
 
     constructor(private http: HttpClient) {}
@@ -40,6 +40,10 @@ export class PeriodTableService {
                     gasStyle: false,
                     liquidStyle: false,
                     unknownStyle: false,
+                    solidSelectedStyle: false,
+                    gasSelectedStyle: false,
+                    liquidSelectedStyle: false,
+                    unknownSelectedStyle: false,
                 })),
             ),
             shareReplay({ bufferSize: 1, refCount: true }),

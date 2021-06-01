@@ -58,6 +58,10 @@ export interface StyleAtom extends Atom {
     gasStyle: boolean
     liquidStyle: boolean
     unknownStyle: boolean
+    solidSelectedStyle: boolean
+    gasSelectedStyle: boolean
+    liquidSelectedStyle: boolean
+    unknownSelectedStyle: boolean
 }
 
 export const CATEGORY_MAP: Record<string, string> = {
