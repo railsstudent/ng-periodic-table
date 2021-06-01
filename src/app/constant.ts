@@ -39,7 +39,7 @@ export interface HighlightState {
     nobleGas: boolean
 }
 
-export type Phase = 'solid' | 'liquid' | 'unknown' | 'gas'
+export type Phase = 'solid' | 'liquid' | 'unknown' | 'gas' | ''
 
 export interface Atom {
     number: number

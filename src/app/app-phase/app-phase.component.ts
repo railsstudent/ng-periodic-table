@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core'
 import { fromEvent, merge, Subject } from 'rxjs'
 import { mapTo, takeUntil } from 'rxjs/operators'
+import { Phase } from '../constant'
 import { PeriodTableService } from '../periodic-table'
 
 @Component({
@@ -81,7 +82,7 @@ export class AppPhaseComponent implements AfterViewInit, OnDestroy {
     symbol: string
 
     @Input()
-    type: string
+    type: Phase
 
     unsubscribe$ = new Subject<boolean>()
     selected = false
@@ -101,7 +102,7 @@ export class AppPhaseComponent implements AfterViewInit, OnDestroy {
         const leave$ = fromEvent($el, 'mouseleave').pipe(
             mapTo({
                 selected: false,
-                type: '',
+                type: '' as Phase,
             }),
         )
 
