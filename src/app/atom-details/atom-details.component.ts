@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Atom } from '../constant';
 
 @Component({
     selector: 'app-atom-details',
@@ -8,5 +9,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class AtomDetailsComponent {
     @Input()
-    data = null;
+    data: Atom | null = null;
 }

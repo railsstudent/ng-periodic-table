@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
-import { assign, get } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, startWith, takeUntil } from 'rxjs/operators';
 import {
@@ -89,13 +88,13 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
                     return atoms.map(atom =>
                         rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
                             ? atom
-                            : assign({}, atom, { blurry: inside })
+                            : Object.assign({}, atom, { blurry: inside })
                     );
                 } else if (colNum >= 1) {
                     return atoms.map(atom =>
                         colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9
                             ? atom
-                            : assign({}, atom, { blurry: inside })
+                            : Object.assign({}, atom, { blurry: inside })
                     );
                 }
                 return atoms;
@@ -144,7 +143,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
                 this.rowHeader[ypos - 1].selected = true;
                 this.colHeader[xpos - 1].selected = true;
             }
-            this.service.changeCurrentAtomCategory(get(this.currentAtom, 'category', ''));
+            this.service.changeCurrentAtomCategory(this.currentAtom.category || '');
         }
     }
 

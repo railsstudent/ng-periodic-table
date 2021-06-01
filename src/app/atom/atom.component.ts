@@ -10,7 +10,6 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { get, includes } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { Atom, STAY_AT_LEAST } from '../constant';
@@ -83,15 +82,15 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         this.service.selectedMetal$.subscribe(metalSelected => {
-            const alkali = get(metalSelected, 'alkali', false);
-            const alkaline = get(metalSelected, 'alkaline', false);
-            const lant = get(metalSelected, 'lant', false);
-            const actinoid = get(metalSelected, 'actinoid', false);
-            const transition = get(metalSelected, 'transition', false);
-            const postTransition = get(metalSelected, 'postTransition', false);
-            const metalloid = get(metalSelected, 'metalloid', false);
-            const nonMetal = get(metalSelected, 'nonMetal', false);
-            const nobleGas = get(metalSelected, 'nobleGas', false);
+            const alkali = metalSelected.alkali;
+            const alkaline = metalSelected.alkaline;
+            const lant = metalSelected.lant;
+            const actinoid = metalSelected.actinoid;
+            const transition = metalSelected.transition;
+            const postTransition = metalSelected.postTransition;
+            const metalloid = metalSelected.metalloid;
+            const nonMetal = metalSelected.nonMetal;
+            const nobleGas = metalSelected.nobleGas;
             const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition;
             const allNonMetals = nonMetal && nobleGas;
 
@@ -105,20 +104,17 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
                 (metalloid && this.data.category !== 'metalloid') ||
                 (!allNonMetals && nonMetal && this.data.category !== 'nonmetal') ||
                 (!allNonMetals && nobleGas && this.data.category !== 'noble-gas') ||
-                (allMetals && includes(['metalloid', 'nonmetal', 'noble-gas'], this.data.category)) ||
+                (allMetals && ['metalloid', 'nonmetal', 'noble-gas'].includes(this.data.category)) ||
                 (allNonMetals &&
-                    includes(
-                        [
-                            'alkali-metal',
-                            'alkaline-earth-metal',
-                            'lanthanide',
-                            'actinide',
-                            'transition-metal',
-                            'post-transition-metal',
-                            'metalloid',
-                        ],
-                        this.data.category
-                    ))),
+                    [
+                        'alkali-metal',
+                        'alkaline-earth-metal',
+                        'lanthanide',
+                        'actinide',
+                        'transition-metal',
+                        'post-transition-metal',
+                        'metalloid',
+                    ].includes(this.data.category))),
                 this.cd.markForCheck();
         });
     }
