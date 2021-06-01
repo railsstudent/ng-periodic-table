@@ -1,1 +1,1 @@
-export * from './periodic-table.service';
+export * from './periodic-table.service'

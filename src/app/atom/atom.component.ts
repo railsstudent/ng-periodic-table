@@ -9,11 +9,11 @@ import {
     Output,
     OnChanges,
     SimpleChanges,
-} from '@angular/core';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { Atom, STAY_AT_LEAST } from '../constant';
-import { PeriodTableService } from '../periodic-table/periodic-table.service';
+} from '@angular/core'
+import { Subject } from 'rxjs'
+import { debounceTime, takeUntil } from 'rxjs/operators'
+import { Atom, STAY_AT_LEAST } from '../constant'
+import { PeriodTableService } from '../periodic-table/periodic-table.service'
 
 @Component({
     selector: 'app-atom',
@@ -23,17 +23,17 @@ import { PeriodTableService } from '../periodic-table/periodic-table.service';
 })
 export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     @Input()
-    data: Atom;
+    data: Atom
 
     @Output()
-    hoverAtom: EventEmitter<Atom | null> = new EventEmitter<Atom | null>();
+    hoverAtom: EventEmitter<Atom | null> = new EventEmitter<Atom | null>()
 
-    backgroundStyles: any = {};
-    selectedPhase: string;
+    backgroundStyles: any = {}
+    selectedPhase: string
 
-    mouseEnterSubject = new Subject<Atom>();
-    mouseLeaveSubject = new Subject<void>();
-    private unsubscribe$ = new Subject<void>();
+    mouseEnterSubject = new Subject<Atom>()
+    mouseLeaveSubject = new Subject<void>()
+    private unsubscribe$ = new Subject<void>()
 
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
         this.backgroundStyles = {
@@ -43,58 +43,57 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
             'gas-selected': false,
             'unknown-selected': false,
             grayout: false,
-        };
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        const { data } = changes;
-        const { currentValue } = data;
-        const { blurry = false } = currentValue;
+        const { data } = changes
+        const { currentValue } = data
+        const { blurry = false } = currentValue
         this.backgroundStyles = {
             ...this.backgroundStyles,
             blurry,
-        };
+        }
     }
 
     ngOnInit() {
         this.mouseEnterSubject
             .pipe(
                 debounceTime(STAY_AT_LEAST),
-                takeUntil(this.unsubscribe$)
+                takeUntil(this.unsubscribe$),
             )
-            .subscribe((atom: Atom) => this.hoverAtom.emit(atom), (err: unknown) => console.error(err));
+            .subscribe((atom: Atom) => this.hoverAtom.emit(atom), (err: unknown) => console.error(err))
 
         this.mouseLeaveSubject
             .pipe(
                 debounceTime(STAY_AT_LEAST),
-                takeUntil(this.unsubscribe$)
+                takeUntil(this.unsubscribe$),
             )
-            .subscribe(() => this.hoverAtom.emit(null), (err: unknown) => console.error(err));
+            .subscribe(() => this.hoverAtom.emit(null), (err: unknown) => console.error(err))
 
         this.service.selectedPhase$.subscribe(selectedPhase => {
-            this.selectedPhase = selectedPhase;
+            this.selectedPhase = selectedPhase
 
-            this.backgroundStyles['solid-selected'] = selectedPhase === 'solid' && this.data.phase === 'solid';
-            this.backgroundStyles['liquid-selected'] = selectedPhase === 'liquid' && this.data.phase === 'liquid';
-            this.backgroundStyles['gas-selected'] = selectedPhase === 'gas' && this.data.phase === 'gas';
-            this.backgroundStyles['unknown-selected'] = selectedPhase === 'unknown' && this.data.phase === 'unknown';
-            this.cd.markForCheck();
-        });
+            this.backgroundStyles['solid-selected'] = selectedPhase === 'solid' && this.data.phase === 'solid'
+            this.backgroundStyles['liquid-selected'] = selectedPhase === 'liquid' && this.data.phase === 'liquid'
+            this.backgroundStyles['gas-selected'] = selectedPhase === 'gas' && this.data.phase === 'gas'
+            this.backgroundStyles['unknown-selected'] = selectedPhase === 'unknown' && this.data.phase === 'unknown'
+            this.cd.markForCheck()
+        })
 
         this.service.selectedMetal$.subscribe(metalSelected => {
-            const alkali = metalSelected.alkali;
-            const alkaline = metalSelected.alkaline;
-            const lant = metalSelected.lant;
-            const actinoid = metalSelected.actinoid;
-            const transition = metalSelected.transition;
-            const postTransition = metalSelected.postTransition;
-            const metalloid = metalSelected.metalloid;
-            const nonMetal = metalSelected.nonMetal;
-            const nobleGas = metalSelected.nobleGas;
-            const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition;
-            const allNonMetals = nonMetal && nobleGas;
-
-            (this.backgroundStyles['grayout'] =
+            const alkali = metalSelected.alkali
+            const alkaline = metalSelected.alkaline
+            const lant = metalSelected.lant
+            const actinoid = metalSelected.actinoid
+            const transition = metalSelected.transition
+            const postTransition = metalSelected.postTransition
+            const metalloid = metalSelected.metalloid
+            const nonMetal = metalSelected.nonMetal
+            const nobleGas = metalSelected.nobleGas
+            const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition
+            const allNonMetals = nonMetal && nobleGas
+            ;(this.backgroundStyles['grayout'] =
                 (!allMetals && alkali && this.data.category !== 'alkali-metal') ||
                 (!allMetals && alkaline && this.data.category !== 'alkaline-earth-metal') ||
                 (!allMetals && lant && this.data.category !== 'lanthanide') ||
@@ -115,22 +114,22 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
                         'post-transition-metal',
                         'metalloid',
                     ].includes(this.data.category))),
-                this.cd.markForCheck();
-        });
+                this.cd.markForCheck()
+        })
     }
 
     ngOnDestroy() {
         if (this.unsubscribe$) {
-            this.unsubscribe$.next();
-            this.unsubscribe$.complete();
+            this.unsubscribe$.next()
+            this.unsubscribe$.complete()
         }
     }
 
     debounceMouseEnter() {
-        this.mouseEnterSubject.next(this.data);
+        this.mouseEnterSubject.next(this.data)
     }
 
     debounceMouseLeave() {
-        this.mouseLeaveSubject.next();
+        this.mouseLeaveSubject.next()
     }
 }
