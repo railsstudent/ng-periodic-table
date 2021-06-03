@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core'
 import { fromEvent, merge, Subject } from 'rxjs'
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent'
-import { filter, map, mapTo, share, takeUntil, tap } from 'rxjs/operators'
+import { map, mapTo, share, takeUntil, tap } from 'rxjs/operators'
 import { CATEGORIES, CATEGORY_MAP } from '../constant'
 import { HighlightState, INIT_HIGHLIGHT_STATE } from '../types'
 import { PeriodTableService } from '../periodic-table'
@@ -38,6 +38,9 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             const $el = document.getElementById(category) as FromEventTarget<Event>
             const o = fromEvent($el, 'mouseenter').pipe(
                 mapTo({ [category]: true }),
+                tap(value => {
+                  console.log('mouse enters', value)
+                }),
                 takeUntil(this.unsubscribe$),
             )
             return o
@@ -47,6 +50,9 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             const $el = document.getElementById(category) as FromEventTarget<Event>
             const o = fromEvent($el, 'mouseleave').pipe(
                 mapTo({ [category]: false }),
+                tap(value => {
+                  console.log('mouse leaves', value)
+                }),
                 takeUntil(this.unsubscribe$),
             )
             return o
@@ -57,19 +63,15 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
 
         const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(
             mapTo({
-                alkali: true,
-                alkaline: true,
-                lant: true,
-                actinoid: true,
-                transition: true,
-                postTransition: true,
+                ...INIT_HIGHLIGHT_STATE,
+                allMetals: true
             }),
         )
 
         const allNonMetalsEnter$ = fromEvent($allNonMetals, 'mouseenter').pipe(
             mapTo({
-                nonMetal: true,
-                nobleGas: true,
+                ...INIT_HIGHLIGHT_STATE,
+                allNonMetals: true,
             }),
         )
 
@@ -89,6 +91,9 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         categorySelection$
             .pipe(
                 map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
+                tap(highlightState => {
+                  console.log(highlightState)
+                }),
                 tap(highlightState => this.service.setHighlightState(highlightState)),
                 takeUntil(this.unsubscribe$),
             )
@@ -98,64 +103,64 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             })
 
         // gray out unselected categories
-        categorySelection$
-            .pipe(
-                filter(current => {
-                    const key = Object.keys(current)[0]
-                    const xxx = key as keyof HighlightState
-                    return current[xxx]
-                }),
-                map(current => {
-                    return Object.keys(current).reduce((acc, key) => {
-                        acc[key] = !current[key]
-                        return acc
-                    }, {})
-                }),
-                takeUntil(this.unsubscribe$),
-            )
-            .subscribe(currentSelection => {
-                const numKeys = Object.keys(currentSelection).length
-                this.grayButtonStyle = {
-                    alkali: false,
-                    alkaline: false,
-                    lant: false,
-                    actinoid: false,
-                    transition: false,
-                    postTransition: false,
-                    metalloid: false,
-                    nonMetal: false,
-                    nobleGas: false,
-                }
-                if (numKeys === 1) {
-                    const key = Object.keys(currentSelection)[0]
-                    this.grayButtonStyle[key] = currentSelection[key]
-                }
-                this.cd.markForCheck()
-            })
+        // categorySelection$
+        //     .pipe(
+        //         filter(current => {
+        //             const key = Object.keys(current)[0]
+        //             const xxx = key as keyof HighlightState
+        //             return current[xxx]
+        //         }),
+        //         map(current => {
+        //             return Object.keys(current).reduce((acc, key) => {
+        //                 acc[key] = !current[key]
+        //                 return acc
+        //             }, {})
+        //         }),
+        //         takeUntil(this.unsubscribe$),
+        //     )
+        //     .subscribe(currentSelection => {
+        //         const numKeys = Object.keys(currentSelection).length
+        //         this.grayButtonStyle = {
+        //             alkali: false,
+        //             alkaline: false,
+        //             lant: false,
+        //             actinoid: false,
+        //             transition: false,
+        //             postTransition: false,
+        //             metalloid: false,
+        //             nonMetal: false,
+        //             nobleGas: false,
+        //         }
+        //         if (numKeys === 1) {
+        //             const key = Object.keys(currentSelection)[0]
+        //             this.grayButtonStyle[key] = currentSelection[key]
+        //         }
+        //         this.cd.markForCheck()
+        //     })
 
         // remove gray background
-        categorySelection$
-            .pipe(
-                filter(current => {
-                    const k = Object.keys(current)[0]
-                    return !current[k]
-                }),
-                takeUntil(this.unsubscribe$),
-            )
-            .subscribe(() => {
-                this.grayButtonStyle = {
-                    alkali: false,
-                    alkaline: false,
-                    lant: false,
-                    actinoid: false,
-                    transition: false,
-                    postTransition: false,
-                    metalloid: false,
-                    nonMetal: false,
-                    nobleGas: false,
-                }
-                this.cd.markForCheck()
-            })
+        // categorySelection$
+        //     .pipe(
+        //         filter(current => {
+        //             const k = Object.keys(current)[0]
+        //             return !current[k]
+        //         }),
+        //         takeUntil(this.unsubscribe$),
+        //     )
+        //     .subscribe(() => {
+        //         this.grayButtonStyle = {
+        //             alkali: false,
+        //             alkaline: false,
+        //             lant: false,
+        //             actinoid: false,
+        //             transition: false,
+        //             postTransition: false,
+        //             metalloid: false,
+        //             nonMetal: false,
+        //             nobleGas: false,
+        //         }
+        //         this.cd.markForCheck()
+        //     })
 
         this.service.currentAtomCategory$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
             const category = CATEGORY_MAP[v]

@@ -40,6 +40,8 @@ export interface HighlightState {
     metalloid: boolean
     nonMetal: boolean
     nobleGas: boolean
+    allMetals: boolean
+    allNonMetals: boolean
 }
 
 export const INIT_HIGHLIGHT_STATE: HighlightState = {
@@ -52,4 +54,6 @@ export const INIT_HIGHLIGHT_STATE: HighlightState = {
     metalloid: false,
     nonMetal: false,
     nobleGas: false,
+    allMetals: false,
+    allNonMetals: false,
 }
