@@ -29,23 +29,20 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     @Output()
     hoverAtom: EventEmitter<StyleAtom | null> = new EventEmitter<StyleAtom | null>()
 
-    backgroundStyles: any = {}
+    backgroundStyles: {
+      blurry: boolean,
+      grayout: boolean
+    } = {
+      blurry: false,
+      grayout: false,
+    }
     selectedPhase: string
 
     mouseEnterSubject = new Subject<StyleAtom>()
     mouseLeaveSubject = new Subject<void>()
     private unsubscribe$ = new Subject<void>()
 
-    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
-        this.backgroundStyles = {
-            blurry: false,
-            'solid-selected': false,
-            'liquid-selected': false,
-            'gas-selected': false,
-            'unknown-selected': false,
-            grayout: false,
-        }
-    }
+    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         const { data } = changes
