@@ -39,7 +39,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             const o = fromEvent($el, 'mouseenter').pipe(
                 mapTo({ [category]: true }),
                 tap(value => {
-                  console.log('mouse enters', value)
+                    console.log('mouse enters', value)
                 }),
                 takeUntil(this.unsubscribe$),
             )
@@ -51,7 +51,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             const o = fromEvent($el, 'mouseleave').pipe(
                 mapTo({ [category]: false }),
                 tap(value => {
-                  console.log('mouse leaves', value)
+                    console.log('mouse leaves', value)
                 }),
                 takeUntil(this.unsubscribe$),
             )
@@ -64,7 +64,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(
             mapTo({
                 ...INIT_HIGHLIGHT_STATE,
-                allMetals: true
+                allMetals: true,
             }),
         )
 
@@ -92,7 +92,7 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
             .pipe(
                 map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
                 tap(highlightState => {
-                  console.log(highlightState)
+                    console.log(highlightState)
                 }),
                 tap(highlightState => this.service.setHighlightState(highlightState)),
                 takeUntil(this.unsubscribe$),
