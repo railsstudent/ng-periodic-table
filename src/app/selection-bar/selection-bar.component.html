@@ -2,29 +2,51 @@
     <div class="metal-container">
         <div><span id="all-metals" class="title-underline">Metals </span></div>
         <div class="buttons">
-            <button id="alkali" class="alkali-metal" [class.selected]="hoverCategory === 'alkali'">
+            <button
+                id="alkali"
+                class="alkali-metal"
+                [class.selected]="hoverCategory === 'alkali'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('alkali')"
+            >
                 <span>Alkali metals</span>
             </button>
             <button
                 id="alkaline"
                 class="alkaline-earth-metal"
                 [class.selected]="hoverCategory === 'alkaline'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('alkaline')"
             >
                 <span>Alkaline earth metals</span>
             </button>
-            <button id="lant" class="lanthanide" [class.selected]="hoverCategory === 'lant'">
+            <button
+                id="lant"
+                class="lanthanide"
+                [class.selected]="hoverCategory === 'lant'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('lant')"
+            >
                 <span>Lanthanoids</span>
             </button>
-            <button id="actinoid" class="actinide" [class.selected]="hoverCategory === 'actinoid'">
+            <button
+                id="actinoid"
+                class="actinide"
+                [class.selected]="hoverCategory === 'actinoid'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('actinoid')"
+            >
                 <span>Actinoids</span>
             </button>
-            <button id="transition" class="transition-metal" [class.selected]="hoverCategory === 'transition'">
+            <button
+                id="transition"
+                class="transition-metal"
+                [class.selected]="hoverCategory === 'transition'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('transition')"
+            >
                 <span>Transition metals</span>
             </button>
             <button
                 id="postTransition"
                 class="post-transition-metal"
                 [class.selected]="hoverCategory === 'postTransition'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('postTransition')"
             >
                 <span>Post-transition metals</span>
             </button>
@@ -33,7 +55,12 @@
     <div class="other">
         <p class="title">&nbsp;</p>
         <div class="buttons">
-            <button id="metalloid" class="metalloid" [class.selected]="hoverCategory === 'metalloid'">
+            <button
+                id="metalloid"
+                class="metalloid"
+                [class.selected]="hoverCategory === 'metalloid'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('metalloid')"
+            >
                 <span>Metalloids</span>
             </button>
         </div>
@@ -41,10 +68,20 @@
     <div class="nonmetal-container">
         <div><span id="all-nonmetals" class="title-underline"> Nonmetals </span></div>
         <div class="buttons">
-            <button id="nonMetal" class="nonmetal" [class.selected]="hoverCategory === 'nonMetal'">
+            <button
+                id="nonMetal"
+                class="nonmetal"
+                [class.selected]="hoverCategory === 'nonMetal'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('nonMetal')"
+            >
                 <span>Other nonmetals</span>
             </button>
-            <button id="nobleGas" class="noble-gas" [class.selected]="hoverCategory === 'nobleGas'">
+            <button
+                id="nobleGas"
+                class="noble-gas"
+                [class.selected]="hoverCategory === 'nobleGas'"
+                [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('nobleGas')"
+            >
                 <span>Noble gases</span>
             </button>
         </div>

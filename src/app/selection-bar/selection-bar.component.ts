@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, O
 import { fromEvent, merge, Subject } from 'rxjs'
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent'
 import { map, share, takeUntil, tap } from 'rxjs/operators'
-import { Category, CATEGORY_MAP } from '../constant'
+import { Category, CATEGORY_GROUPS, CATEGORY_MAP } from '../constant'
 import { PeriodTableService } from '../periodic-table'
 
 @Component({
@@ -14,6 +14,7 @@ import { PeriodTableService } from '../periodic-table'
 export class SelectionBarComponent implements OnDestroy, AfterViewInit {
     hoverCategory: Category | null = null
     unsubscribe$ = new Subject()
+    hoverCategoryGroup: string[] = []
 
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
 
@@ -62,13 +63,14 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                 tap(current => this.service.setHighlightState(current)),
                 takeUntil(this.unsubscribe$),
             )
-            .subscribe(highlightState => {
-                this.hoverCategory = highlightState
+            .subscribe(hoverCategory => {
+                this.hoverCategory = hoverCategory
+                this.hoverCategoryGroup = hoverCategory ? CATEGORY_GROUPS[hoverCategory].map(cat => cat.toString()) : []
                 this.cd.markForCheck()
             })
 
-        this.service.currentAtomCategory$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
-            const category = CATEGORY_MAP[v]
+        this.service.currentAtomCategory$.pipe(takeUntil(this.unsubscribe$)).subscribe(strCategory => {
+            const category = CATEGORY_MAP[strCategory]
             if (category) {
                 this.hoverCategory = category
                 this.cd.markForCheck()
