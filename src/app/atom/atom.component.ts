@@ -56,27 +56,29 @@ export class AtomComponent implements OnInit, OnDestroy {
             .subscribe(() => this.hoverAtom.emit(null), (err: unknown) => console.error(err))
 
         this.service.selectedMetal$.subscribe(metalSelected => {
-            const alkali = metalSelected.alkali
-            const alkaline = metalSelected.alkaline
-            const lant = metalSelected.lant
-            const actinoid = metalSelected.actinoid
-            const transition = metalSelected.transition
-            const postTransition = metalSelected.postTransition
-            const metalloid = metalSelected.metalloid
-            const nonMetal = metalSelected.nonMetal
-            const nobleGas = metalSelected.nobleGas
-            const allMetals = alkali && alkaline && lant && actinoid && transition && postTransition
-            const allNonMetals = nonMetal && nobleGas
+            const {
+                alkali,
+                alkaline,
+                lant,
+                actinoid,
+                transition,
+                postTransition,
+                metalloid,
+                nonMetal,
+                nobleGas,
+                allMetals,
+                allNonMetals,
+            } = metalSelected
             ;(this.backgroundStyles['grayout'] =
-                (!allMetals && alkali && this.data.category !== 'alkali-metal') ||
-                (!allMetals && alkaline && this.data.category !== 'alkaline-earth-metal') ||
-                (!allMetals && lant && this.data.category !== 'lanthanide') ||
-                (!allMetals && actinoid && this.data.category !== 'actinide') ||
-                (!allMetals && transition && this.data.category !== 'transition-metal') ||
-                (!allMetals && postTransition && this.data.category !== 'post-transition-metal') ||
+                (alkali && this.data.category !== 'alkali-metal') ||
+                (alkaline && this.data.category !== 'alkaline-earth-metal') ||
+                (lant && this.data.category !== 'lanthanide') ||
+                (actinoid && this.data.category !== 'actinide') ||
+                (transition && this.data.category !== 'transition-metal') ||
+                (postTransition && this.data.category !== 'post-transition-metal') ||
                 (metalloid && this.data.category !== 'metalloid') ||
-                (!allNonMetals && nonMetal && this.data.category !== 'nonmetal') ||
-                (!allNonMetals && nobleGas && this.data.category !== 'noble-gas') ||
+                (nonMetal && this.data.category !== 'nonmetal') ||
+                (nobleGas && this.data.category !== 'noble-gas') ||
                 (allMetals && ['metalloid', 'nonmetal', 'noble-gas'].includes(this.data.category)) ||
                 (allNonMetals &&
                     [
