@@ -7,8 +7,6 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    OnChanges,
-    SimpleChanges,
 } from '@angular/core'
 import { Subject } from 'rxjs'
 import { debounceTime, takeUntil } from 'rxjs/operators'
@@ -22,7 +20,7 @@ import { StyleAtom } from '../types'
     styleUrls: ['./atom.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtomComponent implements OnInit, OnDestroy, OnChanges {
+export class AtomComponent implements OnInit, OnDestroy {
     @Input()
     data: StyleAtom
 
@@ -30,11 +28,9 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     hoverAtom: EventEmitter<StyleAtom | null> = new EventEmitter<StyleAtom | null>()
 
     backgroundStyles: {
-      blurry: boolean,
-      grayout: boolean
+        grayout: boolean
     } = {
-      blurry: false,
-      grayout: false,
+        grayout: false,
     }
     selectedPhase: string
 
@@ -43,16 +39,6 @@ export class AtomComponent implements OnInit, OnDestroy, OnChanges {
     private unsubscribe$ = new Subject<void>()
 
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
-
-    ngOnChanges(changes: SimpleChanges): void {
-        const { data } = changes
-        const { currentValue } = data
-        const { blurry = false } = currentValue
-        this.backgroundStyles = {
-            ...this.backgroundStyles,
-            blurry,
-        }
-    }
 
     ngOnInit() {
         this.mouseEnterSubject
