@@ -10,7 +10,7 @@ import {
 } from '@angular/core'
 import { Subject } from 'rxjs'
 import { debounceTime, takeUntil } from 'rxjs/operators'
-import { STAY_AT_LEAST } from '../constant'
+import { CATEGORY_GROUPS, CATEGORY_MAP, STAY_AT_LEAST } from '../constant'
 import { PeriodTableService } from '../periodic-table/'
 import { StyleAtom } from '../types'
 
@@ -56,41 +56,13 @@ export class AtomComponent implements OnInit, OnDestroy {
             .subscribe(() => this.hoverAtom.emit(null), (err: unknown) => console.error(err))
 
         this.service.selectedMetal$.subscribe(metalSelected => {
-            const {
-                alkali,
-                alkaline,
-                lant,
-                actinoid,
-                transition,
-                postTransition,
-                metalloid,
-                nonMetal,
-                nobleGas,
-                allMetals,
-                allNonMetals,
-            } = metalSelected
-            ;(this.backgroundStyles['grayout'] =
-                (alkali && this.data.category !== 'alkali-metal') ||
-                (alkaline && this.data.category !== 'alkaline-earth-metal') ||
-                (lant && this.data.category !== 'lanthanide') ||
-                (actinoid && this.data.category !== 'actinide') ||
-                (transition && this.data.category !== 'transition-metal') ||
-                (postTransition && this.data.category !== 'post-transition-metal') ||
-                (metalloid && this.data.category !== 'metalloid') ||
-                (nonMetal && this.data.category !== 'nonmetal') ||
-                (nobleGas && this.data.category !== 'noble-gas') ||
-                (allMetals && ['metalloid', 'nonmetal', 'noble-gas'].includes(this.data.category)) ||
-                (allNonMetals &&
-                    [
-                        'alkali-metal',
-                        'alkaline-earth-metal',
-                        'lanthanide',
-                        'actinide',
-                        'transition-metal',
-                        'post-transition-metal',
-                        'metalloid',
-                    ].includes(this.data.category))),
-                this.cd.markForCheck()
+            if (metalSelected) {
+                const groups = CATEGORY_GROUPS[metalSelected]
+                this.backgroundStyles['grayout'] = !groups.includes(CATEGORY_MAP[this.data.category])
+            } else {
+                this.backgroundStyles['grayout'] = false
+            }
+            this.cd.markForCheck()
         })
     }
 

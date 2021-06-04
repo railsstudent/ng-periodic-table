@@ -1,9 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core'
 import { fromEvent, merge, Subject } from 'rxjs'
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent'
-import { map, mapTo, share, takeUntil, tap } from 'rxjs/operators'
-import { CATEGORIES, CATEGORY_MAP } from '../constant'
-import { HighlightState, INIT_HIGHLIGHT_STATE } from '../types'
+import { map, share, takeUntil, tap } from 'rxjs/operators'
+import { Category, CATEGORY_MAP } from '../constant'
 import { PeriodTableService } from '../periodic-table'
 
 @Component({
@@ -13,46 +12,26 @@ import { PeriodTableService } from '../periodic-table'
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectionBarComponent implements OnDestroy, AfterViewInit {
-    highlightState: HighlightState
-    grayButtonStyle = {
-        alkali: false,
-        alkaline: false,
-        lant: false,
-        actinoid: false,
-        transition: false,
-        postTransition: false,
-        metalloid: false,
-        nonMetal: false,
-        nobleGas: false,
-    }
+    hoverCategory: Category | null = null
     unsubscribe$ = new Subject()
 
-    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {
-        this.highlightState = {
-            ...INIT_HIGHLIGHT_STATE,
-        }
-    }
+    constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
 
     ngAfterViewInit() {
-        const btnMouseEnter$ = CATEGORIES.map(category => {
+        const categories = Object.values(CATEGORY_MAP)
+        const btnMouseEnter$ = categories.map(category => {
             const $el = document.getElementById(category) as FromEventTarget<Event>
             const o = fromEvent($el, 'mouseenter').pipe(
-                mapTo({ [category]: true }),
-                tap(value => {
-                    console.log('mouse enters', value)
-                }),
+                map(() => category),
                 takeUntil(this.unsubscribe$),
             )
             return o
         })
 
-        const btnMouseLeave$ = CATEGORIES.map(category => {
+        const btnMouseLeave$ = categories.map(category => {
             const $el = document.getElementById(category) as FromEventTarget<Event>
             const o = fromEvent($el, 'mouseleave').pipe(
-                mapTo({ [category]: false }),
-                tap(value => {
-                    console.log('mouse leaves', value)
-                }),
+                map(() => null),
                 takeUntil(this.unsubscribe$),
             )
             return o
@@ -61,25 +40,15 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
         const $allMetals = document.getElementById('all-metals') as FromEventTarget<Event>
         const $allNonMetals = document.getElementById('all-nonmetals') as FromEventTarget<Event>
 
-        const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(
-            mapTo({
-                ...INIT_HIGHLIGHT_STATE,
-                allMetals: true,
-            }),
-        )
+        const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(map(() => Category.allMetals))
 
-        const allNonMetalsEnter$ = fromEvent($allNonMetals, 'mouseenter').pipe(
-            mapTo({
-                ...INIT_HIGHLIGHT_STATE,
-                allNonMetals: true,
-            }),
-        )
+        const allNonMetalsEnter$ = fromEvent($allNonMetals, 'mouseenter').pipe(map(() => Category.allNonMetals))
 
-        const metalsLeave$ = fromEvent($allMetals, 'mouseleave').pipe(mapTo(INIT_HIGHLIGHT_STATE))
-        const allMetalsLeave$ = fromEvent($allNonMetals, 'mouseleave').pipe(mapTo(INIT_HIGHLIGHT_STATE))
+        const metalsLeave$ = fromEvent($allMetals, 'mouseleave').pipe(map(() => null))
+        const allMetalsLeave$ = fromEvent($allNonMetals, 'mouseleave').pipe(map(() => null))
 
         // mouse hovers category
-        const categorySelection$ = merge<HighlightState>(
+        const categorySelection$ = merge<Category>(
             ...btnMouseEnter$,
             ...btnMouseLeave$,
             allMetalsEnter$,
@@ -90,30 +59,21 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
 
         categorySelection$
             .pipe(
-                map(current => ({ ...INIT_HIGHLIGHT_STATE, ...current })),
-                tap(highlightState => {
-                    console.log(highlightState)
-                }),
-                tap(highlightState => this.service.setHighlightState(highlightState)),
+                tap(current => this.service.setHighlightState(current)),
                 takeUntil(this.unsubscribe$),
             )
             .subscribe(highlightState => {
-                this.highlightState = highlightState
+                this.hoverCategory = highlightState
                 this.cd.markForCheck()
             })
 
         this.service.currentAtomCategory$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
             const category = CATEGORY_MAP[v]
             if (category) {
-                this.highlightState = { ...INIT_HIGHLIGHT_STATE, [category]: true }
+                this.hoverCategory = category
                 this.cd.markForCheck()
             }
         })
-    }
-
-    numHighlightState() {
-        return Object.keys(this.highlightState).filter(k => this.highlightState[k as keyof HighlightState] === true)
-            .length
     }
 
     ngOnDestroy() {

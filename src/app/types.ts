@@ -29,31 +29,3 @@ export interface HeaderInfo {
     colNum: number
     inside: boolean
 }
-
-export interface HighlightState {
-    alkali: boolean
-    alkaline: boolean
-    lant: boolean
-    actinoid: boolean
-    transition: boolean
-    postTransition: boolean
-    metalloid: boolean
-    nonMetal: boolean
-    nobleGas: boolean
-    allMetals: boolean
-    allNonMetals: boolean
-}
-
-export const INIT_HIGHLIGHT_STATE: HighlightState = {
-    alkali: false,
-    alkaline: false,
-    lant: false,
-    actinoid: false,
-    transition: false,
-    postTransition: false,
-    metalloid: false,
-    nonMetal: false,
-    nobleGas: false,
-    allMetals: false,
-    allNonMetals: false,
-}

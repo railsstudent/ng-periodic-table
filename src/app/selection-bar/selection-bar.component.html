@@ -2,53 +2,29 @@
     <div class="metal-container">
         <div><span id="all-metals" class="title-underline">Metals </span></div>
         <div class="buttons">
-            <button
-                id="alkali"
-                class="alkali-metal"
-                [class.selected]="highlightState.alkali === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.alkali && grayButtonStyle.alkali === true"
-                #alkali
-            >
+            <button id="alkali" class="alkali-metal" [class.selected]="hoverCategory === 'alkali'">
                 <span>Alkali metals</span>
             </button>
             <button
                 id="alkaline"
                 class="alkaline-earth-metal"
-                [class.selected]="highlightState.alkaline === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.alkaline && grayButtonStyle.alkaline === true"
-                #alkaline
+                [class.selected]="hoverCategory === 'alkaline'"
             >
                 <span>Alkaline earth metals</span>
             </button>
-            <button
-                id="lant"
-                class="lanthanide"
-                [class.selected]="highlightState.lant === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.lant && grayButtonStyle.lant === true"
-            >
+            <button id="lant" class="lanthanide" [class.selected]="hoverCategory === 'lant'">
                 <span>Lanthanoids</span>
             </button>
-            <button
-                id="actinoid"
-                class="actinide"
-                [class.selected]="highlightState.actinoid === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.actinoid && grayButtonStyle.actinoid === true"
-            >
+            <button id="actinoid" class="actinide" [class.selected]="hoverCategory === 'actinoid'">
                 <span>Actinoids</span>
             </button>
-            <button
-                id="transition"
-                class="transition-metal"
-                [class.selected]="highlightState.transition === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.transition && grayButtonStyle.transition === true"
-            >
+            <button id="transition" class="transition-metal" [class.selected]="hoverCategory === 'transition'">
                 <span>Transition metals</span>
             </button>
             <button
                 id="postTransition"
                 class="post-transition-metal"
-                [class.selected]="highlightState.postTransition === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.postTransition && grayButtonStyle.postTransition === true"
+                [class.selected]="hoverCategory === 'postTransition'"
             >
                 <span>Post-transition metals</span>
             </button>
@@ -57,12 +33,7 @@
     <div class="other">
         <p class="title">&nbsp;</p>
         <div class="buttons">
-            <button
-                id="metalloid"
-                class="metalloid"
-                [class.selected]="highlightState.metalloid === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.metalloid && grayButtonStyle.metalloid === true"
-            >
+            <button id="metalloid" class="metalloid" [class.selected]="hoverCategory === 'metalloid'">
                 <span>Metalloids</span>
             </button>
         </div>
@@ -70,20 +41,10 @@
     <div class="nonmetal-container">
         <div><span id="all-nonmetals" class="title-underline"> Nonmetals </span></div>
         <div class="buttons">
-            <button
-                id="nonMetal"
-                class="nonmetal"
-                [class.selected]="highlightState.nonMetal === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.nonMetal && grayButtonStyle.nonMetal === true"
-            >
+            <button id="nonMetal" class="nonmetal" [class.selected]="hoverCategory === 'nonMetal'">
                 <span>Other nonmetals</span>
             </button>
-            <button
-                id="nobleGas"
-                class="noble-gas"
-                [class.selected]="highlightState.nobleGas === true && numHighlightState() === 1"
-                [class.gray]="grayButtonStyle.nobleGas && grayButtonStyle.nobleGas === true"
-            >
+            <button id="nobleGas" class="noble-gas" [class.selected]="hoverCategory === 'nobleGas'">
                 <span>Noble gases</span>
             </button>
         </div>

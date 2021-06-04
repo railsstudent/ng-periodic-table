@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, Subject } from 'rxjs'
 import { map, shareReplay } from 'rxjs/operators'
-import { Phase } from '../constant'
-import { HighlightState, StyleAtom } from '../types'
+import { Category, Phase } from '../constant'
+import { StyleAtom } from '../types'
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +12,7 @@ export class PeriodTableService {
     private currentAtomCategorySub$ = new BehaviorSubject<string>('')
     currentAtomCategory$ = this.currentAtomCategorySub$.asObservable()
 
-    private selectedMetalSub$ = new Subject<HighlightState>()
+    private selectedMetalSub$ = new Subject<Category | null>()
     selectedMetal$ = this.selectedMetalSub$.asObservable()
 
     private selectedPhaseSub$ = new BehaviorSubject<Phase>('')
@@ -24,7 +24,7 @@ export class PeriodTableService {
         this.currentAtomCategorySub$.next(atomCategory)
     }
 
-    setHighlightState(highlightState: HighlightState) {
+    setHighlightState(highlightState: Category | null) {
         this.selectedMetalSub$.next(highlightState)
     }
 
