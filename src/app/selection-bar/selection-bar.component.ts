@@ -102,66 +102,6 @@ export class SelectionBarComponent implements OnDestroy, AfterViewInit {
                 this.cd.markForCheck()
             })
 
-        // gray out unselected categories
-        // categorySelection$
-        //     .pipe(
-        //         filter(current => {
-        //             const key = Object.keys(current)[0]
-        //             const xxx = key as keyof HighlightState
-        //             return current[xxx]
-        //         }),
-        //         map(current => {
-        //             return Object.keys(current).reduce((acc, key) => {
-        //                 acc[key] = !current[key]
-        //                 return acc
-        //             }, {})
-        //         }),
-        //         takeUntil(this.unsubscribe$),
-        //     )
-        //     .subscribe(currentSelection => {
-        //         const numKeys = Object.keys(currentSelection).length
-        //         this.grayButtonStyle = {
-        //             alkali: false,
-        //             alkaline: false,
-        //             lant: false,
-        //             actinoid: false,
-        //             transition: false,
-        //             postTransition: false,
-        //             metalloid: false,
-        //             nonMetal: false,
-        //             nobleGas: false,
-        //         }
-        //         if (numKeys === 1) {
-        //             const key = Object.keys(currentSelection)[0]
-        //             this.grayButtonStyle[key] = currentSelection[key]
-        //         }
-        //         this.cd.markForCheck()
-        //     })
-
-        // remove gray background
-        // categorySelection$
-        //     .pipe(
-        //         filter(current => {
-        //             const k = Object.keys(current)[0]
-        //             return !current[k]
-        //         }),
-        //         takeUntil(this.unsubscribe$),
-        //     )
-        //     .subscribe(() => {
-        //         this.grayButtonStyle = {
-        //             alkali: false,
-        //             alkaline: false,
-        //             lant: false,
-        //             actinoid: false,
-        //             transition: false,
-        //             postTransition: false,
-        //             metalloid: false,
-        //             nonMetal: false,
-        //             nobleGas: false,
-        //         }
-        //         this.cd.markForCheck()
-        //     })
-
         this.service.currentAtomCategory$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
             const category = CATEGORY_MAP[v]
             if (category) {
