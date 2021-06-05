@@ -1,9 +1,9 @@
 <div class="selection-bar">
     <div class="metal-container">
-        <div><span id="all-metals" class="title-underline">Metals </span></div>
+        <div><span id="all-metals" class="title-underline" #allMetals>Metals </span></div>
         <div class="buttons">
             <button
-                id="alkali"
+                #alkali
                 class="alkali-metal"
                 [class.selected]="hoverCategory === 'alkali'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('alkali')"
@@ -11,7 +11,7 @@
                 <span>Alkali metals</span>
             </button>
             <button
-                id="alkaline"
+                #alkaline
                 class="alkaline-earth-metal"
                 [class.selected]="hoverCategory === 'alkaline'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('alkaline')"
@@ -19,7 +19,7 @@
                 <span>Alkaline earth metals</span>
             </button>
             <button
-                id="lant"
+                #lant
                 class="lanthanide"
                 [class.selected]="hoverCategory === 'lant'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('lant')"
@@ -27,7 +27,7 @@
                 <span>Lanthanoids</span>
             </button>
             <button
-                id="actinoid"
+                #actinoid
                 class="actinide"
                 [class.selected]="hoverCategory === 'actinoid'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('actinoid')"
@@ -35,7 +35,7 @@
                 <span>Actinoids</span>
             </button>
             <button
-                id="transition"
+                #transition
                 class="transition-metal"
                 [class.selected]="hoverCategory === 'transition'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('transition')"
@@ -43,7 +43,7 @@
                 <span>Transition metals</span>
             </button>
             <button
-                id="postTransition"
+                #postTransition
                 class="post-transition-metal"
                 [class.selected]="hoverCategory === 'postTransition'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('postTransition')"
@@ -56,7 +56,7 @@
         <p class="title">&nbsp;</p>
         <div class="buttons">
             <button
-                id="metalloid"
+                #metalloid
                 class="metalloid"
                 [class.selected]="hoverCategory === 'metalloid'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('metalloid')"
@@ -66,10 +66,10 @@
         </div>
     </div>
     <div class="nonmetal-container">
-        <div><span id="all-nonmetals" class="title-underline"> Nonmetals </span></div>
+        <div><span id="all-nonmetals" class="title-underline" #allNonMetals> Nonmetals </span></div>
         <div class="buttons">
             <button
-                id="nonMetal"
+                #nonMetal
                 class="nonmetal"
                 [class.selected]="hoverCategory === 'nonMetal'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('nonMetal')"
@@ -77,7 +77,7 @@
                 <span>Other nonmetals</span>
             </button>
             <button
-                id="nobleGas"
+                #nobleGas
                 class="noble-gas"
                 [class.selected]="hoverCategory === 'nobleGas'"
                 [class.gray]="hoverCategoryGroup.length > 0 && !hoverCategoryGroup.includes('nobleGas')"

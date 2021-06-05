@@ -1,7 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core'
-import { fromEvent, merge, Subject } from 'rxjs'
-import { FromEventTarget } from 'rxjs/internal/observable/fromEvent'
-import { map, share, takeUntil, tap } from 'rxjs/operators'
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core'
+import { fromEvent, merge, Observable, Subject } from 'rxjs'
+import { map, takeUntil, tap } from 'rxjs/operators'
 import { Category, CATEGORY_GROUPS, CATEGORY_MAP } from '../constant'
 import { PeriodTableService } from '../periodic-table'
 
@@ -11,56 +18,83 @@ import { PeriodTableService } from '../periodic-table'
     styleUrls: ['./selection-bar.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectionBarComponent implements OnDestroy, AfterViewInit {
+export class SelectionBarComponent implements OnDestroy, OnInit {
     hoverCategory: Category | null = null
     unsubscribe$ = new Subject()
     hoverCategoryGroup: string[] = []
 
+    @ViewChild('alkali', { static: true })
+    alkali: ElementRef
+
+    @ViewChild('alkaline', { static: true })
+    alkaline: ElementRef
+
+    @ViewChild('lant', { static: true })
+    lant: ElementRef
+
+    @ViewChild('actinoid', { static: true })
+    actinoid: ElementRef
+
+    @ViewChild('transition', { static: true })
+    transition: ElementRef
+
+    @ViewChild('postTransition', { static: true })
+    postTransition: ElementRef
+
+    @ViewChild('metalloid', { static: true })
+    metalloid: ElementRef
+
+    @ViewChild('nonMetal', { static: true })
+    nonMetal: ElementRef
+
+    @ViewChild('nobleGas', { static: true })
+    nobleGas: ElementRef
+
+    @ViewChild('allMetals', { static: true })
+    allMetals: ElementRef
+
+    @ViewChild('allNonMetals', { static: true })
+    allNonMetals: ElementRef
+
     constructor(private service: PeriodTableService, private cd: ChangeDetectorRef) {}
 
-    ngAfterViewInit() {
-        const categories = Object.values(CATEGORY_MAP)
-        const btnMouseEnter$ = categories.map(category => {
-            const $el = document.getElementById(category) as FromEventTarget<Event>
-            const o = fromEvent($el, 'mouseenter').pipe(
-                map(() => category),
-                takeUntil(this.unsubscribe$),
+    ngOnInit() {
+        const nativeElements = {
+            [Category.alkali]: this.alkali.nativeElement,
+            [Category.alkaline]: this.alkaline.nativeElement,
+            [Category.actinoid]: this.actinoid.nativeElement,
+            [Category.lant]: this.lant.nativeElement,
+            [Category.metalloid]: this.metalloid.nativeElement,
+            [Category.nobleGas]: this.nobleGas.nativeElement,
+            [Category.nonMetal]: this.nonMetal.nativeElement,
+            [Category.postTransition]: this.postTransition.nativeElement,
+            [Category.transition]: this.transition.nativeElement,
+            [Category.allMetals]: this.allMetals.nativeElement,
+            [Category.allNonMetals]: this.allNonMetals.nativeElement,
+        }
+
+        const btnMouseEnters$: Observable<Category | null>[] = []
+        const btnMouseLeaves$: Observable<Category | null>[] = []
+
+        Object.keys(nativeElements).forEach(cat => {
+            const nativeElement = nativeElements[cat]
+            btnMouseEnters$.push(
+                fromEvent(nativeElement, 'mouseenter').pipe(
+                    map(() => Category[cat as keyof Category]),
+                    takeUntil(this.unsubscribe$),
+                ),
             )
-            return o
+            btnMouseLeaves$.push(
+                fromEvent(nativeElement, 'mouseleave').pipe(
+                    map(() => null),
+                    takeUntil(this.unsubscribe$),
+                ),
+            )
         })
 
-        const btnMouseLeave$ = categories.map(category => {
-            const $el = document.getElementById(category) as FromEventTarget<Event>
-            const o = fromEvent($el, 'mouseleave').pipe(
-                map(() => null),
-                takeUntil(this.unsubscribe$),
-            )
-            return o
-        })
-
-        const $allMetals = document.getElementById('all-metals') as FromEventTarget<Event>
-        const $allNonMetals = document.getElementById('all-nonmetals') as FromEventTarget<Event>
-
-        const allMetalsEnter$ = fromEvent($allMetals, 'mouseenter').pipe(map(() => Category.allMetals))
-
-        const allNonMetalsEnter$ = fromEvent($allNonMetals, 'mouseenter').pipe(map(() => Category.allNonMetals))
-
-        const metalsLeave$ = fromEvent($allMetals, 'mouseleave').pipe(map(() => null))
-        const allMetalsLeave$ = fromEvent($allNonMetals, 'mouseleave').pipe(map(() => null))
-
-        // mouse hovers category
-        const categorySelection$ = merge<Category>(
-            ...btnMouseEnter$,
-            ...btnMouseLeave$,
-            allMetalsEnter$,
-            allNonMetalsEnter$,
-            metalsLeave$,
-            allMetalsLeave$,
-        ).pipe(share())
-
-        categorySelection$
+        merge(...btnMouseEnters$, ...btnMouseLeaves$)
             .pipe(
-                tap(current => this.service.setHighlightState(current)),
+                tap(current => this.service.setCategory(current)),
                 takeUntil(this.unsubscribe$),
             )
             .subscribe(hoverCategory => {

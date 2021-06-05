@@ -21,8 +21,8 @@ export class PeriodTableService {
         this.currentAtomCategorySub$.next(atomCategory)
     }
 
-    setHighlightState(highlightState: Category | null) {
-        this.selectedMetalSub$.next(highlightState)
+    setCategory(category: Category | null) {
+        this.selectedMetalSub$.next(category)
     }
 
     getAtoms(): Observable<StyleAtom[]> {
