@@ -11,6 +11,7 @@
             <span class="index">{{ o.index }}</span> <span class="description">{{ o.description }}</span>
         </div>
 
+        <!--
         <div
             *ngFor="let o of rowHeader"
             class="periodic-row-num {{ o.className }}"
@@ -20,6 +21,8 @@
         >
             <span class="index">{{ o.index }}</span>
         </div>
+        -->
+        <app-row-selectors (selectedRow)="selectRowElements($event)"></app-row-selectors>
 
         <app-atom-details
             class="atom-details"

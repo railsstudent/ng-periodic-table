@@ -1,0 +1,40 @@
+@import '../../variables';
+
+:host {
+    display: grid;
+    grid-gap: $grid-gap;
+    grid-template-columns: 20px;
+    grid-auto-rows: $square;
+}
+
+.periodic {
+    &-row-num {
+        border: 1px solid #ccc;
+        color: $heading-color;
+        position: relative;
+        cursor: pointer;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        &.selected {
+            background: yellow;
+        }
+
+        span {
+            width: 100%;
+            text-align: center;
+            &.index {
+                font-size: 1.75em;
+            }
+
+            &.description {
+                font-size: 0.6em;
+                position: absolute;
+                bottom: 10%;
+            }
+        }
+    }
+}

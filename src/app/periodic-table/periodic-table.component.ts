@@ -13,7 +13,7 @@ import {
     Phase,
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
-import { HeaderInfo, StyleAtom } from '../types'
+import { HeaderInfo, StyleAtom, RowHeaderInfo } from '../types'
 
 @Component({
     selector: 'app-periodic-table',
@@ -86,13 +86,11 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
                     return atoms.map(atom =>
                         rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
                             ? atom
-                            : Object.assign({}, atom, { blurry: inside }),
+                            : { ...atom, blurry: inside },
                     )
                 } else if (colNum >= 1) {
                     return atoms.map(atom =>
-                        colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9
-                            ? atom
-                            : Object.assign({}, atom, { blurry: inside }),
+                        colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9 ? atom : { ...atom, blurry: inside },
                     )
                 }
 
@@ -118,11 +116,8 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         )
     }
 
-    updateRowHeaderSelected(rowNum: number, inside: boolean) {
-        this.unselectAllHeaders()
-        this.currentRowHeader = inside ? rowNum : null
-        this.rowHeader[rowNum - 1].selected = inside
-        this.headerSub$.next({ rowNum: inside ? rowNum : -1, colNum: -1, inside })
+    selectRowElements(rowHeader: RowHeaderInfo) {
+        this.headerSub$.next({ ...rowHeader, colNum: -1 })
     }
 
     updateColHeaderSelected(colNum: number, inside: boolean) {

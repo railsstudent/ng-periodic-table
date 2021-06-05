@@ -12,6 +12,7 @@ import { SelectionBarComponent } from './selection-bar/selection-bar.component'
 import { SharedModule } from './shared'
 import { AppShellComponent } from './app-shell/app-shell.component'
 import { AppPhasesComponent } from './app-phase-container/app-phases.component'
+import { RowSelectorsComponent } from './row-selectors/row-selectors.component'
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { AppPhasesComponent } from './app-phase-container/app-phases.component'
         AppWikiComponent,
         AppShellComponent,
         AppPhasesComponent,
+        RowSelectorsComponent,
     ],
     imports: [BrowserModule, HttpClientModule, SharedModule],
     providers: [Title],
