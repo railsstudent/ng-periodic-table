@@ -106,14 +106,14 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         this.unselectAllHeaders()
         this.currentRowHeader = inside ? rowNum : null
         this.rowHeader[rowNum - 1].selected = inside
-        this.headerSub$.next({ rowNum, colNum: -1, inside })
+        this.headerSub$.next({ rowNum: inside ? rowNum : -1, colNum: -1, inside })
     }
 
     updateColHeaderSelected(colNum: number, inside: boolean) {
         this.unselectAllHeaders()
         this.currentColHeader = inside ? colNum : null
         this.colHeader[colNum - 1].selected = inside
-        this.headerSub$.next({ rowNum: -1, colNum, inside })
+        this.headerSub$.next({ rowNum: -1, colNum: inside ? colNum : -1, inside })
     }
 
     unselectAllHeaders() {
