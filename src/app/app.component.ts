@@ -1,16 +1,7 @@
-import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Component } from '@angular/core'
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    template: '<app-shell></app-shell>',
 })
-export class AppComponent {
-    currentYear: number;
-
-    constructor(titleService: Title) {
-        titleService.setTitle('Periodic Table');
-        this.currentYear = new Date().getFullYear();
-    }
-}
+export class AppComponent {}
