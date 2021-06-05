@@ -1,13 +1,11 @@
-:host {
+  :host {
     margin-top: 10px;
     flex-grow: 1;
 }
 
 @import '../../variables';
 
-$square: 60px;
 $heading-color: #000088;
-$grid-gap: 4px;
 $selected-color: #fff;
 
 .periodic {
@@ -106,6 +104,12 @@ $selected-color: #fff;
                 grid-row: 4;
                 grid-column: 8;
             }
+        }
+
+        .app-phases {
+          grid-row: 3 / 5;
+          grid-column: 7 / 9;
+          border: 1px solid red;
         }
 
         .selected {

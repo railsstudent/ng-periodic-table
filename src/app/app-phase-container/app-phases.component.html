@@ -1,0 +1,18 @@
+<ng-container class="phases">
+  <div class="phase-row-1 col-1">
+    <app-phase [type]="'solid'" [symbol]="'C'"></app-phase>
+    <app-phase class="gap" [type]="'liquid'" [symbol]="'Hg'"></app-phase>
+  </div>
+  <div class="phase-row-1 col-2">
+      <div class="solid">Solid</div>
+      <div class="liquid">Liquid</div>
+  </div>
+  <div class="phase-row-2 col-1">
+      <app-phase [type]="'gas'" [symbol]="'H'"></app-phase>
+      <app-phase class="gap" [type]="'unknown'" [symbol]="'Rf'"></app-phase>
+  </div>
+  <div class="phase-row-2 col-2">
+      <div class="gas">Gas</div>
+      <div class="unknown">Unknown</div>
+  </div>
+</ng-container>

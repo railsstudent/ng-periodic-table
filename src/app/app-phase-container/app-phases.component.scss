@@ -1,0 +1,94 @@
+@import '../../variables';
+
+:host {
+  display: grid;
+  grid-gap: $grid-gap;
+  grid-template-columns: repeat(2, $square);
+  grid-template-rows: repeat(2, $square);
+}
+
+app-phase.gap {
+  margin-top: 5px;
+}
+
+  .phase-row-1 {
+    .solid,
+    .liquid {
+        padding: 2px;
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    .solid {
+        color: $solid-color;
+    }
+
+    .liquid {
+        color: $liquid-color;
+        margin-top: 5px;
+    }
+
+    &.col-1 {
+        grid-row: 1;
+        grid-column: 1;
+
+        .solid,
+        .liquid {
+            width: 50%;
+            margin: 0 0 0 auto;
+            border: 1px solid #000;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .liquid {
+            margin-top: 5px;
+        }
+    }
+
+    &.col-2 {
+      grid-row: 1;
+      grid-column: 2;
+    }
+}
+
+.phase-row-2 {
+    .gas,
+    .unknown {
+        padding: 2px;
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    .gas {
+        color: $gas-color;
+    }
+
+    .unknown {
+        color: $unknown-color;
+        margin-top: 5px;
+    }
+
+    &.col-1 {
+        grid-row: 2;
+        grid-column: 1;
+
+        .gas,
+        .unknown {
+            width: 50%;
+            margin: 0 0 0 auto;
+            border: 1px solid #000;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .unknown {
+            margin-top: 5px;
+        }
+    }
+
+    &.col-2 {
+        grid-row: 2;
+        grid-column: 2;
+    }
+  }

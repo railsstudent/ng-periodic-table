@@ -10,7 +10,8 @@ import { FooterComponent } from './footer/footer.component'
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component'
 import { SelectionBarComponent } from './selection-bar/selection-bar.component'
 import { SharedModule } from './shared'
-import { AppShellComponent } from './app-shell/app-shell.component'
+import { AppShellComponent } from './app-shell/app-shell.component';
+import { AppPhasesComponent } from './app-phase-container/app-phases.component'
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { AppShellComponent } from './app-shell/app-shell.component'
         AppPhaseComponent,
         AppWikiComponent,
         AppShellComponent,
+        AppPhasesComponent,
     ],
     imports: [BrowserModule, HttpClientModule, SharedModule],
     providers: [Title],

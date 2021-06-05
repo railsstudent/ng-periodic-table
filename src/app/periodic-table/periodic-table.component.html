@@ -27,6 +27,7 @@
             [data]="currentAtom"
         ></app-atom-details>
 
+        <!--
         <div class="phase-row-1 col-1">
             <app-phase [type]="'solid'" [symbol]="'C'"></app-phase>
             <app-phase class="gap" [type]="'liquid'" [symbol]="'Hg'"></app-phase>
@@ -43,6 +44,8 @@
             <div class="gas">Gas</div>
             <div class="unknown">Unknown</div>
         </div>
+        -->
+        <app-phases class="app-phases"></app-phases>
 
         <ng-container *ngIf="(atoms$ | async) as atoms">
             <app-atom
