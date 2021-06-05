@@ -1,25 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { AppPhasesComponent } from './app-phases.component';
+import { AppPhasesComponent } from './app-phases.component'
 
 describe('AppPhasesComponent', () => {
-  let component: AppPhasesComponent;
-  let fixture: ComponentFixture<AppPhasesComponent>;
+    let component: AppPhasesComponent
+    let fixture: ComponentFixture<AppPhasesComponent>
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ AppPhasesComponent ]
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [AppPhasesComponent],
+        }).compileComponents()
     })
-    .compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AppPhasesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AppPhasesComponent)
+        component = fixture.componentInstance
+        fixture.detectChanges()
+    })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    it('should create', () => {
+        expect(component).toBeTruthy()
+    })
+})

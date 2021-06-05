@@ -1,4 +1,4 @@
-  :host {
+:host {
     margin-top: 10px;
     flex-grow: 1;
 }
@@ -107,9 +107,9 @@ $selected-color: #fff;
         }
 
         .app-phases {
-          grid-row: 3 / 5;
-          grid-column: 7 / 9;
-          border: 1px solid red;
+            grid-row: 3 / 5;
+            grid-column: 7 / 9;
+            border: 1px solid red;
         }
 
         .selected {
