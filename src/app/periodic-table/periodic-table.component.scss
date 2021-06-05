@@ -5,9 +5,6 @@
 
 @import '../../variables';
 
-$heading-color: #000088;
-$selected-color: #fff;
-
 .periodic {
     &-container {
         display: flex;
@@ -19,6 +16,16 @@ $selected-color: #fff;
         grid-gap: $grid-gap;
         grid-template-columns: 20px repeat(18, $square);
         grid-auto-rows: $square;
+
+        .app-col-selectors {
+            grid-row: 1;
+            grid-column: 1 / -1;
+        }
+
+        .app-row-selectors {
+            grid-row: 2 / 9;
+            grid-column: 1;
+        }
 
         .app-phases {
             grid-row: 3 / 5;

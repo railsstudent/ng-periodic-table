@@ -13,7 +13,7 @@ import {
     Phase,
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
-import { HeaderInfo, StyleAtom, RowHeaderInfo } from '../types'
+import { HeaderInfo, StyleAtom, RowHeaderInfo, ColHeaderInfo } from '../types'
 
 @Component({
     selector: 'app-periodic-table',
@@ -118,6 +118,10 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
 
     selectRowElements(rowHeader: RowHeaderInfo) {
         this.headerSub$.next({ ...rowHeader, colNum: -1 })
+    }
+
+    selectColElements(colHeader: ColHeaderInfo) {
+        this.headerSub$.next({ ...colHeader, rowNum: -1 })
     }
 
     updateColHeaderSelected(colNum: number, inside: boolean) {

@@ -34,3 +34,8 @@ export interface RowHeaderInfo {
     rowNum: number
     inside: boolean
 }
+
+export interface ColHeaderInfo {
+    colNum: number
+    inside: boolean
+}

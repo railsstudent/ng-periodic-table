@@ -1,28 +1,7 @@
 <div class="periodic-container">
     <div class="periodic-grid">
-        <div class="periodic-col-num">&nbsp;</div>
-        <div
-            class="periodic-col-num"
-            *ngFor="let o of colHeader"
-            (mouseenter)="updateColHeaderSelected(o.index, true)"
-            (mouseleave)="updateColHeaderSelected(o.index, false)"
-            [class.selected]="o.selected"
-        >
-            <span class="index">{{ o.index }}</span> <span class="description">{{ o.description }}</span>
-        </div>
-
-        <!--
-        <div
-            *ngFor="let o of rowHeader"
-            class="periodic-row-num {{ o.className }}"
-            (mouseenter)="updateRowHeaderSelected(o.index, true)"
-            (mouseleave)="updateRowHeaderSelected(o.index, false)"
-            [class.selected]="o.selected"
-        >
-            <span class="index">{{ o.index }}</span>
-        </div>
-        -->
-        <app-row-selectors (selectedRow)="selectRowElements($event)"></app-row-selectors>
+        <app-col-selectors class="app-col-selectors" (selectedCol)="selectColElements($event)"></app-col-selectors>
+        <app-row-selectors class="app-row-selectors" (selectedRow)="selectRowElements($event)"></app-row-selectors>
 
         <app-atom-details
             class="atom-details"

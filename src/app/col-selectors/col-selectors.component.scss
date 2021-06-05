@@ -3,11 +3,11 @@
 :host {
     display: grid;
     grid-gap: $grid-gap;
-    grid-template-columns: 20px;
-    grid-template-rows: repeat(7, $square);
+    grid-template-columns: 20px repeat(18, $square);
+    grid-template-rows: $square;
 }
 
-.periodic-row-num {
+.periodic-col-num {
     border: 1px solid #ccc;
     color: $heading-color;
     position: relative;
