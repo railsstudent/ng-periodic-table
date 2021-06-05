@@ -3,6 +3,8 @@ import { combineLatest, Observable, Subject } from 'rxjs'
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
+    CATEGORY_GROUPS,
+    CATEGORY_MAP,
     DESCRIPTION,
     HEADER_STAY_AT_LEAST,
     LANT_ATOM_GROUP,
@@ -70,8 +72,13 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             debounceTime(HEADER_STAY_AT_LEAST),
         )
 
-        this.atoms$ = combineLatest([this.headerMove$, this.service.getAtoms(), this.service.selectedPhase$]).pipe(
-            map(([headerMove, atoms, selectedPhase]) => {
+        this.atoms$ = combineLatest([
+            this.headerMove$,
+            this.service.getAtoms(),
+            this.service.selectedPhase$,
+            this.service.selectedMetal$,
+        ]).pipe(
+            map(([headerMove, atoms, selectedPhase, selectedMetal]) => {
                 const { rowNum, colNum, inside } = headerMove
                 if (rowNum >= 1) {
                     return atoms.map(atom =>
@@ -86,17 +93,24 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
                             : Object.assign({}, atom, { blurry: inside }),
                     )
                 }
-                return atoms.map(atom => ({
-                    ...atom,
-                    solidStyle: atom.phase === 'solid' && selectedPhase !== 'solid',
-                    gasStyle: atom.phase === 'gas' && selectedPhase !== 'gas',
-                    unknownStyle: atom.phase === 'unknown' && selectedPhase !== 'unknown',
-                    liquidStyle: atom.phase === 'liquid' && selectedPhase !== 'liquid',
-                    solidSelectedStyle: atom.phase === 'solid' && selectedPhase === 'solid',
-                    gasSelectedStyle: atom.phase === 'gas' && selectedPhase === 'gas',
-                    unknownSelectedStyle: atom.phase === 'unknown' && selectedPhase === 'unknown',
-                    liquidSelectedStyle: atom.phase === 'liquid' && selectedPhase === 'liquid',
-                }))
+
+                return atoms.map(atom => {
+                    const groups = selectedMetal ? CATEGORY_GROUPS[selectedMetal] : []
+                    const grayout = groups.length > 0 && !groups.includes(CATEGORY_MAP[atom.category])
+
+                    return {
+                        ...atom,
+                        solidStyle: atom.phase === 'solid' && selectedPhase !== 'solid',
+                        gasStyle: atom.phase === 'gas' && selectedPhase !== 'gas',
+                        unknownStyle: atom.phase === 'unknown' && selectedPhase !== 'unknown',
+                        liquidStyle: atom.phase === 'liquid' && selectedPhase !== 'liquid',
+                        solidSelectedStyle: atom.phase === 'solid' && selectedPhase === 'solid',
+                        gasSelectedStyle: atom.phase === 'gas' && selectedPhase === 'gas',
+                        unknownSelectedStyle: atom.phase === 'unknown' && selectedPhase === 'unknown',
+                        liquidSelectedStyle: atom.phase === 'liquid' && selectedPhase === 'liquid',
+                        grayout,
+                    }
+                })
             }),
             takeUntil(this.unsubscribe$),
         )
