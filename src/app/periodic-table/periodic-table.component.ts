@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core'
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs'
-import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators'
+import { debounceTime, map, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
     CATEGORY_GROUPS,
@@ -28,16 +28,17 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
 
     colHeader: { index: number; description: string; selected: boolean }[]
     rowHeader: { index: number; className: string; selected: boolean }[]
-    unsubscribe$ = new Subject<void>()
-    headerSub$ = new Subject<HeaderInfo>()
-    headerMove$: Observable<HeaderInfo>
+    unsubscribe$ = new Subject<boolean>()
+    headerSub$ = new BehaviorSubject<HeaderInfo>({
+        rowNum: -1,
+        colNum: -1,
+        inside: false,
+    })
+    headerMove$ = this.headerSub$.asObservable()
     atoms$: Observable<StyleAtom[]>
     selectedPhaseSub$ = new BehaviorSubject<Phase>('')
 
     currentAtom: StyleAtom | null
-    currentRowHeader: number | null
-    currentColHeader: number | null
-
     wikiAtomName = ''
 
     constructor(private service: PeriodTableService) {
@@ -60,19 +61,10 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         ]
 
         this.currentAtom = null
-        this.currentRowHeader = null
-        this.currentColHeader = null
     }
 
     ngOnInit() {
-        this.headerMove$ = this.headerSub$.pipe(
-            startWith({
-                rowNum: -1,
-                colNum: -1,
-                inside: false,
-            }),
-            debounceTime(HEADER_STAY_AT_LEAST),
-        )
+        this.headerMove$ = this.headerSub$.pipe(debounceTime(HEADER_STAY_AT_LEAST))
 
         this.atoms$ = combineLatest([
             this.headerMove$,
@@ -124,26 +116,14 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         this.headerSub$.next({ ...colHeader, rowNum: -1 })
     }
 
-    updateColHeaderSelected(colNum: number, inside: boolean) {
-        this.unselectAllHeaders()
-        this.currentColHeader = inside ? colNum : null
-        this.colHeader[colNum - 1].selected = inside
-        this.headerSub$.next({ rowNum: -1, colNum: inside ? colNum : -1, inside })
-    }
-
-    unselectAllHeaders() {
-        this.rowHeader.forEach(r => (r.selected = false))
-        this.colHeader.forEach(c => (c.selected = false))
-    }
-
     showAtomDetails(atom: StyleAtom) {
-        this.rowHeader.forEach((r, index) => {
-            if (r && r.selected && (!this.currentRowHeader || index !== this.currentRowHeader - 1)) {
+        this.rowHeader.forEach(r => {
+            if (r && r.selected) {
                 r.selected = false
             }
         })
-        this.colHeader.forEach((c, index) => {
-            if (c && c.selected && (!this.currentColHeader || index !== this.currentColHeader - 1)) {
+        this.colHeader.forEach(c => {
+            if (c && c.selected) {
                 c.selected = false
             }
         })
@@ -165,7 +145,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.unsubscribe$.next()
+        this.unsubscribe$.next(true)
         this.unsubscribe$.complete()
     }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
 import { RowHeaderInfo } from '../types'
 
 @Component({
@@ -15,6 +15,7 @@ import { RowHeaderInfo } from '../types'
         </div>
     `,
     styleUrls: ['./row-selectors.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RowSelectorsComponent {
     @Output()

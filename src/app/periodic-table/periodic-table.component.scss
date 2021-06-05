@@ -51,58 +51,6 @@
         }
     }
 
-    &-row-num,
-    &-col-num {
-        border: 1px solid #ccc;
-        color: $heading-color;
-        position: relative;
-        cursor: pointer;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-
-        span {
-            width: 100%;
-            text-align: center;
-            &.index {
-                font-size: 1.75em;
-            }
-
-            &.description {
-                font-size: 0.6em;
-                position: absolute;
-                bottom: 10%;
-            }
-        }
-    }
-
-    &-row-num {
-        grid-column: 1;
-        &.one {
-            grid-row: 2;
-        }
-        &.two {
-            grid-row: 3;
-        }
-        &.three {
-            grid-row: 4;
-        }
-        &.four {
-            grid-row: 5;
-        }
-        &.five {
-            grid-row: 6;
-        }
-        &.six {
-            grid-row: 7;
-        }
-        &.seven {
-            grid-row: 8;
-        }
-    }
-
     &-atom {
         &-1 {
             grid-row: 2;

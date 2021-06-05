@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
 import { MAX_COL_INDEX } from '../constant'
 import { ColHeaderInfo } from '../types'
 
@@ -23,6 +23,7 @@ const COLUMN_Halogens = 16
         </ng-container>
     `,
     styleUrls: ['./col-selectors.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColSelectorsComponent {
     @Output()
