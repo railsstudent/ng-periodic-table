@@ -20,96 +20,9 @@ $selected-color: #fff;
         grid-template-columns: 20px repeat(18, $square);
         grid-auto-rows: $square;
 
-        app-phase.gap {
-            margin-top: 5px;
-        }
-
-        .phase-row-1 {
-            .solid,
-            .liquid {
-                padding: 2px;
-                font-size: 1em;
-                font-weight: bold;
-            }
-
-            .solid {
-                color: $solid-color;
-            }
-
-            .liquid {
-                color: $liquid-color;
-                margin-top: 5px;
-            }
-
-            &.col-1 {
-                grid-row: 3;
-                grid-column: 7;
-
-                .solid,
-                .liquid {
-                    width: 50%;
-                    margin: 0 0 0 auto;
-                    border: 1px solid #000;
-                    text-align: center;
-                    cursor: pointer;
-                }
-
-                .liquid {
-                    margin-top: 5px;
-                }
-            }
-
-            &.col-2 {
-                grid-row: 3;
-                grid-column: 8;
-            }
-        }
-
-        .phase-row-2 {
-            .gas,
-            .unknown {
-                padding: 2px;
-                font-size: 1em;
-                font-weight: bold;
-            }
-
-            .gas {
-                color: $gas-color;
-            }
-
-            .unknown {
-                color: $unknown-color;
-                margin-top: 5px;
-            }
-
-            &.col-1 {
-                grid-row: 4;
-                grid-column: 7;
-
-                .gas,
-                .unknown {
-                    width: 50%;
-                    margin: 0 0 0 auto;
-                    border: 1px solid #000;
-                    text-align: center;
-                    cursor: pointer;
-                }
-
-                .unknown {
-                    margin-top: 5px;
-                }
-            }
-
-            &.col-2 {
-                grid-row: 4;
-                grid-column: 8;
-            }
-        }
-
         .app-phases {
             grid-row: 3 / 5;
             grid-column: 7 / 9;
-            border: 1px solid red;
         }
 
         .selected {

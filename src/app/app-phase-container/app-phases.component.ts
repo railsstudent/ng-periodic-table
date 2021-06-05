@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
+import { Phase } from '../constant'
 
 @Component({
     selector: 'app-phases',
@@ -6,8 +7,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
     styleUrls: ['./app-phases.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppPhasesComponent implements OnInit {
-    constructor() {}
+export class AppPhasesComponent {
+    @Output()
+    hoverPhase = new EventEmitter<Phase>()
 
-    ngOnInit(): void {}
+    hoverPhaseHandled(phase: Phase) {
+        this.hoverPhase.emit(phase)
+    }
 }

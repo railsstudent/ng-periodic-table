@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core'
-import { combineLatest, Observable, Subject } from 'rxjs'
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs'
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
@@ -10,6 +10,7 @@ import {
     LANT_ATOM_GROUP,
     MAX_COL_INDEX,
     MAX_ROW_INDEX,
+    Phase,
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
 import { HeaderInfo, StyleAtom } from '../types'
@@ -31,6 +32,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     headerSub$ = new Subject<HeaderInfo>()
     headerMove$: Observable<HeaderInfo>
     atoms$: Observable<StyleAtom[]>
+    selectedPhaseSub$ = new BehaviorSubject<Phase>('')
 
     currentAtom: StyleAtom | null
     currentRowHeader: number | null
@@ -75,7 +77,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
         this.atoms$ = combineLatest([
             this.headerMove$,
             this.service.getAtoms(),
-            this.service.selectedPhase$,
+            this.selectedPhaseSub$,
             this.service.selectedMetal$,
         ]).pipe(
             map(([headerMove, atoms, selectedPhase, selectedMetal]) => {
