@@ -10,7 +10,8 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "format": "pretty-quick",
-        "format-staged": "pretty-quick --staged"
+        "format-staged": "pretty-quick --staged",
+        "deploy": "ng deploy --base-href='https://railsstudent.github.io/ng-periodic-table/' --repo='https://github.com/railsstudent/ng-periodic-table.git' --no-silent"
     },
     "private": true,
     "dependencies": {
