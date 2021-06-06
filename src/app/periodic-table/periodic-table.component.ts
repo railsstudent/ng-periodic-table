@@ -133,7 +133,8 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             this.currentAtom = atom
             const { xpos, ypos } = this.currentAtom
             if (ypos > MAX_ROW_INDEX) {
-                ;(this.selectedAtomRow = ypos - 2), (this.selectedAtomCol = null)
+                this.selectedAtomCol = null
+                this.selectedAtomRow = ypos - 2
             } else {
                 this.selectedAtomRow = ypos
                 this.selectedAtomCol = xpos
