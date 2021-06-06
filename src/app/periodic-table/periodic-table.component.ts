@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core'
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs'
+import { BehaviorSubject, merge, Observable, Subject } from 'rxjs'
 import { debounceTime, map, takeUntil } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
@@ -14,6 +14,11 @@ import {
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
 import { HeaderInfo, StyleAtom, RowHeaderInfo, ColHeaderInfo } from '../types'
+
+const langAtonRow = 6
+const actAtomRow = 7
+const lantAtomPos = 8
+const actAtomPos = 9
 
 @Component({
     selector: 'app-periodic-table',
@@ -38,6 +43,7 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     atoms$: Observable<StyleAtom[]>
     selectedPhaseSub$ = new BehaviorSubject<Phase>('')
 
+    allAtoms: StyleAtom[] = []
     currentAtom: StyleAtom | null
     wikiAtomName = ''
 
@@ -66,46 +72,66 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.headerMove$ = this.headerSub$.pipe(debounceTime(HEADER_STAY_AT_LEAST))
 
-        this.atoms$ = combineLatest([
-            this.headerMove$,
-            this.service.getAtoms(),
-            this.selectedPhaseSub$,
-            this.service.selectedMetal$,
-        ]).pipe(
-            map(([headerMove, atoms, selectedPhase, selectedMetal]) => {
-                const { rowNum, colNum, inside } = headerMove
-                if (rowNum >= 1) {
-                    return atoms.map(atom =>
-                        rowNum === atom.ypos || (rowNum === 6 && atom.ypos === 8) || (rowNum === 7 && atom.ypos === 9)
-                            ? atom
-                            : { ...atom, blurry: inside },
-                    )
-                } else if (colNum >= 1) {
-                    return atoms.map(atom =>
-                        colNum === atom.xpos && atom.ypos !== 8 && atom.ypos !== 9 ? atom : { ...atom, blurry: inside },
-                    )
-                }
+        this.service
+            .getAtoms()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(atoms => (this.allAtoms = atoms))
 
-                return atoms.map(atom => {
-                    const groups = selectedMetal ? CATEGORY_GROUPS[selectedMetal] : []
+        const phaseAtoms$ = this.selectedPhaseSub$.pipe(
+            map(selectedPhase =>
+                this.allAtoms.map(atom => ({
+                    ...atom,
+                    solidStyle: atom.phase === 'solid' && selectedPhase !== 'solid',
+                    gasStyle: atom.phase === 'gas' && selectedPhase !== 'gas',
+                    unknownStyle: atom.phase === 'unknown' && selectedPhase !== 'unknown',
+                    liquidStyle: atom.phase === 'liquid' && selectedPhase !== 'liquid',
+                    solidSelectedStyle: atom.phase === 'solid' && selectedPhase === 'solid',
+                    gasSelectedStyle: atom.phase === 'gas' && selectedPhase === 'gas',
+                    unknownSelectedStyle: atom.phase === 'unknown' && selectedPhase === 'unknown',
+                    liquidSelectedStyle: atom.phase === 'liquid' && selectedPhase === 'liquid',
+                })),
+            ),
+            takeUntil(this.unsubscribe$),
+        )
+
+        const categoryAtoms$ = this.service.selectedMetal$.pipe(
+            map(selectedMetal => {
+                const groups = selectedMetal ? CATEGORY_GROUPS[selectedMetal] : []
+                return this.allAtoms.map(atom => {
                     const grayout = groups.length > 0 && !groups.includes(CATEGORY_MAP[atom.category])
-
                     return {
                         ...atom,
-                        solidStyle: atom.phase === 'solid' && selectedPhase !== 'solid',
-                        gasStyle: atom.phase === 'gas' && selectedPhase !== 'gas',
-                        unknownStyle: atom.phase === 'unknown' && selectedPhase !== 'unknown',
-                        liquidStyle: atom.phase === 'liquid' && selectedPhase !== 'liquid',
-                        solidSelectedStyle: atom.phase === 'solid' && selectedPhase === 'solid',
-                        gasSelectedStyle: atom.phase === 'gas' && selectedPhase === 'gas',
-                        unknownSelectedStyle: atom.phase === 'unknown' && selectedPhase === 'unknown',
-                        liquidSelectedStyle: atom.phase === 'liquid' && selectedPhase === 'liquid',
                         grayout,
                     }
                 })
             }),
             takeUntil(this.unsubscribe$),
         )
+
+        const selectedAtoms$ = this.headerMove$.pipe(
+            map(headerMove => {
+                const { rowNum, colNum, inside } = headerMove
+                if (rowNum >= 1) {
+                    return this.allAtoms.map(atom => {
+                        const isLangAtomSelected = rowNum === langAtonRow && atom.ypos === lantAtomPos
+                        const isActAtomSelected = rowNum === actAtomRow && atom.ypos === actAtomPos
+                        return rowNum === atom.ypos || isLangAtomSelected || isActAtomSelected
+                            ? atom
+                            : { ...atom, blurry: inside }
+                    })
+                } else if (colNum >= 1) {
+                    return this.allAtoms.map(atom =>
+                        colNum === atom.xpos && atom.ypos !== lantAtomPos && atom.ypos !== actAtomPos
+                            ? atom
+                            : { ...atom, blurry: inside },
+                    )
+                }
+                return this.allAtoms
+            }),
+            takeUntil(this.unsubscribe$),
+        )
+
+        this.atoms$ = merge(selectedAtoms$, phaseAtoms$, categoryAtoms$)
     }
 
     selectRowElements(rowHeader: RowHeaderInfo) {
