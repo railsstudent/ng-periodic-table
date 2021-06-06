@@ -13,7 +13,7 @@ import {
     Phase,
 } from '../constant'
 import { PeriodTableService } from './periodic-table.service'
-import { HeaderInfo, StyleAtom, RowHeaderInfo, ColHeaderInfo } from '../types'
+import { StyleAtom, RowHeaderInfo, ColHeaderInfo } from '../types'
 
 const langAtonRow = 6
 const actAtomRow = 7
@@ -34,12 +34,18 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     colHeader: { index: number; description: string; selected: boolean }[]
     rowHeader: { index: number; className: string; selected: boolean }[]
     unsubscribe$ = new Subject<boolean>()
-    headerSub$ = new BehaviorSubject<HeaderInfo>({
-        rowNum: -1,
+    colHeaderSub$ = new BehaviorSubject<ColHeaderInfo>({
         colNum: -1,
         inside: false,
     })
-    headerMove$ = this.headerSub$.asObservable()
+    colHeaderMove$ = this.colHeaderSub$.pipe(debounceTime(HEADER_STAY_AT_LEAST))
+
+    rowHeaderSub$ = new BehaviorSubject<RowHeaderInfo>({
+        rowNum: -1,
+        inside: false,
+    })
+    rowHeaderMove$ = this.rowHeaderSub$.pipe(debounceTime(HEADER_STAY_AT_LEAST))
+
     atoms$: Observable<StyleAtom[]>
     selectedPhaseSub$ = new BehaviorSubject<Phase>('')
 
@@ -70,8 +76,6 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.headerMove$ = this.headerSub$.pipe(debounceTime(HEADER_STAY_AT_LEAST))
-
         this.service
             .getAtoms()
             .pipe(takeUntil(this.unsubscribe$))
@@ -108,38 +112,39 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe$),
         )
 
-        const selectedAtoms$ = this.headerMove$.pipe(
+        const colAtoms$ = this.colHeaderMove$.pipe(
             map(headerMove => {
-                const { rowNum, colNum, inside } = headerMove
-                if (rowNum >= 1) {
-                    return this.allAtoms.map(atom => {
-                        const isLangAtomSelected = rowNum === langAtonRow && atom.ypos === lantAtomPos
-                        const isActAtomSelected = rowNum === actAtomRow && atom.ypos === actAtomPos
-                        return rowNum === atom.ypos || isLangAtomSelected || isActAtomSelected
-                            ? atom
-                            : { ...atom, blurry: inside }
-                    })
-                } else if (colNum >= 1) {
-                    return this.allAtoms.map(atom =>
-                        colNum === atom.xpos && atom.ypos !== lantAtomPos && atom.ypos !== actAtomPos
-                            ? atom
-                            : { ...atom, blurry: inside },
-                    )
+                const { colNum, inside } = headerMove
+                if (colNum < 1) {
+                    return this.allAtoms
                 }
-                return this.allAtoms
+                return this.allAtoms.map(atom =>
+                    colNum === atom.xpos && atom.ypos !== lantAtomPos && atom.ypos !== actAtomPos
+                        ? atom
+                        : { ...atom, blurry: inside },
+                )
             }),
             takeUntil(this.unsubscribe$),
         )
 
-        this.atoms$ = merge(selectedAtoms$, phaseAtoms$, categoryAtoms$)
-    }
+        const rowAtoms$ = this.rowHeaderMove$.pipe(
+            map(headerMove => {
+                const { rowNum, inside } = headerMove
+                if (rowNum < 1) {
+                    return this.allAtoms
+                }
+                return this.allAtoms.map(atom => {
+                    const isLangAtomSelected = rowNum === langAtonRow && atom.ypos === lantAtomPos
+                    const isActAtomSelected = rowNum === actAtomRow && atom.ypos === actAtomPos
+                    return rowNum === atom.ypos || isLangAtomSelected || isActAtomSelected
+                        ? atom
+                        : { ...atom, blurry: inside }
+                })
+            }),
+            takeUntil(this.unsubscribe$),
+        )
 
-    selectRowElements(rowHeader: RowHeaderInfo) {
-        this.headerSub$.next({ ...rowHeader, colNum: -1 })
-    }
-
-    selectColElements(colHeader: ColHeaderInfo) {
-        this.headerSub$.next({ ...colHeader, rowNum: -1 })
+        this.atoms$ = merge(rowAtoms$, colAtoms$, phaseAtoms$, categoryAtoms$)
     }
 
     showAtomDetails(atom: StyleAtom) {

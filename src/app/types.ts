@@ -24,12 +24,6 @@ export interface StyleAtom extends Atom {
     grayout: boolean
 }
 
-export interface HeaderInfo {
-    rowNum: number
-    colNum: number
-    inside: boolean
-}
-
 export interface RowHeaderInfo {
     rowNum: number
     inside: boolean

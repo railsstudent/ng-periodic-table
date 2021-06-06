@@ -1,7 +1,7 @@
 <div class="periodic-container">
     <div class="periodic-grid">
-        <app-col-selectors class="app-col-selectors" (selectedCol)="selectColElements($event)"></app-col-selectors>
-        <app-row-selectors class="app-row-selectors" (selectedRow)="selectRowElements($event)"></app-row-selectors>
+        <app-col-selectors class="app-col-selectors" (selectedCol)="colHeaderSub$.next($event)"></app-col-selectors>
+        <app-row-selectors class="app-row-selectors" (selectedRow)="rowHeaderSub$.next($event)"></app-row-selectors>
 
         <app-atom-details
             class="atom-details"
