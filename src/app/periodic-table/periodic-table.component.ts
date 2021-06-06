@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core'
 import { BehaviorSubject, merge, Observable, Subject } from 'rxjs'
-import { debounceTime, map, takeUntil } from 'rxjs/operators'
+import { debounceTime, first, map, takeUntil, tap } from 'rxjs/operators'
 import {
     ACT_ATOM_GROUP,
     CATEGORY_GROUPS,
@@ -55,10 +55,10 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     constructor(private service: PeriodTableService) {}
 
     ngOnInit() {
-        this.service
-            .getAtoms()
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(atoms => (this.allAtoms = atoms))
+        const firstAtoms$ = this.service.getAtoms().pipe(
+            tap(atoms => (this.allAtoms = atoms)),
+            first(),
+        )
 
         const phaseAtoms$ = this.selectedPhaseSub$.pipe(
             map(selectedPhase =>
@@ -123,7 +123,9 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe$),
         )
 
-        this.atoms$ = merge(rowAtoms$, colAtoms$, phaseAtoms$, categoryAtoms$)
+        this.atoms$ = merge(rowAtoms$, colAtoms$, phaseAtoms$, categoryAtoms$, firstAtoms$).pipe(
+            tap(value => console.log('$atom', value)),
+        )
     }
 
     showAtomDetails(atom: StyleAtom) {
