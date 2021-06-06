@@ -35,7 +35,7 @@ const COLUMN_Halogens = 16
 })
 export class ColSelectorsComponent implements OnChanges {
     @Input()
-    selectedAtomCol: ColHeaderInfo | null = null
+    selectedAtomCol: number | null = null
 
     @Output()
     selectedCol = new EventEmitter<ColHeaderInfo>()
@@ -59,8 +59,8 @@ export class ColSelectorsComponent implements OnChanges {
         const { selectedAtomCol } = changes
         const { currentValue } = selectedAtomCol
         this.unselectAllHeaders()
-        if (currentValue && currentValue.colNum) {
-            this.colHeader[currentValue.colNum - 1].selected = true
+        if (currentValue) {
+            this.colHeader[currentValue - 1].selected = true
         }
     }
 

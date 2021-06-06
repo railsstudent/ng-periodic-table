@@ -27,7 +27,7 @@ import { RowHeaderInfo } from '../types'
 })
 export class RowSelectorsComponent implements OnChanges {
     @Input()
-    selectedAtomRow: RowHeaderInfo | null = null
+    selectedAtomRow: number | null = null
 
     @Output()
     selectedRow = new EventEmitter<RowHeaderInfo>()
@@ -46,8 +46,8 @@ export class RowSelectorsComponent implements OnChanges {
         const { selectedAtomRow } = changes
         const { currentValue } = selectedAtomRow
         this.unselectAllHeaders()
-        if (currentValue && currentValue.rowNum) {
-            this.rowHeader[currentValue.rowNum - 1].selected = true
+        if (currentValue) {
+            this.rowHeader[currentValue - 1].selected = true
         }
     }
 

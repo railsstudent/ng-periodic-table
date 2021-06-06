@@ -48,8 +48,8 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
 
     allAtoms: StyleAtom[] = []
     currentAtom: StyleAtom | null = null
-    selectedAtomCol: ColHeaderInfo | null = null
-    selectedAtomRow: RowHeaderInfo | null = null
+    selectedAtomCol: number | null = null
+    selectedAtomRow: number | null = null
     wikiAtomName = ''
 
     constructor(private service: PeriodTableService) {}
@@ -133,20 +133,10 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
             this.currentAtom = atom
             const { xpos, ypos } = this.currentAtom
             if (ypos > MAX_ROW_INDEX) {
-                this.selectedAtomRow = {
-                    rowNum: ypos - 2,
-                    inside: true,
-                }
-                this.selectedAtomCol = null
+                ;(this.selectedAtomRow = ypos - 2), (this.selectedAtomCol = null)
             } else {
-                this.selectedAtomRow = {
-                    rowNum: ypos,
-                    inside: true,
-                }
-                this.selectedAtomCol = {
-                    colNum: xpos,
-                    inside: true,
-                }
+                this.selectedAtomRow = ypos
+                this.selectedAtomCol = xpos
             }
             this.service.changeCurrentAtomCategory(this.currentAtom.category || '')
         } else {
