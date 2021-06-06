@@ -7,11 +7,7 @@ import { Title } from '@angular/platform-browser'
         <div class="container">
             <app-selection-bar></app-selection-bar>
             <app-periodic-table></app-periodic-table>
-            <app-footer
-                [version]="version"
-                [currentYear]="currentYear"
-                [frameworkVersion]="frameworkVersion"
-            ></app-footer>
+            <app-footer version="0.1.0" [currentYear]="currentYear" frameworkVersion="12.0.3"></app-footer>
         </div>
     `,
     styles: [
@@ -30,8 +26,6 @@ import { Title } from '@angular/platform-browser'
 })
 export class AppShellComponent {
     currentYear = new Date().getFullYear()
-    version = '0.1.0'
-    frameworkVersion = '12.0.1'
 
     constructor(titleService: Title) {
         titleService.setTitle('Periodic Table')
