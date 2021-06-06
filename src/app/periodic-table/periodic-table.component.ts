@@ -8,7 +8,6 @@ import {
     DESCRIPTION,
     HEADER_STAY_AT_LEAST,
     LANT_ATOM_GROUP,
-    MAX_COL_INDEX,
     MAX_ROW_INDEX,
     Phase,
 } from '../constant'
@@ -31,8 +30,6 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     lantAtomGroup = LANT_ATOM_GROUP
     actinideAtomGroup = ACT_ATOM_GROUP
 
-    colHeader: { index: number; description: string; selected: boolean }[]
-    rowHeader: { index: number; className: string; selected: boolean }[]
     unsubscribe$ = new Subject<boolean>()
     colHeaderSub$ = new BehaviorSubject<ColHeaderInfo>({
         colNum: -1,
@@ -50,30 +47,12 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     selectedPhaseSub$ = new BehaviorSubject<Phase>('')
 
     allAtoms: StyleAtom[] = []
-    currentAtom: StyleAtom | null
+    currentAtom: StyleAtom | null = null
+    selectedAtomCol: ColHeaderInfo | null = null
+    selectedAtomRow: RowHeaderInfo | null = null
     wikiAtomName = ''
 
-    constructor(private service: PeriodTableService) {
-        this.colHeader = Array(MAX_COL_INDEX)
-            .fill(1)
-            .map((_, i) => ({
-                index: i + 1,
-                description: i === 14 ? 'Pnictogens' : i === 15 ? 'Chalcogens' : i === 16 ? 'Halogens' : '',
-                selected: false,
-            }))
-
-        this.rowHeader = [
-            { index: 1, className: 'one', selected: false },
-            { index: 2, className: 'two', selected: false },
-            { index: 3, className: 'three', selected: false },
-            { index: 4, className: 'four', selected: false },
-            { index: 5, className: 'fifth', selected: false },
-            { index: 6, className: 'six', selected: false },
-            { index: 7, className: 'seven', selected: false },
-        ]
-
-        this.currentAtom = null
-    }
+    constructor(private service: PeriodTableService) {}
 
     ngOnInit() {
         this.service
@@ -148,26 +127,29 @@ export class PeriodicTableComponent implements OnInit, OnDestroy {
     }
 
     showAtomDetails(atom: StyleAtom) {
-        this.rowHeader.forEach(r => {
-            if (r && r.selected) {
-                r.selected = false
-            }
-        })
-        this.colHeader.forEach(c => {
-            if (c && c.selected) {
-                c.selected = false
-            }
-        })
         if (atom) {
             this.currentAtom = atom
             const { xpos, ypos } = this.currentAtom
             if (ypos > MAX_ROW_INDEX) {
-                this.rowHeader[ypos - 2 - 1].selected = true
+                this.selectedAtomRow = {
+                    rowNum: ypos - 2,
+                    inside: true,
+                }
+                this.selectedAtomCol = null
             } else {
-                this.rowHeader[ypos - 1].selected = true
-                this.colHeader[xpos - 1].selected = true
+                this.selectedAtomRow = {
+                    rowNum: ypos,
+                    inside: true,
+                }
+                this.selectedAtomCol = {
+                    colNum: xpos,
+                    inside: true,
+                }
             }
             this.service.changeCurrentAtomCategory(this.currentAtom.category || '')
+        } else {
+            this.selectedAtomRow = null
+            this.selectedAtomCol = null
         }
     }
 

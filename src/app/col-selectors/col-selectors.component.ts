@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core'
 import { MAX_COL_INDEX } from '../constant'
 import { ColHeaderInfo } from '../types'
 
@@ -25,7 +33,10 @@ const COLUMN_Halogens = 16
     styleUrls: ['./col-selectors.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ColSelectorsComponent {
+export class ColSelectorsComponent implements OnChanges {
+    @Input()
+    selectedAtomCol: ColHeaderInfo | null = null
+
     @Output()
     selectedCol = new EventEmitter<ColHeaderInfo>()
 
@@ -43,6 +54,15 @@ export class ColSelectorsComponent {
                     : '',
             selected: false,
         }))
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const { selectedAtomCol } = changes
+        const { currentValue } = selectedAtomCol
+        this.unselectAllHeaders()
+        if (currentValue && currentValue.colNum) {
+            this.colHeader[currentValue.colNum - 1].selected = true
+        }
+    }
 
     updateColHeaderSelected(colNum: number, inside: boolean) {
         this.unselectAllHeaders()

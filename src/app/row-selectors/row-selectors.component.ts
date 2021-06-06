@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core'
 import { RowHeaderInfo } from '../types'
 
 @Component({
@@ -17,7 +25,10 @@ import { RowHeaderInfo } from '../types'
     styleUrls: ['./row-selectors.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowSelectorsComponent {
+export class RowSelectorsComponent implements OnChanges {
+    @Input()
+    selectedAtomRow: RowHeaderInfo | null = null
+
     @Output()
     selectedRow = new EventEmitter<RowHeaderInfo>()
 
@@ -30,6 +41,15 @@ export class RowSelectorsComponent {
         { index: 6, className: 'six', selected: false },
         { index: 7, className: 'seven', selected: false },
     ]
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const { selectedAtomRow } = changes
+        const { currentValue } = selectedAtomRow
+        this.unselectAllHeaders()
+        if (currentValue && currentValue.rowNum) {
+            this.rowHeader[currentValue.rowNum - 1].selected = true
+        }
+    }
 
     updateRowHeaderSelected(rowNum: number, inside: boolean) {
         this.unselectAllHeaders()
