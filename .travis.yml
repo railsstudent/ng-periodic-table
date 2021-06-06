@@ -21,7 +21,7 @@ before_script:
 
 script:
     - echo "*** audit ***"
-    - npm audit --audit-level=moderate
+    - npm audit --audit-level=moderate --production
     - echo "*** lint ***"
     - npm run lint
     - echo "*** Deploy ng-periodic-table to github pages ****"

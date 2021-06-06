@@ -46,7 +46,7 @@
         "@types/node": "^12.11.1",
         "@typescript-eslint/eslint-plugin": "4.23.0",
         "@typescript-eslint/parser": "^4.23.0",
-        "angular-cli-ghpages": "0.6.1",
+        "angular-cli-ghpages": "0.6.2",
         "eslint": "^7.26.0",
         "eslint-plugin-rxjs": "^3.3.3",
         "eslint-plugin-rxjs-angular": "^1.0.6",
