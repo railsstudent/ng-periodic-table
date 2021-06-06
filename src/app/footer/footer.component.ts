@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { environment } from './../../environments/environment';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import { environment } from './../../environments/environment'
 
 @Component({
     selector: 'app-footer',
@@ -15,6 +15,7 @@ import { environment } from './../../environments/environment';
                     size="2x"
                     (click)="openExternalLocation(githubUrl)"
                     [attr.aria-label]="'github source code'"
+                    class="icon-github"
                 ></fa-icon>
                 <fa-icon
                     [icon]="['fab', 'angular']"
@@ -68,6 +69,11 @@ import { environment } from './../../environments/environment';
 
             .icon-angular {
                 color: red;
+                cursor: pointer;
+            }
+
+            .icon-github {
+                cursor: pointer;
             }
         `,
     ],
@@ -75,20 +81,20 @@ import { environment } from './../../environments/environment';
 })
 export class FooterComponent {
     @Input()
-    version: string;
+    version: string
 
     @Input()
-    currentYear: number;
+    currentYear: number
 
     @Input()
-    frameworkVersion: string;
+    frameworkVersion: string
 
-    githubUrl = environment.githubUrl;
-    angularUrl = environment.angularUrl;
+    githubUrl = environment.githubUrl
+    angularUrl = environment.angularUrl
 
     openExternalLocation(link: string) {
         if (window) {
-            window.open(link, '_blank');
+            window.open(link, '_blank')
         }
     }
 }
